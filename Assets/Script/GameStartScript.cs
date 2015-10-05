@@ -20,7 +20,8 @@ public class GameStartScript : MonoBehaviour {
 	//-2:動く床
 	//-3:岩
 	//-4:壁
-	private int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 1, 1, -3, 1, 1, 2, 2, 3, -1, 3, 2, -2, -2, -2, 2, -2, -2, -2, 2, -4, 2, 1, 1, -1, 1, 2, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3};
+	private int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 1, 1, -3, 1, -3, 1, -1, 1, 2, 2, 3, -1, 3, 2, -2, -2, -2, 2, -2, -2, -2, 2,
+		-4, 2, 1, 1, -1, 1, 2, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -1, 3, 4, 5};
 
 	//GameObject系
 	public GameObject chara;
@@ -396,9 +397,8 @@ public class GameStartScript : MonoBehaviour {
 	}
 
 	IEnumerator createFloor(int createCount) {
-		Debug.Log("CREATE FLOOR");
 		for (int i = 0; i < createCount; i++) {
-			if (floorData[blockCount] != null) {
+			if (blockCount < floorData.Length) {
 
 				bool isBomb = false;
 				bool isMoveFloor = false;
@@ -415,9 +415,11 @@ public class GameStartScript : MonoBehaviour {
 					isMoveFloor = true;
 				} else if (floorData[blockCount] == -3) {
 					vCount = floorData[(blockCount-1)];
-					isRock = true;
-					StartCoroutine(fallRock());
 					rockNumber++;
+					if (isRock == false) {
+						isRock = true;
+						StartCoroutine(fallRock());
+					}
 				} else if (floorData[blockCount] == -4) {
 					vCount = floorData[(blockCount-1)];
 					isWall = true;
@@ -496,20 +498,21 @@ public class GameStartScript : MonoBehaviour {
 
 	//岩を落とす	
 	IEnumerator fallRock() {
-		Debug.Log("岩を落とすよ");
 		while (true) {
-			for (int i = 0; i < rockNumber; i++) {
-				int foundIndex = Array.IndexOf(floorData, -3, i);
-				if (foundIndex >= 0) {
-					//落とす座標
-					float passX = charaDefaultPositionX + (addCubePositionX * -1 * foundIndex);
-					float passY = 5.5f;
+			for (int i = 1; i <= rockNumber; i++) {
+				for (int j = 0; j < floorData.Length; j++) {
+					if (floorData[j] == -3) {
+						//落とす座標
+						float passX = charaDefaultPositionX + (addCubePositionX * -1 * j);
+						float passY = 5.5f;
 
-					Instantiate(rockPrefab, new Vector3(passX, passY, 0), Quaternion.identity);
+						Instantiate(rockPrefab, new Vector3(passX, passY, 0), Quaternion.identity);
+						yield return new WaitForSeconds(UnityEngine.Random.Range(0.1F, 0.3F));
+					}
 				}
 			}
 
-			float waitTime = UnityEngine.Random.Range(0.8F, 1.5F);
+			float waitTime = UnityEngine.Random.Range(0.3F, 1.5F);
 
 			yield return new WaitForSeconds(waitTime);
 		}
