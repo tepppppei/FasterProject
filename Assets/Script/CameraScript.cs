@@ -18,7 +18,7 @@ public class CameraScript : MonoBehaviour {
 
     private Camera cam;
     private float width = 740f;
-    private float height = 1060f;
+    private float height = 1136f;
     private float pixelPerUnit = 100f;
 
     void Awake () {

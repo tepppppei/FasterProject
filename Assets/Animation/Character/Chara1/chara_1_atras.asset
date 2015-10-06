@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 529336600, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
+  m_Name: chara_1_atras
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 244437e550bee16418eb608c93d48635, type: 2}
+  uvs:
+  - serializedVersion: 2
+    x: .578125
+    y: .249023438
+    width: .0869140625
+    height: .114257812
+  - serializedVersion: 2
+    x: .206054688
+    y: .385742188
+    width: .0947265625
+    height: .103515625
+  - serializedVersion: 2
+    x: .301757812
+    y: .385742188
+    width: .0810546875
+    height: .102539062
+  - serializedVersion: 2
+    x: .435546875
+    y: 0
+    width: .232421875
+    height: .248046875
+  - serializedVersion: 2
+    x: .107421875
+    y: .385742188
+    width: .09765625
+    height: .102539062
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: .434570312
+    height: .384765625
+  - serializedVersion: 2
+    x: .54296875
+    y: .369140625
+    width: .078125
+    height: .0908203125
+  - serializedVersion: 2
+    x: .435546875
+    y: .369140625
+    width: .106445312
+    height: .1171875
+  - serializedVersion: 2
+    x: 0
+    y: .385742188
+    width: .106445312
+    height: .110351562
+  - serializedVersion: 2
+    x: .435546875
+    y: .249023438
+    width: .141601562
+    height: .119140625
+  textureGUIDs:
+  - 069699009f557f0479e56279b0b9751c
+  - 79978bd02f3240e498a95afe8c1e249c
+  - e3bf4ee0160f8634a82c5134fb099f19
+  - 8eb439710d658ac48a3785aaa5e92613
+  - 5219dcc1140da024b8b36eb6622de953
+  - d6b64823afba11d4d9f999767065747a
+  - 99ae4853ac35ded4b8de16244019f2b1
+  - e1719ef63d7b40c4fbc216e8d21c9cb8
+  - 2108503779e62db4cbfe9c7d206723e2
+  - 316e1a1f044ada24b818a0914e964da5
+  textureSizes:
+  - {x: 89, y: 117}
+  - {x: 97, y: 106}
+  - {x: 83, y: 105}
+  - {x: 238, y: 254}
+  - {x: 100, y: 105}
+  - {x: 445, y: 394}
+  - {x: 80, y: 93}
+  - {x: 109, y: 120}
+  - {x: 109, y: 113}
+  - {x: 145, y: 122}
+  defaultPivotOffsets:
+  - {x: 0, y: .292279422}
+  - {x: -.00602637976, y: .20955883}
+  - {x: .265104532, y: .308823526}
+  - {x: -.00588544225, y: .275735289}
+  - {x: -.121599264, y: .242647067}
+  - {x: -.0482142866, y: -.405388862}
+  - {x: .012821692, y: .297794133}
+  - {x: -.267134368, y: .308823526}
+  - {x: .262985677, y: .292279422}
+  - {x: -.289285719, y: .241949633}
+  textureNames:
+  - foot_right_bottom
+  - foot_left_top
+  - arm_right_top
+  - body
+  - foot_right_top
+  - head
+  - foot_left_bottom
+  - arm_left_top
+  - arm_right_bottom
+  - arm_left_bottom
+  texturePaths:
+  - Assets/Resources/Image/Character/Chara1/foot_right_bottom.png
+  - Assets/Resources/Image/Character/Chara1/foot_left_top.png
+  - Assets/Resources/Image/Character/Chara1/arm_right_top.png
+  - Assets/Resources/Image/Character/Chara1/body.png
+  - Assets/Resources/Image/Character/Chara1/foot_right_top.png
+  - Assets/Resources/Image/Character/Chara1/head.png
+  - Assets/Resources/Image/Character/Chara1/foot_left_bottom.png
+  - Assets/Resources/Image/Character/Chara1/arm_left_top.png
+  - Assets/Resources/Image/Character/Chara1/arm_right_bottom.png
+  - Assets/Resources/Image/Character/Chara1/arm_left_bottom.png
+  lastBuildID: 20151006120351240
+  needsRebuilt: 0
+  dataVersion: 4
+  maxAtlasSize: 512
+  padding: 1
+  forceSquare: 1

@@ -40,6 +40,7 @@ public class GameStartScript : MonoBehaviour {
 	//canvas系
 	public GameObject[] timeObject;
 	public GameObject progressObject;
+	public GameObject[] hpObject;
 
 	//ゲームスタートフラグ
 	private bool startFlg = false;
@@ -65,6 +66,8 @@ public class GameStartScript : MonoBehaviour {
 	private float charaDefaultPositionX;
 	//時間
 	private DateTime startTime;
+	//残りHP
+	private int hp = 3;
 
 	// Use this for initialization
 	void Start () {
@@ -91,6 +94,10 @@ public class GameStartScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		countdown();
+
+		if (hp == 0) {
+			gameFailed();
+		}
 
 		if (startFlg) {
 			moveProgress();
@@ -233,6 +240,8 @@ public class GameStartScript : MonoBehaviour {
 		path[0] = new Vector3(pass1x, pass1y, 0);
 		path[1] = new Vector3(pass2x, pass2y, 0);
 
+		chara.GetComponent<Animation>().Play("Move");
+
 		iTween.MoveTo(chara, iTween.Hash(
 			"path", path,
 			"time", moveSpeed,
@@ -276,6 +285,8 @@ public class GameStartScript : MonoBehaviour {
 		path[0] = new Vector3(pass1x, pass1y, 0);
 		path[1] = new Vector3(pass2x, pass2y, 0);
 
+		chara.GetComponent<Animation>().Play("Jump");
+
 		iTween.MoveTo(chara, iTween.Hash(
 			"path", path,
 			"time", moveSpeed,
@@ -312,6 +323,7 @@ public class GameStartScript : MonoBehaviour {
 		path[0] = new Vector3(pass1x, pass1y, 0);
 		path[1] = new Vector3(pass2x, pass2y, 0);
 
+		chara.GetComponent<Animation>().Play("Move");
 		iTween.MoveTo(chara, iTween.Hash(
 			"path", path,
 			"time", moveSpeed,
@@ -344,6 +356,7 @@ public class GameStartScript : MonoBehaviour {
 		int step = 2;
 		float posX = chara.transform.localPosition.x + (addCubePositionX * step * -1);
 
+		chara.GetComponent<Animation>().Play("Sliding");
 		iTween.MoveTo(chara, iTween.Hash(
 			"position", new Vector3(posX, chara.transform.localPosition.y, 0),
 			"time", moveSpeed, 
@@ -366,7 +379,7 @@ public class GameStartScript : MonoBehaviour {
 		isMove = true;
 		iTween.ValueTo(gameObject,iTween.Hash(
 			"from",0,
-			"to",1,
+			"to",0.5f,
 			"time",0.2f,
 			"looptype","pingpong",
 			"onupdate","ValueChange"
@@ -377,18 +390,21 @@ public class GameStartScript : MonoBehaviour {
 
 	IEnumerator stopAction(float tm) {
 		yield return new WaitForSeconds(tm);
-		sr.color = new Color(1, 1, 1, 1.0f);
+		//sr.color = new Color(1, 1, 1, 1.0f);
+		//chara.GetComponent<SkinnedMeshRenderer>().material.tintColor = new Color(1, 1, 1, 1.0f);
+		chara.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
 		iTween.Stop(gameObject);
 		Debug.Log("IS MOVEをFALSEにする");
 		isMove = false;
 	}
 
 	void ValueChange(float value){
-		sr.color = new Color(1, 1, 1, value);
+		//sr.color = new Color(1, 1, 1, value);
+		chara.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, value));
 	}
 
 	private void CompleteHandler() {
-		Debug.Log("IS MOVEをFALSEにする");
+		chara.GetComponent<Animation>().Play("Idle");
 		isMove = false;
 	}
 
@@ -678,6 +694,10 @@ public class GameStartScript : MonoBehaviour {
 	}
 
 	private void goBackProgress() {
+		hp--;
+
+		chara.GetComponent<Animation>().Play("Idle");
+
 		int floorLength = floorData.Length;
 		//何％まで進んでいるか
 		float progressPercent = (charaMoveCount * 1.0f) / (floorLength * 1.0f);
@@ -699,9 +719,20 @@ public class GameStartScript : MonoBehaviour {
 
 		int rotateZ = 360 * 3;
 		iTween.RotateTo(progressObject, iTween.Hash("z", rotateZ, "time", 0.5f));
+
+		//HPをフェードアウト
+		iTween.FadeTo(hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
+		Destroy(hpObject[hp], 1.0f);
 	}
 
 	private void goBackProgressComplete() {
+
+	}
+
+	private void gameFailed() {
+
+
+
 
 	}
 }
