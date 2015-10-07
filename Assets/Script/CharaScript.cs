@@ -36,6 +36,8 @@ public class CharaScript : MonoBehaviour {
 			}
 		} else if(collision.gameObject.tag == "Rock"){
 			gameStartScript.goBack();
+		} else if(collision.gameObject.tag == "Goal"){
+			gameStartScript.goal();
 		}
 	}
 

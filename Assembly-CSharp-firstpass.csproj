@@ -6,7 +6,7 @@
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
 	<RootNamespace></RootNamespace>
-	<ProjectGuid>{D05F0A23-3D63-D46F-5FD1-546FC73A5F99}</ProjectGuid>
+	<ProjectGuid>{A661A116-036D-C377-DB9D-DD2A7469A078}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
@@ -46,12 +46,18 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Plugins\iTween.cs" />
+     <None Include="Assets\SmoothMoves\readme.txt" />
      <None Include="Assets\GUI4500Pack\readme.txt" />
+     <None Include="Assets\Rise of the Dough\readme.txt" />
+     <None Include="Assets\Rise of the Dough\Music\tangor - credits.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="SmoothMoves_Runtime">
+ <HintPath>C:/Users/T00777/Documents/FasterProject/FasterProject/Assets/SmoothMoves/Plugins/SmoothMoves/SmoothMoves_Runtime.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>

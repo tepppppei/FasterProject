@@ -6,7 +6,7 @@
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
 	<RootNamespace></RootNamespace>
-	<ProjectGuid>{3CC3877F-8998-D519-C64D-44896F1883FC}</ProjectGuid>
+	<ProjectGuid>{392E6D86-88E7-92DB-44EB-B520F10C71E0}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -46,7 +46,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Camera\Editor\ParallaxLayerInspector.cs" />
+     <None Include="Assets\SmoothMoves\readme.txt" />
      <None Include="Assets\GUI4500Pack\readme.txt" />
+     <None Include="Assets\Rise of the Dough\readme.txt" />
+     <None Include="Assets\Rise of the Dough\Music\tangor - credits.txt" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
@@ -61,6 +64,15 @@
  </Reference>
  <Reference Include="UnityEditor.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="SmoothMoves_Build">
+ <HintPath>C:/Users/T00777/Documents/FasterProject/FasterProject/Assets/SmoothMoves/Editor/SmoothMoves/SmoothMoves_Build.dll</HintPath>
+ </Reference>
+ <Reference Include="SmoothMoves_Editor">
+ <HintPath>C:/Users/T00777/Documents/FasterProject/FasterProject/Assets/SmoothMoves/Editor/SmoothMoves/SmoothMoves_Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="SmoothMoves_Runtime">
+ <HintPath>C:/Users/T00777/Documents/FasterProject/FasterProject/Assets/SmoothMoves/Plugins/SmoothMoves/SmoothMoves_Runtime.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
@@ -104,9 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{D05F0A23-3D63-D46F-5FD1-546FC73A5F99}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{A661A116-036D-C377-DB9D-DD2A7469A078}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{33F3386A-324B-D3C3-EEA0-8B8DFE429C7C}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+      <Project>{E53DCAFC-116F-E0F5-B626-FB471D88A41E}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

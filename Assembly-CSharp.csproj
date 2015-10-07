@@ -6,7 +6,7 @@
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
 	<RootNamespace></RootNamespace>
-	<ProjectGuid>{33F3386A-324B-D3C3-EEA0-8B8DFE429C7C}</ProjectGuid>
+	<ProjectGuid>{E53DCAFC-116F-E0F5-B626-FB471D88A41E}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<AssemblyName>Assembly-CSharp</AssemblyName>
@@ -45,6 +45,26 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\NewBehaviourScript.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_CameraController.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_Chef.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_DifficultyLevel.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_FX.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_FXManager.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_GUIManager.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_GameManager.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_InputManager.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_MusicManager.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_Pasta.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_PastaManager.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_ProgressBar.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_Room.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_Score.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_SoundFXManager.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_TouchPad.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_Weapon.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_WeaponProperties.cs" />
+     <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_WeaponUpgrade.cs" />
      <Compile Include="Assets\Script\BackgroundScript.cs" />
      <Compile Include="Assets\Script\BombScript.cs" />
      <Compile Include="Assets\Script\CameraScript.cs" />
@@ -52,8 +72,10 @@
      <Compile Include="Assets\Script\CircleDestroyScript.cs" />
      <Compile Include="Assets\Script\CorrectCharaScript.cs" />
      <Compile Include="Assets\Script\GameStartScript.cs" />
+     <Compile Include="Assets\Script\JumpBombScript.cs" />
      <Compile Include="Assets\Script\MoveFloorScript.cs" />
      <Compile Include="Assets\Script\ParticleScript.cs" />
+     <Compile Include="Assets\Script\RestartButtonScript.cs" />
      <Compile Include="Assets\Script\RockScript.cs" />
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Animal\Animal.cs" />
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Animal\Bird.cs" />
@@ -77,12 +99,18 @@
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Ladder\Object_Ladder.cs" />
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Ladder\Object_Ladder_Collider.cs" />
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Mesh\SetOrderInLayer.cs" />
+     <None Include="Assets\SmoothMoves\readme.txt" />
      <None Include="Assets\GUI4500Pack\readme.txt" />
+     <None Include="Assets\Rise of the Dough\readme.txt" />
+     <None Include="Assets\Rise of the Dough\Music\tangor - credits.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="SmoothMoves_Runtime">
+ <HintPath>C:/Users/T00777/Documents/FasterProject/FasterProject/Assets/SmoothMoves/Plugins/SmoothMoves/SmoothMoves_Runtime.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
@@ -93,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{D05F0A23-3D63-D46F-5FD1-546FC73A5F99}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{A661A116-036D-C377-DB9D-DD2A7469A078}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

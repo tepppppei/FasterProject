@@ -24,7 +24,7 @@ public class GameStartScript : MonoBehaviour {
     //-6:ランダム速度の動く床
     private int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 2, -5, 2, 1, 1, -3, 1, -3, 1, -1, 1, 2, -5, 2, 3, -1, 3, 2, -2, -2, -2, -2, -2, -2, 2,
         -4, 2, 1, 1, -1, 1, 2, 3, -5, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -5, 3, 4, 5};
-
+    //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
     public GameObject chara;
     public SpriteRenderer sr; 
@@ -34,11 +34,24 @@ public class GameStartScript : MonoBehaviour {
     private GameObject moveFloorPrefab;
     private GameObject rockPrefab;
     private GameObject wallPrefab;
+    private GameObject goalStarPrefab;
     public LayerMask groundlayer;
 
     //ゲームスタート系
     public GameObject canvasObject;
     public GameObject[] startObject;
+
+    //ゲーム終了系
+    public GameObject panelObject;
+    //順次表示する
+    public GameObject[] endObject;
+    //ゲームクリア系
+    public GameObject clearDialogObject;
+    public GameObject completeObject;
+    public GameObject decTimeObject;
+    public GameObject decHpObject;
+    public GameObject[] starObject;
+    public GameObject[] endButtonObject;
 
     //canvas系
     public GameObject[] timeObject;
@@ -81,6 +94,7 @@ public class GameStartScript : MonoBehaviour {
         moveFloorPrefab = (GameObject)Resources.Load("Prefab/FloorMove");
         rockPrefab = (GameObject)Resources.Load("Prefab/FloorRock");
         wallPrefab = (GameObject)Resources.Load("Prefab/FloorWall");
+        goalStarPrefab = (GameObject)Resources.Load("Prefab/GoalStar");
 
         sr = chara.GetComponent<SpriteRenderer>();
 
@@ -98,10 +112,6 @@ public class GameStartScript : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         countdown();
-
-        if (hp == 0) {
-            gameFailed();
-        }
 
         if (startFlg) {
             moveProgress();
@@ -498,6 +508,22 @@ public class GameStartScript : MonoBehaviour {
                                     ));
 
                         yield return new WaitForSeconds(0.1f);
+
+                        //最後のブロックにゴールを置く
+                        if (j == vCount && blockCount == floorData.Length) {
+                            posY = floorDefaultPositionY + System.Math.Abs(addCubePositionY * (j+1));
+                            floorObject = Instantiate(goalStarPrefab, new Vector3(posX, 10, -1), Quaternion.identity) as GameObject;
+
+                            iTween.MoveTo(floorObject, iTween.Hash(
+                                        "x", posX,
+                                        "y", posY,
+                                        "time", 0.2f,
+                                        "oncomplete", "floorCompleteHandler",
+                                        "oncompletetarget", gameObject
+                                        ));
+
+                            yield return new WaitForSeconds(0.1f);
+                        }
                     }
 
                     if (isWall) {
@@ -639,9 +665,14 @@ public class GameStartScript : MonoBehaviour {
     private void countdown() {
         TimeSpan pastTime = DateTime.Now - startTime;
         int cd = limitTime;
+
+        int totalTime = 0;
         if (startFlg) {
             pastTime = DateTime.Now - startTime;
             cd = limitTime - pastTime.Seconds;
+
+            totalTime = pastTime.Seconds + (pastTime.Minutes * 60);
+            Debug.Log(totalTime);
         }
 
         // カウントダウン機能
@@ -678,6 +709,11 @@ public class GameStartScript : MonoBehaviour {
             showNumber3 = number3;
             timeSpriteRenderer = timeObject[2].GetComponent<SpriteRenderer>();
             timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number3);
+        }
+
+        if (totalTime >= limitTime) {
+            startFlg = false;
+            StartCoroutine(gameFailed());
         }
     }
 
@@ -737,16 +773,120 @@ public class GameStartScript : MonoBehaviour {
             iTween.FadeTo(hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
             Destroy(hpObject[hp], 1.0f);
         }
+
+        if (hp == 0) {
+            startFlg = false;
+            StartCoroutine(gameFailed());
+        }
     }
 
     private void goBackProgressComplete() {
 
     }
 
-    private void gameFailed() {
+    IEnumerator gameFailed() {
+        //GameObjectを生成、生成したオブジェクトを変数に代入
+        GameObject panelPrefab = (GameObject)Instantiate(panelObject); 
+        panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
+        //Canvasの子要素として登録する 
+        panelPrefab.transform.SetParent (canvasObject.transform, false);
+        yield return new WaitForSeconds(0.5f);
 
+        //end object群を全部表示
+        GameObject endPrefab;
+        for (int i = 0; i < endObject.Length; i++) {
+            endPrefab = (GameObject)Instantiate(endObject[i]); 
+            float scaleX = endPrefab.transform.localScale.x;
+            float scaleY = endPrefab.transform.localScale.y;
+            float scaleZ = endPrefab.transform.localScale.z;
 
+            endPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
 
+            //Canvasの子要素として登録する 
+            endPrefab.transform.SetParent (canvasObject.transform, false);
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(endPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
 
+            yield return new WaitForSeconds(0.5f);
+        }
     }
+
+    public void goal() {
+        if (startFlg) {
+            startFlg = false;
+            StartCoroutine(gameCleared());
+        }
+    }
+
+    IEnumerator gameCleared() {
+        //GameObjectを生成、生成したオブジェクトを変数に代入
+        GameObject panelPrefab = (GameObject)Instantiate(panelObject); 
+        panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
+        //Canvasの子要素として登録する 
+        panelPrefab.transform.SetParent (canvasObject.transform, false);
+        yield return new WaitForSeconds(0.5f);
+
+        //ダイアログの表示
+        GameObject clearDialogPrefab = (GameObject)Instantiate(clearDialogObject); 
+        float scaleX = clearDialogPrefab.transform.localScale.x;
+        float scaleY = clearDialogPrefab.transform.localScale.y;
+        float scaleZ = clearDialogPrefab.transform.localScale.z;
+        clearDialogPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        //Canvasの子要素として登録する 
+        clearDialogPrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(clearDialogPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.5f);
+
+        //Complete
+        GameObject completePrefab = (GameObject)Instantiate(completeObject); 
+        scaleX = completePrefab.transform.localScale.x;
+        scaleY = completePrefab.transform.localScale.y;
+        scaleZ = completePrefab.transform.localScale.z;
+        completePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        //Canvasの子要素として登録する 
+        completePrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(completePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.5f);
+
+        //残り時間
+        GameObject decTimePrefab = (GameObject)Instantiate(decTimeObject); 
+        scaleX = decTimePrefab.transform.localScale.x;
+        scaleY = decTimePrefab.transform.localScale.y;
+        scaleZ = decTimePrefab.transform.localScale.z;
+        decTimePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        //Canvasの子要素として登録する 
+        decTimePrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(decTimePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.5f);
+
+        //残りHP
+        GameObject decHpPrefab = (GameObject)Instantiate(decHpObject); 
+        scaleX = decHpPrefab.transform.localScale.x;
+        scaleY = decHpPrefab.transform.localScale.y;
+        scaleZ = decHpPrefab.transform.localScale.z;
+        decHpPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        //Canvasの子要素として登録する 
+        decHpPrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(decHpPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.5f);
+
+        //star
+        GameObject starPrefab;
+        for (int i = 0; i < starObject.Length; i++) {
+            starPrefab = (GameObject)Instantiate(starObject[i]); 
+            scaleX = starPrefab.transform.localScale.x;
+            scaleY = starPrefab.transform.localScale.y;
+            scaleZ = starPrefab.transform.localScale.z;
+
+            starPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+
+            //Canvasの子要素として登録する 
+            starPrefab.transform.SetParent (canvasObject.transform, false);
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(starPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
 }
