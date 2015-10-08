@@ -14,7 +14,6 @@ public class GameStartScript : MonoBehaviour {
     private int backNumber = 5;
     private int limitTime = 60;
 
-
     //＋:段差
     //-1:ボム
     //-2:動く床
@@ -23,7 +22,7 @@ public class GameStartScript : MonoBehaviour {
     //-5:跳ねるボム
     //-6:ランダム速度の動く床
     private int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 2, -5, 2, 1, 1, -3, 1, -3, 1, -1, 1, 2, -5, 2, 3, -1, 3, 2, -2, -2, -2, -2, -2, -2, 2,
-        -4, 2, 1, 1, -1, 1, 2, 3, -5, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -5, 3, 4, 5};
+        -4, 2, 1, 1, -1, 1, 2, 3, -5, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -5, 3, 4, 4};
     //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
     public GameObject chara;
@@ -84,6 +83,9 @@ public class GameStartScript : MonoBehaviour {
     private DateTime startTime;
     //残りHP
     private int hp = 3;
+    //ゴール接地フラグ
+    private bool goalAddFlg = false;
+    private int cd;
 
     // Use this for initialization
     void Start () {
@@ -270,10 +272,21 @@ public class GameStartScript : MonoBehaviour {
         //動く床の場合は3つ移動
         if (floorData[charaMoveCount] == -2) {
             charaMoveCount += 3;
+            step = 0;
+        } else if (floorData[(charaMoveCount + 1)] == -1 || floorData[(charaMoveCount + 1)] == -5) {
+            charaMoveCount++;
+            step = 0;
         } else {
             charaMoveCount++;
         }
 
+        //ブロック追加
+        if ((blockCount - charaMoveCount) <= 4) {
+            step = 5 - (blockCount - charaMoveCount);
+            StartCoroutine(createFloor(step));
+        }
+
+/*
         if (charaMoveCount >= maxMoveCount) {
             maxMoveCount = charaMoveCount;
         }
@@ -281,6 +294,7 @@ public class GameStartScript : MonoBehaviour {
         if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
             StartCoroutine(createFloor(step));
         }
+        */
     }
 
     void actionJump() {
@@ -318,6 +332,13 @@ public class GameStartScript : MonoBehaviour {
             charaMoveCount += step;
         }
 
+        //ブロック追加
+        if ((blockCount - charaMoveCount) <= 4) {
+            step = 5 - (blockCount - charaMoveCount);
+            StartCoroutine(createFloor(step));
+        }
+
+/*
         if (charaMoveCount >= maxMoveCount) {
             maxMoveCount = charaMoveCount;
         }
@@ -325,6 +346,7 @@ public class GameStartScript : MonoBehaviour {
         if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
             StartCoroutine(createFloor(step));
         }
+        */
     }
 
     void actionDown() {
@@ -353,10 +375,21 @@ public class GameStartScript : MonoBehaviour {
         //動く床の場合は3つ移動
         if (floorData[charaMoveCount] == -2) {
             charaMoveCount += 3;
+            step = 0;
+        } else if (floorData[(charaMoveCount + 1)] == -1 || floorData[(charaMoveCount + 1)] == -5) {
+            charaMoveCount++;
+            step = 0;
         } else {
             charaMoveCount++;
         }
 
+        //ブロック追加
+        if ((blockCount - charaMoveCount) <= 4) {
+            step = 5 - (blockCount - charaMoveCount);
+            StartCoroutine(createFloor(step));
+        }
+
+/*
         if (charaMoveCount >= maxMoveCount) {
             maxMoveCount = charaMoveCount;
         }
@@ -364,6 +397,7 @@ public class GameStartScript : MonoBehaviour {
         if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
             StartCoroutine(createFloor(step));
         }
+        */
     }
 
     void actionSliding() {
@@ -382,6 +416,12 @@ public class GameStartScript : MonoBehaviour {
 
         charaMoveCount += step;
 
+        //ブロック追加
+        if ((blockCount - charaMoveCount) <= 4) {
+            step = 5 - (blockCount - charaMoveCount);
+            StartCoroutine(createFloor(step));
+        }
+/*
         if (charaMoveCount >= maxMoveCount) {
             maxMoveCount = charaMoveCount;
         }
@@ -389,6 +429,7 @@ public class GameStartScript : MonoBehaviour {
         if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
             StartCoroutine(createFloor(step));
         }
+        */
     }
 
     void badMove() {
@@ -429,6 +470,9 @@ public class GameStartScript : MonoBehaviour {
     }
 
     IEnumerator createFloor(int createCount) {
+        Debug.Log("CREATE FLOOR");
+        Debug.Log("create count:" + createCount);
+        Debug.Log("chara move count:" + charaMoveCount);
         for (int i = 0; i < createCount; i++) {
             if (blockCount < floorData.Length) {
 
@@ -462,6 +506,8 @@ public class GameStartScript : MonoBehaviour {
                 } else {
                     vCount = floorData[blockCount];
                 }
+
+                Debug.Log("------V COUNT------" + vCount);
 
                 float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * blockCount));
 
@@ -510,7 +556,8 @@ public class GameStartScript : MonoBehaviour {
                         yield return new WaitForSeconds(0.1f);
 
                         //最後のブロックにゴールを置く
-                        if (j == vCount && blockCount == floorData.Length) {
+                        if (j == vCount && blockCount == floorData.Length && !goalAddFlg) {
+                            goalAddFlg = true;
                             posY = floorDefaultPositionY + System.Math.Abs(addCubePositionY * (j+1));
                             floorObject = Instantiate(goalStarPrefab, new Vector3(posX, 10, -1), Quaternion.identity) as GameObject;
 
@@ -550,7 +597,7 @@ public class GameStartScript : MonoBehaviour {
         }
     }
 
-    //岩を落とす	
+    //岩を落とす 
     IEnumerator fallRock() {
         while (true) {
             for (int i = 1; i <= rockNumber; i++) {
@@ -634,14 +681,14 @@ public class GameStartScript : MonoBehaviour {
     }
 
     IEnumerator gameStart() {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(0.5f);
         //GameObjectを生成、生成したオブジェクトを変数に代入
         GameObject prefab = (GameObject)Instantiate(startObject[0]); 
         prefab.GetComponent<Image>().color = new Color(0, 0, 0, 0);
         yield return new WaitForSeconds(0.3f);
         //Canvasの子要素として登録する 
         prefab.transform.SetParent (canvasObject.transform, false);
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(1.5f);
 
         Destroy(prefab);
 
@@ -664,7 +711,7 @@ public class GameStartScript : MonoBehaviour {
     private string showNumber3 = "0";
     private void countdown() {
         TimeSpan pastTime = DateTime.Now - startTime;
-        int cd = limitTime;
+        cd = limitTime;
 
         int totalTime = 0;
         if (startFlg) {
@@ -672,7 +719,6 @@ public class GameStartScript : MonoBehaviour {
             cd = limitTime - pastTime.Seconds;
 
             totalTime = pastTime.Seconds + (pastTime.Minutes * 60);
-            Debug.Log(totalTime);
         }
 
         // カウントダウン機能
@@ -819,6 +865,8 @@ public class GameStartScript : MonoBehaviour {
     }
 
     IEnumerator gameCleared() {
+        int clearTime = cd;
+
         //GameObjectを生成、生成したオブジェクトを変数に代入
         GameObject panelPrefab = (GameObject)Instantiate(panelObject); 
         panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
@@ -856,6 +904,34 @@ public class GameStartScript : MonoBehaviour {
         decTimePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
         //Canvasの子要素として登録する 
         decTimePrefab.transform.SetParent (canvasObject.transform, false);
+        GameObject decTimeChild1 = decTimePrefab.transform.FindChild("time_number_1").gameObject;
+        GameObject decTimeChild2 = decTimePrefab.transform.FindChild("time_number_2").gameObject;
+        GameObject decTimeChild3 = decTimePrefab.transform.FindChild("time_number_3").gameObject;
+
+        String stTime = clearTime.ToString();
+        String number1 = "0";
+        String number2 = "0";
+        String number3 = "0";
+
+        if (stTime.Length >= 3) {
+            number1 = stTime.Substring(0, 1);
+            number2 = stTime.Substring(1, 1);
+            number3 = stTime.Substring(2, 1);
+        } else if (stTime.Length >= 2) {
+            number2 = stTime.Substring(0, 1);
+            number3 = stTime.Substring(1, 1);
+        } else {
+            number3 = stTime.Substring(0, 1);
+        }
+
+        SpriteRenderer timeSpriteRenderer;
+        timeSpriteRenderer = decTimeChild1.GetComponent<SpriteRenderer>();
+        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number1);
+        timeSpriteRenderer = decTimeChild2.GetComponent<SpriteRenderer>();
+        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number2);
+        timeSpriteRenderer = decTimeChild3.GetComponent<SpriteRenderer>();
+        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number3);
+
         iTween.ScaleTo(decTimePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
         yield return new WaitForSeconds(0.5f);
 
@@ -867,10 +943,23 @@ public class GameStartScript : MonoBehaviour {
         decHpPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
         //Canvasの子要素として登録する 
         decHpPrefab.transform.SetParent (canvasObject.transform, false);
+        GameObject decHpChild = decHpPrefab.transform.FindChild("hp_number_1").gameObject;
+        String stHp = hp.ToString();
+        SpriteRenderer hpSpriteRenderer;
+        hpSpriteRenderer = decHpChild.GetComponent<SpriteRenderer>();
+        hpSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + stHp);
         iTween.ScaleTo(decHpPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
         yield return new WaitForSeconds(0.5f);
 
         //star
+        //星の数を計算する
+        float decPer = (clearTime * 1.0f) / (limitTime * 1.0f);
+        float decHpPer = (hp * 1.0f) / 2 * decPer;
+        float totalPer = decPer + decHpPer;
+        Debug.Log("DEC PER:" + decPer);
+        Debug.Log("DEC HP PER:" + decHpPer);
+        Debug.Log("TOTAL PER:" + totalPer);
+
         GameObject starPrefab;
         for (int i = 0; i < starObject.Length; i++) {
             starPrefab = (GameObject)Instantiate(starObject[i]); 
@@ -880,13 +969,37 @@ public class GameStartScript : MonoBehaviour {
 
             starPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
 
+            if (i == 1 && totalPer <= 0.35f) {
+                starPrefab.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/item_star_lost");
+            } else if (i == 2 && totalPer <= 0.49f) {
+                starPrefab.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/item_star_lost");
+            }
+
             //Canvasの子要素として登録する 
             starPrefab.transform.SetParent (canvasObject.transform, false);
+
             // 4秒かけて、y軸を3倍に拡大
             iTween.ScaleTo(starPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
 
             yield return new WaitForSeconds(0.5f);
         }
-    }
 
+        //button
+        GameObject endButtonPrefab;
+        for (int i = 0; i < endButtonObject.Length; i++) {
+            endButtonPrefab = (GameObject)Instantiate(endButtonObject[i]); 
+            scaleX = endButtonPrefab.transform.localScale.x;
+            scaleY = endButtonPrefab.transform.localScale.y;
+            scaleZ = endButtonPrefab.transform.localScale.z;
+
+            endButtonPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+
+            //Canvasの子要素として登録する 
+            endButtonPrefab.transform.SetParent (canvasObject.transform, false);
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(endButtonPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
 }

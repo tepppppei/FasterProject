@@ -75,7 +75,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 11447108}
         m_MethodName: restartScene
         m_Mode: 1
         m_Arguments:
@@ -177,7 +177,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132466}
   m_LocalRotation: {x: 0, y: 0, z: -.00268505188, w: -.999996424}
-  m_LocalPosition: {x: 0, y: 0, z: -130}
+  m_LocalPosition: {x: 0, y: 0, z: -230}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 22482300}
@@ -211,7 +211,19 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.z
+      value: -230
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 11447108}
+    - target: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: restartScene
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132466}
