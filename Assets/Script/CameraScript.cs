@@ -33,10 +33,10 @@ public class CameraScript : MonoBehaviour {
     		float bgScale = height / Screen.height;
     		float camWidth = width / (Screen.width * bgScale);
     		cam.rect = new Rect ((1f - camWidth) / 2f, 0f, camWidth, 1f);
-    		} else {
-    			float bgScale = width / Screen.width;
-    			float camHeight = height / (Screen.height * bgScale);
-    			cam.rect = new Rect (0f, (1f - camHeight) / 2f, 1f, camHeight);
-    		}
+    	} else {
+    		float bgScale = width / Screen.width;
+    		float camHeight = height / (Screen.height * bgScale);
+    		cam.rect = new Rect (0f, (1f - camHeight) / 2f, 1f, camHeight);
     	}
     }
+}

@@ -3,7 +3,11 @@ using System.Collections;
  
 public class PhotonSystemScript : Photon.MonoBehaviour {
 
+	public GameObject battleGameStartObject;
 	public GameObject prefab;
+
+	//GameStartObjectのScript
+	private BattleGameStartScript gameStartScript;
  
 	/// マスターサーバーのロビーに入るに呼び出されます。
 	void OnJoinedLobby() {
@@ -16,7 +20,8 @@ public class PhotonSystemScript : Photon.MonoBehaviour {
 	/// これは参加する際だけでなく作成する際も含みます。
 	void OnJoinedRoom() {
 		Debug.Log("部屋に入室");
-		//PhotonNetwork.Instantiate("Character", new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+		GameObject chara = PhotonNetwork.Instantiate("Character", new Vector3(-1.29f, 11.56f, -1f), new Quaternion(0, 180f, 0f, 0f), 0) as GameObject;
+		gameStartScript.charaSetting(chara);
 	}
 	 
 	/// JoinRandom()の入室が失敗した場合に後に呼び出されます。
@@ -27,9 +32,11 @@ public class PhotonSystemScript : Photon.MonoBehaviour {
 	}
 	 
 	void Awake() {
+		gameStartScript = battleGameStartObject.GetComponent<BattleGameStartScript>();
+
 		//マスターサーバーへ接続
 		Debug.Log("マスターサーバーへ接続します");
-		//PhotonNetwork.ConnectUsingSettings("v0.1");
+		PhotonNetwork.ConnectUsingSettings("v0.1");
 	}
 
 }

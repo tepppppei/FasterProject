@@ -3,16 +3,16 @@ using System;
 using UnityEngine.UI;
 using System.Collections;
 
-public class BattleGameStartScript : MonoBehaviour {
+public class BattleGameStartScript : Photon.MonoBehaviour {
 
     //------初期設定系------
-    private float floorDefaultPositionX = -1.28f;
-    private float floorDefaultPositionY = -3.86f;
-    private float addCubePositionX = -1.05f;
-    private float addCubePositionY = -1.05f;
-    private float moveSpeed = 0.16f;
-    private int backNumber = 5;
-    private int limitTime = 60;
+    public float floorDefaultPositionX = -1.28f;
+    public float floorDefaultPositionY = -3.86f;
+    public float addCubePositionX = -1.05f;
+    public float addCubePositionY = -1.05f;
+    public float moveSpeed = 0.16f;
+    public int backNumber = 5;
+    public int limitTime = 60;
 
 
     //＋:段差
@@ -22,7 +22,7 @@ public class BattleGameStartScript : MonoBehaviour {
     //-4:壁
     //-5:跳ねるボム
     //-6:ランダム速度の動く床
-    private int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 2, -5, 2, 1, 1, -3, 1, -3, 1, -1, 1, 2, -5, 2, 3, -1, 3, 2, -2, -2, -2, -2, -2, -2, 2,
+    public int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 2, -5, 2, 1, 1, -3, 1, -3, 1, -1, 1, 2, -5, 2, 3, -1, 3, 2, -2, -2, -2, -2, -2, -2, 2,
         -4, 2, 1, 1, -1, 1, 2, 3, -5, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -5, 3, 4, 4};
     //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
@@ -59,25 +59,17 @@ public class BattleGameStartScript : MonoBehaviour {
     public GameObject[] hpObject;
 
     //ゲームスタートフラグ
-    private bool startFlg = false;
+    public bool startFlg = false;
     //キャラの移動回数
     private int charaMoveCount = 0;
-    //入力受付
-    private bool isMove = false;
     private Vector3 touchPos;
     //現在何番目までブロックを作ったか
-    private int blockCount = 0;
+    public int blockCount = 0;
     //初回ブロック作成フラグ
     private bool firstCreateFlg = false;
-    //接地フラグ
-    private bool isGrounded = true;
-    //戻りフラグ
-    private bool isBack = false;
     //岩フラグ
     private bool isRock = false;
     private int rockNumber = 0;
-    //MAXどこまで進んだか
-    private int maxMoveCount = 0;
     //キャラの初期Ｘ値
     private float charaDefaultPositionX;
     //時間
@@ -87,6 +79,10 @@ public class BattleGameStartScript : MonoBehaviour {
     //ゴール接地フラグ
     private bool goalAddFlg = false;
     private int cd;
+    //ゲーム終了フラグ
+    private bool isEnd = false;
+    //スタートアニメーションを再生したか
+    private bool isStartAnimation = false;
 
     // Use this for initialization
     void Start () {
@@ -99,373 +95,35 @@ public class BattleGameStartScript : MonoBehaviour {
         wallPrefab = (GameObject)Resources.Load("Prefab/FloorWall");
         goalStarPrefab = (GameObject)Resources.Load("Prefab/GoalStar");
 
-        sr = chara.GetComponent<SpriteRenderer>();
-
-        charaDefaultPositionX = chara.transform.localPosition.x;
+        //sr = chara.GetComponent<SpriteRenderer>();
+        //charaDefaultPositionX = chara.transform.localPosition.x;
 
         if (!firstCreateFlg) {
             firstCreateFlg = true;
             StartCoroutine(createFloor(5));
         }
 
-        //ゲーム開始処理
-        StartCoroutine(gameStart());
     }
 
     // Update is called once per frame
+    private GameObject[] characters;
     void Update() {
         countdown();
 
-        if (startFlg) {
-            moveProgress();
-
-            if (Input.GetMouseButtonDown(0)) {
-                touchPos = Input.mousePosition;
-            } else if (Input.GetMouseButtonUp(0)) {
-                Vector3 releasePos = Input.mousePosition;
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                float swipeDistanceY = releasePos.y - touchPos.y;
-
-                //接地判定
-                isGrounded = Physics2D.Linecast(
-                        chara.transform.localPosition, chara.transform.localPosition - chara.transform.up * 1.2f, groundlayer);
-
-                Debug.Log("IS MOVE:" + isMove);
-                Debug.Log("IS GROUNDED:" + isGrounded);
-                if (!isMove && isGrounded) {
-                    //タッチ判定
-                    if (System.Math.Abs(swipeDistanceY) <= 35) {
-                        if (checkMove(0)) {
-                            touchTrueEffect(worldPos.x, worldPos.y);
-                            actionMove();
-                        } else {
-                            touchFalseEffect(worldPos.x, worldPos.y);
-                            badMove();
-                        }
-                        //スワイプ上判定
-                    } else if (swipeDistanceY > 35) {
-                        if (checkMove(1)) {
-                            touchTrueEffect(worldPos.x, worldPos.y);
-                            actionJump();
-                        } else {
-                            touchFalseEffect(worldPos.x, worldPos.y);
-                            badMove();
-                        }
-                        //スワイプ下判定
-                    } else if (swipeDistanceY < -35) {
-                        if (checkMove(2)) {
-                            touchTrueEffect(worldPos.x, worldPos.y);
-                            if (floorData[(charaMoveCount+1)] == -4) {
-                                actionSliding();
-                            } else {
-                                actionDown();
-                            }
-                        } else {
-                            touchFalseEffect(worldPos.x, worldPos.y);
-                            badMove();
-                        }
-                    } else {
-                        touchFalseEffect(worldPos.x, worldPos.y);
-                    }
-                } else {
-                    touchFalseEffect(worldPos.x, worldPos.y);
-                }
+        if (!startFlg) {
+            if (!isStartAnimation && characters != null && characters.Length >= 2) {
+                isStartAnimation = true;
+                StartCoroutine(gameStart());
+            } else if (!isStartAnimation) {
+                characters = GameObject.FindGameObjectsWithTag("Chara");
             }
         }
     }
 
-    //移動OKタッチエフェクト
-    void touchTrueEffect(float x, float y) {
-        GameObject circlePrefab = (GameObject)Resources.Load("Prefab/CircleTrue");
-        Instantiate (circlePrefab, new Vector3(x, y, -2), Quaternion.identity);
-    }
-
-    //移動NGタッチエフェクト
-    void touchFalseEffect(float x, float y) {
-        GameObject circlePrefab = (GameObject)Resources.Load("Prefab/CircleFalse");
-        Instantiate (circlePrefab, new Vector3(x, y, -2), Quaternion.identity);
-    }
-
-    public bool checkMove(int moveType) {
-        if (floorData[(charaMoveCount)] == -2) {
-            return true;
-        } else if (floorData[(charaMoveCount)] == -3) {
-            if (moveType == 0) {
-                return true;
-            } else {
-                return false;
-            }
-            //イレギュラーパターン
-        } else if (floorData[(charaMoveCount + 1)] < 0) {
-            if (floorData[(charaMoveCount + 1)] == -1) {
-                return true;
-            } else if (floorData[(charaMoveCount + 1)] == -2) {
-                return true;
-            } else if (floorData[(charaMoveCount + 1)] == -3) {
-                if (moveType == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else if (floorData[(charaMoveCount + 1)] == -4) {
-                if (moveType == 2) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else if (floorData[(charaMoveCount + 1)] == -5) {
-                return true;
-            } else {
-                return false;
-            }
-            //通常
-        } else {
-            //横移動チェック
-            if (moveType == 0) {
-                if (floorData[charaMoveCount] == floorData[(charaMoveCount + 1)]) {
-                    return true;
-                } else {
-                    return false;
-                }
-                //上移動チェック
-            } else if (moveType == 1) {
-                if (floorData[charaMoveCount] < floorData[(charaMoveCount + 1)]) {
-                    return true;
-                } else {
-                    return false;
-
-                }
-                //下移動チェック
-            } else if (moveType == 2) {
-                if (floorData[charaMoveCount] > floorData[(charaMoveCount + 1)]) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-    }
-
-    void actionMove() {
-        isMove = true;
-
-        float pass1x = chara.transform.localPosition.x + (addCubePositionX / -2);
-        float pass1y = chara.transform.localPosition.y + (addCubePositionY * -0.8f);
-        float pass2x = chara.transform.localPosition.x + (addCubePositionX * -1);
-        float pass2y = chara.transform.localPosition.y;
-
-        Vector3[] path = new Vector3[2];
-        path[0] = new Vector3(pass1x, pass1y, 0);
-        path[1] = new Vector3(pass2x, pass2y, 0);
-
-        chara.GetComponent<Animation>().Play("Move");
-
-        iTween.MoveTo(chara, iTween.Hash(
-                    "path", path,
-                    "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
-                    "oncompletetarget", gameObject
-                    ));
-
-        int step = 1;
-        //動く床の場合は3つ移動
-        if (floorData[charaMoveCount] == -2) {
-            charaMoveCount += 3;
-            step = 0;
-        } else if (floorData[(charaMoveCount + 1)] == -1 || floorData[(charaMoveCount + 1)] == -5) {
-            charaMoveCount++;
-            step = 0;
-        } else {
-            charaMoveCount++;
-        }
-
-        //ブロック追加
-        if ((blockCount - charaMoveCount) <= 4) {
-            step = 5 - (blockCount - charaMoveCount);
-            StartCoroutine(createFloor(step));
-        }
-
 /*
-        if (charaMoveCount >= maxMoveCount) {
-            maxMoveCount = charaMoveCount;
-        }
-
-        if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
-            StartCoroutine(createFloor(step));
-        }
-        */
+    void LateUpdate() {
     }
-
-    void actionJump() {
-        isMove = true;
-
-        //次がボムの場合
-        int step = 1;
-        if (floorData[(charaMoveCount + 1)] == -1 || floorData[(charaMoveCount + 1)] == -5) {
-            step = 2;
-        }
-
-        float pass1x = chara.transform.localPosition.x + ((addCubePositionX * step) / -2);
-        float pass1y = chara.transform.localPosition.y + (addCubePositionY * -1.7f);
-        float pass2x = chara.transform.localPosition.x + ((addCubePositionX * step) * -1);
-        float pass2y = chara.transform.localPosition.y + (addCubePositionY * -1);
-
-        Vector3[] path = new Vector3[2];
-        path[0] = new Vector3(pass1x, pass1y, 0);
-        path[1] = new Vector3(pass2x, pass2y, 0);
-
-        chara.GetComponent<Animation>().Play("Jump");
-
-        iTween.MoveTo(chara, iTween.Hash(
-                    "path", path,
-                    "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
-                    "oncompletetarget", gameObject
-                    ));
-
-        //動く床の場合は3つ移動
-        if (floorData[charaMoveCount] == -2) {
-            charaMoveCount += 3;
-        } else {
-            charaMoveCount += step;
-        }
-
-        //ブロック追加
-        if ((blockCount - charaMoveCount) <= 4) {
-            step = 5 - (blockCount - charaMoveCount);
-            StartCoroutine(createFloor(step));
-        }
-
-/*
-        if (charaMoveCount >= maxMoveCount) {
-            maxMoveCount = charaMoveCount;
-        }
-
-        if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
-            StartCoroutine(createFloor(step));
-        }
-        */
-    }
-
-    void actionDown() {
-        isMove = true;
-
-        float pass1x = chara.transform.localPosition.x + (addCubePositionX / -2);
-        float pass1y = chara.transform.localPosition.y + (addCubePositionY * -0.8f);
-        float pass2x = chara.transform.localPosition.x + (addCubePositionX * -1);
-        float pass2y = chara.transform.localPosition.y;
-
-        Vector3[] path = new Vector3[2];
-        path[0] = new Vector3(pass1x, pass1y, 0);
-        path[1] = new Vector3(pass2x, pass2y, 0);
-
-        chara.GetComponent<Animation>().Play("Move");
-        iTween.MoveTo(chara, iTween.Hash(
-                    "path", path,
-                    "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
-                    "oncompletetarget", gameObject
-                    ));
-
-        int step = 1;
-
-        //動く床の場合は3つ移動
-        if (floorData[charaMoveCount] == -2) {
-            charaMoveCount += 3;
-            step = 0;
-        } else if (floorData[(charaMoveCount + 1)] == -1 || floorData[(charaMoveCount + 1)] == -5) {
-            charaMoveCount++;
-            step = 0;
-        } else {
-            charaMoveCount++;
-        }
-
-        //ブロック追加
-        if ((blockCount - charaMoveCount) <= 4) {
-            step = 5 - (blockCount - charaMoveCount);
-            StartCoroutine(createFloor(step));
-        }
-
-/*
-        if (charaMoveCount >= maxMoveCount) {
-            maxMoveCount = charaMoveCount;
-        }
-
-        if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
-            StartCoroutine(createFloor(step));
-        }
-        */
-    }
-
-    void actionSliding() {
-        isMove = true;
-
-        int step = 2;
-        float posX = chara.transform.localPosition.x + (addCubePositionX * step * -1);
-
-        chara.GetComponent<Animation>().Play("Sliding");
-        iTween.MoveTo(chara, iTween.Hash(
-                    "position", new Vector3(posX, chara.transform.localPosition.y, 0),
-                    "time", moveSpeed, 
-                    "oncomplete", "CompleteHandler", 
-                    "oncompletetarget", gameObject
-                    ));
-
-        charaMoveCount += step;
-
-        //ブロック追加
-        if ((blockCount - charaMoveCount) <= 4) {
-            step = 5 - (blockCount - charaMoveCount);
-            StartCoroutine(createFloor(step));
-        }
-/*
-        if (charaMoveCount >= maxMoveCount) {
-            maxMoveCount = charaMoveCount;
-        }
-
-        if (charaMoveCount >= 1 && charaMoveCount == maxMoveCount) {
-            StartCoroutine(createFloor(step));
-        }
-        */
-    }
-
-    void badMove() {
-        isMove = true;
-        iTween.ValueTo(gameObject,iTween.Hash(
-                    "from",0,
-                    "to",0.5f,
-                    "time",0.2f,
-                    "looptype","pingpong",
-                    "onupdate","ValueChange"
-                    ));
-
-        StartCoroutine(stopAction(1.0f));
-    }
-
-    IEnumerator stopAction(float tm) {
-        yield return new WaitForSeconds(tm);
-        //sr.color = new Color(1, 1, 1, 1.0f);
-        //chara.GetComponent<SkinnedMeshRenderer>().material.tintColor = new Color(1, 1, 1, 1.0f);
-        chara.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
-        iTween.Stop(gameObject);
-        Debug.Log("IS MOVEをFALSEにする");
-        isMove = false;
-    }
-
-    void ValueChange(float value){
-        //sr.color = new Color(1, 1, 1, value);
-        chara.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, value));
-    }
-
-    private void CompleteHandler() {
-        chara.GetComponent<Animation>().Play("Idle");
-        isMove = false;
-    }
+    */
 
     private void floorCompleteHandler() {
 
@@ -621,66 +279,6 @@ public class BattleGameStartScript : MonoBehaviour {
         }
     }
 
-    //指定場所まで戻す
-    public void goBack() {
-        if (!isBack) {
-            isBack = true;
-            isMove = true;
-
-            int vBlockCount = 0;
-            bool isBreak = false;
-            for (int i = backNumber; i <= (backNumber + backNumber) && isBreak == false; i++) {
-                vBlockCount = floorData[(charaMoveCount - i)];
-                if (vBlockCount >= 1) {
-                    charaMoveCount -= i;
-                    isBreak = true;
-                    break;
-                }
-            }
-
-            chara.GetComponent<BoxCollider2D>().isTrigger = true; 
-
-            float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
-            float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
-
-            iTween.MoveTo(chara, iTween.Hash(
-                        "position", new Vector3(posX, posY, 0),
-                        "time", 0.5f, 
-                        "oncomplete", "goBackComplete", 
-                        "oncompletetarget", gameObject, 
-                        "easeType", "linear"
-                        ));
-
-            iTween.ValueTo(gameObject,iTween.Hash(
-                        "from",0,
-                        "to",1,
-                        "time",0.2f,
-                        "looptype","pingpong",
-                        "onupdate","ValueChange"
-                        ));
-
-            //進捗バーも戻す
-            goBackProgress();
-
-            StartCoroutine(stopAction(1.0f));
-        }
-    }
-
-    private void goBackComplete() {
-        chara.GetComponent<BoxCollider2D>().isTrigger = false; 
-        isBack = false;
-        Debug.Log("IS MOVEをFALSEにする");
-        isMove = false;
-    }
-
-    public void correctCharaPositionX() {
-        float passX = charaDefaultPositionX + (addCubePositionX * -1 * charaMoveCount);
-        float passY = chara.transform.localPosition.y;
-
-        chara.GetComponent<BoxCollider2D>().isTrigger = true;
-        chara.transform.localPosition = new Vector3(passX, passY, 0);
-        chara.GetComponent<BoxCollider2D>().isTrigger = false;
-    }
 
     IEnumerator gameStart() {
         yield return new WaitForSeconds(0.5f);
@@ -712,13 +310,12 @@ public class BattleGameStartScript : MonoBehaviour {
     private string showNumber2 = "0";
     private string showNumber3 = "0";
     private void countdown() {
-        TimeSpan pastTime = DateTime.Now - startTime;
         cd = limitTime;
 
         int totalTime = 0;
         if (startFlg) {
-            //pastTime = DateTime.Now - startTime;
-            //cd = limitTime - pastTime.Seconds;
+            TimeSpan pastTime = DateTime.Now - startTime;
+            cd = limitTime - pastTime.Seconds;
 
             totalTime = pastTime.Seconds + (pastTime.Minutes * 60);
         }
@@ -761,75 +358,9 @@ public class BattleGameStartScript : MonoBehaviour {
 
         if (totalTime >= limitTime) {
             startFlg = false;
+            isEnd = true;
             StartCoroutine(gameFailed());
         }
-    }
-
-    private float latestProgressX = 0;
-    private float defaultProgressX = 0;
-    private void moveProgress() {
-        int floorLength = floorData.Length;
-        //何％まで進んでいるか
-        float progressPercent = (charaMoveCount * 1.0f) / (floorLength * 1.0f);
-        //x増加値
-        float progressAddX = 286 * progressPercent;
-
-        if (defaultProgressX == 0) {
-            defaultProgressX = progressObject.transform.localPosition.x;
-        }
-
-        if (latestProgressX < progressAddX) {
-            latestProgressX = progressAddX;
-
-            float pasX = -141 + latestProgressX;
-            float pasY = progressObject.transform.localPosition.y;
-            float pasZ = progressObject.transform.localPosition.z;
-
-            progressObject.transform.localPosition = new Vector3(pasX, pasY, pasZ);
-        }
-    }
-
-    private void goBackProgress() {
-        hp--;
-
-        chara.GetComponent<Animation>().Play("Idle");
-
-        int floorLength = floorData.Length;
-        //何％まで進んでいるか
-        float progressPercent = (charaMoveCount * 1.0f) / (floorLength * 1.0f);
-        //x増加値
-        float progressAddX = 286 * progressPercent;
-        latestProgressX = progressAddX;
-
-        float pasX = defaultProgressX + progressAddX;
-        float pasY = progressObject.transform.localPosition.y;
-        float pasZ = progressObject.transform.localPosition.z;
-
-        iTween.MoveTo(progressObject, iTween.Hash(
-                    "position", new Vector3(pasX, pasY, pasZ),
-                    "time", 0.5f,
-                    "islocal", true,
-                    "oncomplete", "goBackComplete",
-                    "oncompletetarget", gameObject
-                    ));
-
-        int rotateZ = 360 * 3;
-        iTween.RotateTo(progressObject, iTween.Hash("z", rotateZ, "time", 0.5f));
-
-        //HPをフェードアウト
-        if (hp >= 0) {
-            iTween.FadeTo(hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
-            Destroy(hpObject[hp], 1.0f);
-        }
-
-        if (hp == 0) {
-            startFlg = false;
-            StartCoroutine(gameFailed());
-        }
-    }
-
-    private void goBackProgressComplete() {
-
     }
 
     IEnumerator gameFailed() {
@@ -1003,5 +534,20 @@ public class BattleGameStartScript : MonoBehaviour {
 
             yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void charaSetting(GameObject ch) {
+        chara = ch;
+        sr = chara.GetComponent<SpriteRenderer>();
+        charaDefaultPositionX = chara.transform.localPosition.x;
+    }
+
+    public void instructionCreateFloor(int num) {
+        StartCoroutine(createFloor(num));
+    }
+
+    public void instructionGameFailed() {
+        isEnd = true;
+        StartCoroutine(gameFailed());
     }
 }
