@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BattleCharaScript : Photon.MonoBehaviour {
 
-	//public GameObject gameStartObj;
+    //public GameObject gameStartObj;
     //------初期設定系------
     private float floorDefaultPositionX;
     private float floorDefaultPositionY;
@@ -14,20 +14,20 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     private int[] floorData;
 
     public LayerMask groundlayer;
-    public SpriteRenderer sr; 
+    public SpriteRenderer sr;
 
     //canvas系
     private GameObject progressObject;
     private GameObject[] hpObject;
 
-	//動く床用
-	private float moveFloorX = 0;
-	private float charaX = 0;
-	//動く床フラグ
-	private bool isOnMoveFloor = false;
+    //動く床用
+    private float moveFloorX = 0;
+    private float charaX = 0;
+    //動く床フラグ
+    private bool isOnMoveFloor = false;
 
-	//スタートフラグ
-	private bool startFlg = false;
+    //スタートフラグ
+    private bool startFlg = false;
     //キャラの移動回数
     private int charaMoveCount = 0;
     //入力受付
@@ -42,81 +42,87 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     //残りHP
     private int hp = 3;
 
-	//GameStartObjectのScript
-	BattleGameStartScript gameStartScript;
+    //GameStartObjectのScript
+    BattleGameStartScript gameStartScript;
 
-	// Use this for initialization
-	void Start () {
-		GameObject obj = GameObject.Find("GameStartObj");
-		gameStartScript = obj.GetComponent<BattleGameStartScript>();
-		updateDefaultSettings();
+    //PhotonNetworkのScript
+    private NetworkPlayerScript networkPlayerScript;
+
+    // Use this for initialization
+    void Start () {
+        GameObject obj = GameObject.Find("GameStartObj");
+        gameStartScript = obj.GetComponent<BattleGameStartScript>();
+        updateDefaultSettings();
 
         sr = this.gameObject.GetComponent<SpriteRenderer>();
         charaDefaultPositionX = this.gameObject.transform.localPosition.x;
 
-       	progressObject = GameObject.Find("cara_sprite_0");
-       	hpObject = GameObject.FindGameObjectsWithTag("HpHeart");
-	}
+        progressObject = GameObject.Find("cara_sprite_0");
+        hpObject = GameObject.FindGameObjectsWithTag("HpHeart");
 
-	void Update() {
+        //photon network
+        networkPlayerScript = this.gameObject.GetComponent <NetworkPlayerScript>();
+    }
+
+    void Update() {
         if (photonView.isMine) {
-	        if (startFlg) {
-	            moveProgress();
-	            if (Input.GetMouseButtonDown(0)) {
-	                touchPos = Input.mousePosition;
-	            } else if (Input.GetMouseButtonUp(0)) {
-	                Vector3 releasePos = Input.mousePosition;
-	                Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-	                float swipeDistanceY = releasePos.y - touchPos.y;
+            if (startFlg) {
+                moveProgress();
+                if (Input.GetMouseButtonDown(0)) {
+                    touchPos = Input.mousePosition;
+                } else if (Input.GetMouseButtonUp(0)) {
+                    Vector3 releasePos = Input.mousePosition;
+                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    float swipeDistanceY = releasePos.y - touchPos.y;
 
-	                //接地判定
-	                isGrounded = Physics2D.Linecast(
-	                    this.gameObject.transform.localPosition, this.gameObject.transform.localPosition - this.gameObject.transform.up * 1.2f, groundlayer);
+                    //接地判定
+                    isGrounded = Physics2D.Linecast(
+                            this.gameObject.transform.localPosition, this.gameObject.transform.localPosition - this.gameObject.transform.up * 1.2f, groundlayer);
 
-	                if (!isMove && isGrounded) {
-	                    //タッチ判定
-	                    if (System.Math.Abs(swipeDistanceY) <= 35) {
-	                        if (checkMove(0)) {
-	                            touchTrueEffect(worldPos.x, worldPos.y);
-	                            actionMove();
-	                        } else {
-	                            touchFalseEffect(worldPos.x, worldPos.y);
-	                            badMove();
-	                        }
-	                    //スワイプ上判定
-	                    } else if (swipeDistanceY > 35) {
-	                        if (checkMove(1)) {
-	                            touchTrueEffect(worldPos.x, worldPos.y);
-	                            actionJump();
-	                        } else {
-	                            touchFalseEffect(worldPos.x, worldPos.y);
-	                            badMove();
-	                        }
-	                    //スワイプ下判定
-	                    } else if (swipeDistanceY < -35) {
-	                        if (checkMove(2)) {
-	                                touchTrueEffect(worldPos.x, worldPos.y);
-	                            if (floorData[(charaMoveCount+1)] == -4) {
-	                                actionSliding();
-	                            } else {
-	                                actionDown();
-	                            }
-	                        } else {
-	                            touchFalseEffect(worldPos.x, worldPos.y);
-	                            badMove();
-	                        }
-	                    } else {
-	                        touchFalseEffect(worldPos.x, worldPos.y);
-	                    }
-	                } else {
-	                    touchFalseEffect(worldPos.x, worldPos.y);
-	                }
-	            }
-	        }
-		}
+                    if (!isMove && isGrounded) {
+                        //タッチ判定
+                        if (System.Math.Abs(swipeDistanceY) <= 35) {
+                            if (checkMove(0)) {
+                                touchTrueEffect(worldPos.x, worldPos.y);
+                                actionMove();
+                            } else {
+                                touchFalseEffect(worldPos.x, worldPos.y);
+                                badMove();
+                            }
+                            //スワイプ上判定
+                        } else if (swipeDistanceY > 35) {
+                            if (checkMove(1)) {
+                                touchTrueEffect(worldPos.x, worldPos.y);
+                                actionJump();
+                            } else {
+                                touchFalseEffect(worldPos.x, worldPos.y);
+                                badMove();
+                            }
+                            //スワイプ下判定
+                        } else if (swipeDistanceY < -35) {
+                            if (checkMove(2)) {
+                                touchTrueEffect(worldPos.x, worldPos.y);
+                                if (floorData[(charaMoveCount+1)] == -4) {
+                                    actionSliding();
+                                } else {
+                                    actionDown();
+                                }
+                            } else {
+                                touchFalseEffect(worldPos.x, worldPos.y);
+                                badMove();
+                            }
+                        } else {
+                            touchFalseEffect(worldPos.x, worldPos.y);
+                        }
+                    } else {
+                        touchFalseEffect(worldPos.x, worldPos.y);
+                    }
+                }
+            }
+        }
 
-		updateStartFlg();
-	}
+        updateStartFlg();
+    }
 
     //移動OKタッチエフェクト
     void touchTrueEffect(float x, float y) {
@@ -226,6 +232,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             charaMoveCount++;
         }
 
+        //同期処理
+        networkPlayerScript.updateActionNumber(charaMoveCount);
+
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
             step = 5 - (gameStartScript.blockCount - charaMoveCount);
@@ -267,6 +276,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         } else {
             charaMoveCount += step;
         }
+
+        //同期処理
+        networkPlayerScript.updateActionNumber(charaMoveCount);
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -310,6 +322,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             charaMoveCount++;
         }
 
+        //同期処理
+        networkPlayerScript.updateActionNumber(charaMoveCount);
+
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
             step = 5 - (gameStartScript.blockCount - charaMoveCount);
@@ -333,6 +348,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                     ));
 
         charaMoveCount += step;
+
+        //同期処理
+        networkPlayerScript.updateActionNumber(charaMoveCount);
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -373,55 +391,59 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         isMove = false;
     }
 
-	void OnCollisionEnter2D(Collision2D collision){
-		if(collision.gameObject.tag == "Bomb"){
-			goBack();
-		} else if(collision.gameObject.tag == "Fall"){
-			goBack();
-		} else if(collision.gameObject.tag == "MoveFloor"){
-			Debug.Log("動く床にぶつかった");
-			isOnMoveFloor = true;
-			moveFloorX = collision.gameObject.transform.localPosition.x;
-			charaX = this.gameObject.transform.localPosition.x;
-			//this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-		} else if(collision.gameObject.tag == "Floor"){
-			if (!isOnMoveFloor) {
-				correctCharaPositionX();
-			}
-		} else if(collision.gameObject.tag == "Rock"){
-			goBack();
-		} else if(collision.gameObject.tag == "Goal"){
-			gameStartScript.goal();
-		}
-	}
+    void OnCollisionEnter2D(Collision2D collision){
+        if (photonView.isMine) {
+            if(collision.gameObject.tag == "Bomb"){
+                goBack();
+            } else if(collision.gameObject.tag == "Fall"){
+                goBack();
+            } else if(collision.gameObject.tag == "MoveFloor"){
+                Debug.Log("動く床にぶつかった");
+                isOnMoveFloor = true;
+                moveFloorX = collision.gameObject.transform.localPosition.x;
+                charaX = this.gameObject.transform.localPosition.x;
+                //this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+            } else if(collision.gameObject.tag == "Floor"){
+                if (!isOnMoveFloor) {
+                    correctCharaPositionX();
+                }
+            } else if(collision.gameObject.tag == "Rock"){
+                goBack();
+            } else if(collision.gameObject.tag == "Goal"){
+                gameStartScript.goal();
+            }
+        }
+    }
 
-	void OnCollisionStay2D(Collision2D collision){
-		if(collision.gameObject.tag == "MoveFloor"){
-			float posX = charaX + (collision.gameObject.transform.localPosition.x - moveFloorX);
-			this.gameObject.transform.localPosition = new Vector3(posX, this.gameObject.transform.localPosition.y, 0);
-		}
-	}
+    void OnCollisionStay2D(Collision2D collision){
+        if (photonView.isMine) {
+            if(collision.gameObject.tag == "MoveFloor"){
+                float posX = charaX + (collision.gameObject.transform.localPosition.x - moveFloorX);
+                this.gameObject.transform.localPosition = new Vector3(posX, this.gameObject.transform.localPosition.y, 0);
+            }
+        }
+    }
 
     void OnCollisionExit2D(Collision2D collision){
-		if(collision.gameObject.tag == "MoveFloor"){
-			Debug.Log("動く床から離れた");
-			isOnMoveFloor = false;
-			//this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-		}
+        if(collision.gameObject.tag == "MoveFloor"){
+            Debug.Log("動く床から離れた");
+            isOnMoveFloor = false;
+            //this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        }
     }
 
     private void updateStartFlg() {
-    	startFlg = gameStartScript.startFlg;
+        startFlg = gameStartScript.startFlg;
     }
 
     private void updateDefaultSettings() {
-	    floorDefaultPositionX = gameStartScript.floorDefaultPositionX;
-	    floorDefaultPositionY = gameStartScript.floorDefaultPositionY;
-	    addCubePositionX = gameStartScript.addCubePositionX;
-	    addCubePositionY = gameStartScript.addCubePositionY;
-	    moveSpeed = gameStartScript.moveSpeed;
-	    backNumber = gameStartScript.backNumber;
-	    floorData = gameStartScript.floorData;
+        floorDefaultPositionX = gameStartScript.floorDefaultPositionX;
+        floorDefaultPositionY = gameStartScript.floorDefaultPositionY;
+        addCubePositionX = gameStartScript.addCubePositionX;
+        addCubePositionY = gameStartScript.addCubePositionY;
+        moveSpeed = gameStartScript.moveSpeed;
+        backNumber = gameStartScript.backNumber;
+        floorData = gameStartScript.floorData;
     }
 
     //指定場所まで戻す
@@ -441,16 +463,19 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                 }
             }
 
-            this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true; 
+            //同期処理
+            networkPlayerScript.updateActionNumber(charaMoveCount);
+
+            this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
 
             float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
             float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
 
             iTween.MoveTo(this.gameObject, iTween.Hash(
                         "position", new Vector3(posX, posY, 0),
-                        "time", 0.5f, 
-                        "oncomplete", "goBackComplete", 
-                        "oncompletetarget", gameObject, 
+                        "time", 0.5f,
+                        "oncomplete", "goBackComplete",
+                        "oncompletetarget", gameObject,
                         "easeType", "linear"
                         ));
 
@@ -549,9 +574,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         }
     }
 
-
     private void goBackProgressComplete() {
 
     }
-
 }

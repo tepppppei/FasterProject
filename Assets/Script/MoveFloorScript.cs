@@ -3,10 +3,11 @@ using System.Collections;
 
 public class MoveFloorScript : MonoBehaviour {
 
-    private float moveSpeed = 1.4f;
     private float addCubePositionX = 1.05f;
     //フラグ
     private bool isRight = true;
+
+    private float moveSpeed = 0;
 
     // Use this for initialization
     void Start () {
@@ -52,5 +53,9 @@ public class MoveFloorScript : MonoBehaviour {
             this.gameObject.GetComponent<BoxCollider2D>().isTrigger= true;
             StartCoroutine(resetTrigger());
         }
+    }
+
+    public void updateFloorSpeed(float sp) {
+        moveSpeed = sp;
     }
 }

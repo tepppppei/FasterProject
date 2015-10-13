@@ -161,14 +161,15 @@ GameObject:
   - 114: {fileID: 11415978}
   - 50: {fileID: 5005956}
   - 61: {fileID: 6146070}
-  - 114: {fileID: 11474478}
   - 114: {fileID: 11422340}
-  - 114: {fileID: 11421422}
-  - 114: {fileID: 11499726}
+  - 114: {fileID: 11429054}
+  - 114: {fileID: 11462676}
+  - 114: {fileID: 11481404}
   - 114: {fileID: 11497536}
   - 95: {fileID: 9594894}
   - 111: {fileID: 11160716}
   - 137: {fileID: 13766266}
+  - 114: {fileID: 11493502}
   m_Layer: 10
   m_Name: Character
   m_TagString: Chara
@@ -11032,13 +11033,65 @@ MonoBehaviour:
   mMeshColor: {r: 1, g: 1, b: 1, a: 1}
   updateColors: 0
   updatePrefabs: 1
---- !u!114 &11421422
+--- !u!114 &11422340
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154662}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 11429054}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
+--- !u!114 &11429054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1055a1db065304923b5fce93e6ca3555, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionNumber: 0
+--- !u!114 &11462676
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f32469248a24f46989f19d6f8a75e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimeNoNow: 0
+  AnimeNoWas: 0
+  AnimeSpeedNow: 0
+  AnimeSpeedWas: 0
+--- !u!114 &11481404
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154662}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -11047,9 +11100,9 @@ MonoBehaviour:
     SynchronizeEnabled: 1
     TeleportEnabled: 1
     TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 3
+    InterpolateOption: 4
     InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
+    InterpolateLerpSpeed: 10
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:
@@ -11077,22 +11130,22 @@ MonoBehaviour:
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-    ExtrapolateOption: 1
+    ExtrapolateOption: 0
     ExtrapolateSpeed: 1
     ExtrapolateIncludingRoundTripTime: 1
     ExtrapolateNumberOfStoredPositions: 1
     DrawErrorGizmo: 1
   m_RotationModel:
     SynchronizeEnabled: 1
-    InterpolateOption: 1
+    InterpolateOption: 2
     InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
+    InterpolateLerpSpeed: 10
   m_ScaleModel:
-    SynchronizeEnabled: 0
+    SynchronizeEnabled: 1
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!114 &11422340
+--- !u!114 &11493502
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -11100,36 +11153,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 154662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Script: {fileID: 11500000, guid: fc60792a129d045658dd5798657ba7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  prefixBackup: -1
-  observed: {fileID: 0}
-  synchronization: 3
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 11421422}
-  - {fileID: 11499726}
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
-  isRuntimeInstantiated: 0
---- !u!114 &11474478
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 154662}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7feba835c47a38d4eb0b0a22dad2fb94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameStartObj: {fileID: 0}
+  groundlayer:
+    serializedVersion: 2
+    m_Bits: 256
+  sr: {fileID: 0}
 --- !u!114 &11497536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11145,21 +11175,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   sr: {fileID: 0}
---- !u!114 &11499726
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 154662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
 --- !u!137 &13766266
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -11226,7 +11241,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: ObservedComponents.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: synchronization
@@ -11235,7 +11250,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: ObservedComponents.Array.data[0]
       value: 
-      objectReference: {fileID: 11421422}
+      objectReference: {fileID: 11429054}
     - target: {fileID: 0}
       propertyPath: m_PositionModel.SynchronizeEnabled
       value: 1
@@ -11246,11 +11261,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_PositionModel.InterpolateOption
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalRotation.y
@@ -11275,7 +11290,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 11499726}
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ShowLayerWeightsInspector
       value: 1
@@ -11287,6 +11302,22 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_PositionModel.ExtrapolateOption
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ScaleModel.SynchronizeEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_PositionModel.InterpolateLerpSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_RotationModel.InterpolateOption
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_RotationModel.InterpolateLerpSpeed
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

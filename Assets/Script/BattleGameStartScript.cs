@@ -12,8 +12,12 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     public float addCubePositionY = -1.05f;
     public float moveSpeed = 0.16f;
     public int backNumber = 5;
-    public int limitTime = 60;
+    public int limitTime = 80;
 
+    //変速設定系
+    public float[] bombSpeedPetern = new float[10];
+    public float[] moveFloorSpeedPetern = new float[10];
+    public bool isMaster = false;
 
     //＋:段差
     //-1:ボム
@@ -27,7 +31,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
     public GameObject chara;
-    public SpriteRenderer sr; 
+    public SpriteRenderer sr;
     private GameObject floorPrefab;
     private GameObject bombPrefab;
     private GameObject jumpBombPrefab;
@@ -83,6 +87,12 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     private bool isEnd = false;
     //スタートアニメーションを再生したか
     private bool isStartAnimation = false;
+    //動く床の数
+    private int moveFloorCount = 0;
+
+    //PhotonNetworkのScript
+    private NetworkPlayerScript networkPlayerScript;
+
 
     // Use this for initialization
     void Start () {
@@ -103,6 +113,14 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             StartCoroutine(createFloor(5));
         }
 
+        //フロアの設定値を事前に作成
+        for (int i = 0; i < 10; i++) {
+            bombSpeedPetern[i] = UnityEngine.Random.Range(0.1F, 0.5F);
+            moveFloorSpeedPetern[i] = UnityEngine.Random.Range(0.5F, 1.4F);
+        }
+
+        //photon network
+        networkPlayerScript = this.gameObject.GetComponent <NetworkPlayerScript>();
     }
 
     // Update is called once per frame
@@ -113,6 +131,16 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         if (!startFlg) {
             if (!isStartAnimation && characters != null && characters.Length >= 2) {
                 isStartAnimation = true;
+
+                //自分がマスターの場合は対戦相手に設定値を送信
+                if (isMaster) {
+                    if (networkPlayerScript != null) {
+                        networkPlayerScript.updateSettings(bombSpeedPetern, moveFloorSpeedPetern);
+                        //networkPlayerScript.bombSpeedPetern = bombSpeedPetern;
+                        //networkPlayerScript.moveFloorSpeedPetern = moveFloorSpeedPetern;
+                    }
+                }
+
                 StartCoroutine(gameStart());
             } else if (!isStartAnimation) {
                 characters = GameObject.FindGameObjectsWithTag("Chara");
@@ -130,9 +158,6 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     }
 
     IEnumerator createFloor(int createCount) {
-        Debug.Log("CREATE FLOOR");
-        Debug.Log("create count:" + createCount);
-        Debug.Log("chara move count:" + charaMoveCount);
         for (int i = 0; i < createCount; i++) {
             if (blockCount < floorData.Length) {
 
@@ -167,8 +192,6 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
                     vCount = floorData[blockCount];
                 }
 
-                Debug.Log("------V COUNT------" + vCount);
-
                 float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * blockCount));
 
                 //動く床は３つ分
@@ -178,6 +201,13 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
                     GameObject floorObject;
                     floorObject = Instantiate(moveFloorPrefab, new Vector3(posX, 10, -1), Quaternion.identity) as GameObject;
+
+                    MoveFloorScript mvs = floorObject.GetComponent<MoveFloorScript>();
+                    mvs.updateFloorSpeed(moveFloorSpeedPetern[moveFloorCount]);
+                    moveFloorCount++;
+                    if (moveFloorCount >= moveFloorSpeedPetern.Length) {
+                        moveFloorCount = 0;
+                    }
 
                     iTween.MoveTo(floorObject, iTween.Hash(
                                 "x", posX,
@@ -259,6 +289,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
     //岩を落とす 
     IEnumerator fallRock() {
+        int loopCount = 0;
         while (true) {
             for (int i = 1; i <= rockNumber; i++) {
                 for (int j = 0; j < floorData.Length; j++) {
@@ -268,14 +299,17 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
                         float passY = 5.5f;
 
                         Instantiate(rockPrefab, new Vector3(passX, passY, 0), Quaternion.identity);
-                        yield return new WaitForSeconds(UnityEngine.Random.Range(0.1F, 0.3F));
+
+                        //yield return new WaitForSeconds(UnityEngine.Random.Range(0.1F, 0.3F));
+                        yield return new WaitForSeconds(bombSpeedPetern[loopCount]);
+                    }
+
+                    loopCount++;
+                    if (loopCount >= bombSpeedPetern.Length) {
+                        loopCount = 0;
                     }
                 }
             }
-
-            float waitTime = UnityEngine.Random.Range(0.3F, 1.5F);
-
-            yield return new WaitForSeconds(waitTime);
         }
     }
 
@@ -283,10 +317,10 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     IEnumerator gameStart() {
         yield return new WaitForSeconds(0.5f);
         //GameObjectを生成、生成したオブジェクトを変数に代入
-        GameObject prefab = (GameObject)Instantiate(startObject[0]); 
+        GameObject prefab = (GameObject)Instantiate(startObject[0]);
         prefab.GetComponent<Image>().color = new Color(0, 0, 0, 0);
         yield return new WaitForSeconds(0.3f);
-        //Canvasの子要素として登録する 
+        //Canvasの子要素として登録する
         prefab.transform.SetParent (canvasObject.transform, false);
         yield return new WaitForSeconds(1.5f);
 
@@ -302,8 +336,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         Destroy(prefab);
 
         startFlg = true;
-
         startTime = DateTime.Now;
+
     }
 
     private string showNumber1 = "0";
