@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using System;
+using UnityEngine.UI;
 
 public class BattleEnemyScript : Photon.MonoBehaviour {
 
@@ -15,9 +17,6 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
     public LayerMask groundlayer;
     public SpriteRenderer sr;
-
-    //canvas系
-    private GameObject progressObject;
 
     //動く床用
     private float moveFloorX = 0;
@@ -42,6 +41,14 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
     //PhotonNetworkのScript
     private NetworkPlayerScript networkPlayerScript;
 
+    //敵のプログレス
+    private GameObject enemyProgressPrefab;
+    private GameObject enemyProgressObject;
+    //canvas
+    private GameObject canvasObject;
+
+    private float enemyColor = 0.3f;
+
     // Use this for initialization
     void Start () {
         GameObject obj = GameObject.Find("GameStartObj");
@@ -51,16 +58,34 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         sr = this.gameObject.GetComponent<SpriteRenderer>();
         charaDefaultPositionX = this.gameObject.transform.localPosition.x;
 
-        progressObject = GameObject.Find("cara_sprite_0");
+        canvasObject = GameObject.Find("Canvas");
+        if (!photonView.isMine) {
+            enemyProgressPrefab = (GameObject)Resources.Load("Image/Character/Chara1/cara_sprite_0");
+            enemyProgressObject = (GameObject)Instantiate(enemyProgressPrefab);
+
+            //オブジェクトにマテリアルを追加
+            Material glayMaterial = (Material) Resources.Load("Material/GlayMaterial");
+            enemyProgressObject.GetComponent<Image>().material = glayMaterial;
+
+            //Canvasの子要素として登録する
+            enemyProgressObject.transform.SetParent (canvasObject.transform, false);
+        }
 
         //photon network
         networkPlayerScript = this.gameObject.GetComponent <NetworkPlayerScript>();
     }
 
+    void LateUpdate() {
+        if (!photonView.isMine) {
+            //敵キャラの色を変更
+            this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(enemyColor, enemyColor, enemyColor, 1.0f));
+        }
+    }
+
     void Update() {
         if (!photonView.isMine) {
             if (startFlg) {
-                //moveProgress();
+                moveProgress();
             }
         }
 
@@ -99,9 +124,6 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         } else {
             charaMoveCount++;
         }
-
-        //同期処理
-        networkPlayerScript.updateActionNumber(charaMoveCount);
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -144,9 +166,6 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             charaMoveCount += step;
         }
 
-        //同期処理
-        networkPlayerScript.updateActionNumber(charaMoveCount);
-
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
             step = 5 - (gameStartScript.blockCount - charaMoveCount);
@@ -188,8 +207,6 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             charaMoveCount++;
         }
 
-        //同期処理
-        networkPlayerScript.updateActionNumber(charaMoveCount);
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -214,8 +231,6 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
         charaMoveCount += step;
 
-        //同期処理
-        networkPlayerScript.updateActionNumber(charaMoveCount);
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -225,6 +240,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
     }
 
     void badMove() {
+        /*
         iTween.ValueTo(gameObject,iTween.Hash(
                     "from",0,
                     "to",0.5f,
@@ -232,6 +248,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                     "looptype","pingpong",
                     "onupdate","ValueChange"
                     ));
+                    */
 
         StartCoroutine(stopAction(1.0f));
     }
@@ -240,13 +257,13 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         yield return new WaitForSeconds(tm);
         //sr.color = new Color(1, 1, 1, 1.0f);
         //this.gameObject.GetComponent<SkinnedMeshRenderer>().material.tintColor = new Color(1, 1, 1, 1.0f);
-        this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+        this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(enemyColor, enemyColor, enemyColor, enemyColor));
         iTween.Stop(gameObject);
         Debug.Log("IS MOVEをFALSEにする");
     }
 
     void ValueChange(float value){
-        this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, value));
+        //this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(enemyColor, enemyColor, enemyColor, value));
     }
 
     private void CompleteHandler() {
@@ -262,6 +279,8 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                 moveFloorX = collision.gameObject.transform.localPosition.x;
                 charaX = this.gameObject.transform.localPosition.x;
                 //this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+            } else if(collision.gameObject.tag == "Fall"){
+                goBack(0);
             } else if(collision.gameObject.tag == "Floor"){
                 if (!isOnMoveFloor) {
                     correctCharaPositionX();
@@ -336,13 +355,17 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                         "easeType", "linear"
                         ));
 
-            iTween.ValueTo(gameObject,iTween.Hash(
-                        "from",0,
-                        "to",1,
-                        "time",0.2f,
-                        "looptype","pingpong",
-                        "onupdate","ValueChange"
-                        ));
+            /*
+            if (!photonView.isMine) {
+                iTween.ValueTo(gameObject,iTween.Hash(
+                            "from",0,
+                            "to",1,
+                            "time",0.2f,
+                            "looptype","pingpong",
+                            "onupdate","ValueChange"
+                            ));
+            }
+            */
 
             //進捗バーも戻す
             goBackProgress();
@@ -377,10 +400,10 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         latestProgressX = progressAddX;
 
         float pasX = defaultProgressX + progressAddX;
-        float pasY = progressObject.transform.localPosition.y;
-        float pasZ = progressObject.transform.localPosition.z;
+        float pasY = enemyProgressObject.transform.localPosition.y;
+        float pasZ = enemyProgressObject.transform.localPosition.z;
 
-        iTween.MoveTo(progressObject, iTween.Hash(
+        iTween.MoveTo(enemyProgressObject, iTween.Hash(
                     "position", new Vector3(pasX, pasY, pasZ),
                     "time", 0.5f,
                     "islocal", true,
@@ -389,7 +412,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                     ));
 
         int rotateZ = 360 * 3;
-        iTween.RotateTo(progressObject, iTween.Hash("z", rotateZ, "time", 0.5f));
+        iTween.RotateTo(enemyProgressObject, iTween.Hash("z", rotateZ, "time", 0.5f));
     }
 
     private float latestProgressX = 0;
@@ -402,17 +425,17 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         float progressAddX = 286 * progressPercent;
 
         if (defaultProgressX == 0) {
-            defaultProgressX = progressObject.transform.localPosition.x;
+            defaultProgressX = enemyProgressObject.transform.localPosition.x;
         }
 
         if (latestProgressX < progressAddX) {
             latestProgressX = progressAddX;
 
             float pasX = -141 + latestProgressX;
-            float pasY = progressObject.transform.localPosition.y;
-            float pasZ = progressObject.transform.localPosition.z;
+            float pasY = enemyProgressObject.transform.localPosition.y;
+            float pasZ = enemyProgressObject.transform.localPosition.z;
 
-            progressObject.transform.localPosition = new Vector3(pasX, pasY, pasZ);
+            enemyProgressObject.transform.localPosition = new Vector3(pasX, pasY, pasZ);
         }
     }
 
@@ -443,8 +466,12 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                         actionJump();
                     } else if (nextFloor == -2) {
                         //床に乗る処理
-
-                        actionJump();
+                        //床の座標を取得
+                        GameObject mvObj = gameStartScript.getMoveFloorObject((charaMoveCount + 1));
+                        float mvfX = mvObj.transform.localPosition.x;
+                        float mvfY = mvObj.transform.localPosition.y + 0.6f;
+                        this.gameObject.transform.localPosition = new Vector3(mvfX, mvfY, this.gameObject.transform.localPosition.z);
+                        //actionJump();
                     } else if (nextFloor == -3) {
                         actionMove();
                     } else if (nextFloor == -4) {
@@ -469,5 +496,9 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
     IEnumerator waitAction() {
         yield return new WaitForSeconds(0.5f);
+    }
+
+    public int getMoveCount() {
+        return charaMoveCount;
     }
 }

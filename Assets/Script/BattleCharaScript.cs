@@ -18,7 +18,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
     //canvas系
     private GameObject progressObject;
-    private GameObject[] hpObject;
+    private ArrayList hpObject = new ArrayList();
 
     //動く床用
     private float moveFloorX = 0;
@@ -58,7 +58,12 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         charaDefaultPositionX = this.gameObject.transform.localPosition.x;
 
         progressObject = GameObject.Find("cara_sprite_0");
-        hpObject = GameObject.FindGameObjectsWithTag("HpHeart");
+        GameObject hpObject1 = GameObject.Find("item_heart1");
+        GameObject hpObject2 = GameObject.Find("item_heart2");
+        GameObject hpObject3 = GameObject.Find("item_heart3");
+        hpObject.Add(hpObject1);
+        hpObject.Add(hpObject2);
+        hpObject.Add(hpObject3);
 
         //photon network
         networkPlayerScript = this.gameObject.GetComponent <NetworkPlayerScript>();
@@ -66,7 +71,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
     void Update() {
         if (photonView.isMine) {
-            if (startFlg) {
+            if (startFlg && !isBack) {
                 moveProgress();
                 if (Input.GetMouseButtonDown(0)) {
                     touchPos = Input.mousePosition;
@@ -199,6 +204,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     }
 
     void actionMove() {
+        this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+        iTween.Stop(gameObject);
+
         isMove = true;
 
         float pass1x = this.gameObject.transform.localPosition.x + (addCubePositionX / -2);
@@ -243,6 +251,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     }
 
     void actionJump() {
+        this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+        iTween.Stop(gameObject);
+
         isMove = true;
 
         //次がボムの場合
@@ -289,6 +300,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     }
 
     void actionDown() {
+        this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+        iTween.Stop(gameObject);
+
         isMove = true;
 
         float pass1x = this.gameObject.transform.localPosition.x + (addCubePositionX / -2);
@@ -334,6 +348,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     }
 
     void actionSliding() {
+        this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+        iTween.Stop(gameObject);
+
         isMove = true;
 
         int step = 2;
@@ -399,6 +416,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                 goBack();
             } else if(collision.gameObject.tag == "MoveFloor"){
                 Debug.Log("動く床にぶつかった");
+                Debug.Log(charaMoveCount);
                 isOnMoveFloor = true;
                 moveFloorX = collision.gameObject.transform.localPosition.x;
                 charaX = this.gameObject.transform.localPosition.x;
@@ -512,6 +530,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
     private void goBackProgress() {
         hp--;
+        Debug.Log("残りHP:"+hp);
 
         this.gameObject.GetComponent<Animation>().Play("Idle");
 
@@ -539,13 +558,12 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
         //HPをフェードアウト
         if (hp >= 0) {
-            iTween.FadeTo(hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
-            Destroy(hpObject[hp], 1.0f);
+            iTween.FadeTo((GameObject)hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
+            Destroy((GameObject)hpObject[hp], 1.0f);
         }
 
         if (hp == 0) {
             startFlg = false;
-
             gameStartScript.instructionGameFailed();
         }
     }
@@ -576,5 +594,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
     private void goBackProgressComplete() {
 
+    }
+
+    public int getMoveCount() {
+        return charaMoveCount;
     }
 }

@@ -48,14 +48,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     //ゲーム終了系
     public GameObject panelObject;
     //順次表示する
-    public GameObject[] endObject;
-    //ゲームクリア系
-    public GameObject clearDialogObject;
-    public GameObject completeObject;
-    public GameObject decTimeObject;
-    public GameObject decHpObject;
-    public GameObject[] starObject;
-    public GameObject[] endButtonObject;
+    public GameObject[] winObject;
+    public GameObject[] failObject;
 
     //canvas系
     public GameObject[] timeObject;
@@ -89,6 +83,13 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     private bool isStartAnimation = false;
     //動く床の数
     private int moveFloorCount = 0;
+    //動く床のオブジェクト
+    private ArrayList moveFloorObjectList = new ArrayList();
+
+    //BattleCharaScript
+    private BattleCharaScript battleCharaScript;
+    //BattleEnemyScript
+    private BattleEnemyScript battleEnemyScript;
 
     //PhotonNetworkのScript
     private NetworkPlayerScript networkPlayerScript;
@@ -115,7 +116,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
         //フロアの設定値を事前に作成
         for (int i = 0; i < 10; i++) {
-            bombSpeedPetern[i] = UnityEngine.Random.Range(0.1F, 0.5F);
+            bombSpeedPetern[i] = UnityEngine.Random.Range(0.3F, 0.8F);
             moveFloorSpeedPetern[i] = UnityEngine.Random.Range(0.5F, 1.4F);
         }
 
@@ -138,6 +139,10 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
                         networkPlayerScript.updateSettings(bombSpeedPetern, moveFloorSpeedPetern);
                         //networkPlayerScript.bombSpeedPetern = bombSpeedPetern;
                         //networkPlayerScript.moveFloorSpeedPetern = moveFloorSpeedPetern;
+
+                        battleCharaScript = this.gameObject.GetComponent<BattleCharaScript>();
+                        battleEnemyScript = this.gameObject.GetComponent<BattleEnemyScript>();
+
                     }
                 }
 
@@ -201,6 +206,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
                     GameObject floorObject;
                     floorObject = Instantiate(moveFloorPrefab, new Vector3(posX, 10, -1), Quaternion.identity) as GameObject;
+
+                    moveFloorObjectList.Add(floorObject);
 
                     MoveFloorScript mvs = floorObject.GetComponent<MoveFloorScript>();
                     mvs.updateFloorSpeed(moveFloorSpeedPetern[moveFloorCount]);
@@ -393,11 +400,21 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         if (totalTime >= limitTime) {
             startFlg = false;
             isEnd = true;
-            StartCoroutine(gameFailed());
+
+            //networkPlayerScript.gameEnd();
+
+            //タイムオーバーの場合は進んでいる方が勝利
+            int myMVC = battleCharaScript.getMoveCount();
+            int enemyMVC = battleCharaScript.getMoveCount();
+            if (myMVC <= enemyMVC) {
+                StartCoroutine(gameEnd(false));
+            } else {
+                StartCoroutine(gameEnd(true));
+            }
         }
     }
 
-    IEnumerator gameFailed() {
+    IEnumerator gameEnd(bool winFlg=false) {
         //GameObjectを生成、生成したオブジェクトを変数に代入
         GameObject panelPrefab = (GameObject)Instantiate(panelObject); 
         panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
@@ -405,10 +422,18 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         panelPrefab.transform.SetParent (canvasObject.transform, false);
         yield return new WaitForSeconds(0.5f);
 
+        GameObject[] endObject;
+        //勝利した場合
+        if (winFlg) {
+            endObject = winObject;
+        } else {
+            endObject = failObject;
+        }
+
         //end object群を全部表示
         GameObject endPrefab;
         for (int i = 0; i < endObject.Length; i++) {
-            endPrefab = (GameObject)Instantiate(endObject[i]); 
+            endPrefab = (GameObject)Instantiate(endObject[i]);
             float scaleX = endPrefab.transform.localScale.x;
             float scaleY = endPrefab.transform.localScale.y;
             float scaleZ = endPrefab.transform.localScale.z;
@@ -418,7 +443,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             //Canvasの子要素として登録する 
             endPrefab.transform.SetParent (canvasObject.transform, false);
             // 4秒かけて、y軸を3倍に拡大
-            iTween.ScaleTo(endPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+            iTween.ScaleTo(endPrefab, iTween.Hash("x", scaleX, "y", scaleY, "z", scaleZ, "time", 0.3f));
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -427,146 +452,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     public void goal() {
         if (startFlg) {
             startFlg = false;
-            StartCoroutine(gameCleared());
-        }
-    }
-
-    IEnumerator gameCleared() {
-        int clearTime = cd;
-
-        //GameObjectを生成、生成したオブジェクトを変数に代入
-        GameObject panelPrefab = (GameObject)Instantiate(panelObject); 
-        panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
-        //Canvasの子要素として登録する 
-        panelPrefab.transform.SetParent (canvasObject.transform, false);
-        yield return new WaitForSeconds(0.5f);
-
-        //ダイアログの表示
-        GameObject clearDialogPrefab = (GameObject)Instantiate(clearDialogObject); 
-        float scaleX = clearDialogPrefab.transform.localScale.x;
-        float scaleY = clearDialogPrefab.transform.localScale.y;
-        float scaleZ = clearDialogPrefab.transform.localScale.z;
-        clearDialogPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-        //Canvasの子要素として登録する 
-        clearDialogPrefab.transform.SetParent (canvasObject.transform, false);
-        iTween.ScaleTo(clearDialogPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
-
-        //Complete
-        GameObject completePrefab = (GameObject)Instantiate(completeObject); 
-        scaleX = completePrefab.transform.localScale.x;
-        scaleY = completePrefab.transform.localScale.y;
-        scaleZ = completePrefab.transform.localScale.z;
-        completePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-        //Canvasの子要素として登録する 
-        completePrefab.transform.SetParent (canvasObject.transform, false);
-        iTween.ScaleTo(completePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
-
-        //残り時間
-        GameObject decTimePrefab = (GameObject)Instantiate(decTimeObject); 
-        scaleX = decTimePrefab.transform.localScale.x;
-        scaleY = decTimePrefab.transform.localScale.y;
-        scaleZ = decTimePrefab.transform.localScale.z;
-        decTimePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-        //Canvasの子要素として登録する 
-        decTimePrefab.transform.SetParent (canvasObject.transform, false);
-        GameObject decTimeChild1 = decTimePrefab.transform.FindChild("time_number_1").gameObject;
-        GameObject decTimeChild2 = decTimePrefab.transform.FindChild("time_number_2").gameObject;
-        GameObject decTimeChild3 = decTimePrefab.transform.FindChild("time_number_3").gameObject;
-
-        String stTime = clearTime.ToString();
-        String number1 = "0";
-        String number2 = "0";
-        String number3 = "0";
-
-        if (stTime.Length >= 3) {
-            number1 = stTime.Substring(0, 1);
-            number2 = stTime.Substring(1, 1);
-            number3 = stTime.Substring(2, 1);
-        } else if (stTime.Length >= 2) {
-            number2 = stTime.Substring(0, 1);
-            number3 = stTime.Substring(1, 1);
-        } else {
-            number3 = stTime.Substring(0, 1);
-        }
-
-        SpriteRenderer timeSpriteRenderer;
-        timeSpriteRenderer = decTimeChild1.GetComponent<SpriteRenderer>();
-        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number1);
-        timeSpriteRenderer = decTimeChild2.GetComponent<SpriteRenderer>();
-        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number2);
-        timeSpriteRenderer = decTimeChild3.GetComponent<SpriteRenderer>();
-        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number3);
-
-        iTween.ScaleTo(decTimePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
-
-        //残りHP
-        GameObject decHpPrefab = (GameObject)Instantiate(decHpObject); 
-        scaleX = decHpPrefab.transform.localScale.x;
-        scaleY = decHpPrefab.transform.localScale.y;
-        scaleZ = decHpPrefab.transform.localScale.z;
-        decHpPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-        //Canvasの子要素として登録する 
-        decHpPrefab.transform.SetParent (canvasObject.transform, false);
-        GameObject decHpChild = decHpPrefab.transform.FindChild("hp_number_1").gameObject;
-        String stHp = hp.ToString();
-        SpriteRenderer hpSpriteRenderer;
-        hpSpriteRenderer = decHpChild.GetComponent<SpriteRenderer>();
-        hpSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + stHp);
-        iTween.ScaleTo(decHpPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
-
-        //star
-        //星の数を計算する
-        float decPer = (clearTime * 1.0f) / (limitTime * 1.0f);
-        float decHpPer = (hp * 1.0f) / 2 * decPer;
-        float totalPer = decPer + decHpPer;
-        Debug.Log("DEC PER:" + decPer);
-        Debug.Log("DEC HP PER:" + decHpPer);
-        Debug.Log("TOTAL PER:" + totalPer);
-
-        GameObject starPrefab;
-        for (int i = 0; i < starObject.Length; i++) {
-            starPrefab = (GameObject)Instantiate(starObject[i]); 
-            scaleX = starPrefab.transform.localScale.x;
-            scaleY = starPrefab.transform.localScale.y;
-            scaleZ = starPrefab.transform.localScale.z;
-
-            starPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-
-            if (i == 1 && totalPer <= 0.35f) {
-                starPrefab.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/item_star_lost");
-            } else if (i == 2 && totalPer <= 0.49f) {
-                starPrefab.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/item_star_lost");
-            }
-
-            //Canvasの子要素として登録する 
-            starPrefab.transform.SetParent (canvasObject.transform, false);
-
-            // 4秒かけて、y軸を3倍に拡大
-            iTween.ScaleTo(starPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-
-            yield return new WaitForSeconds(0.5f);
-        }
-
-        //button
-        GameObject endButtonPrefab;
-        for (int i = 0; i < endButtonObject.Length; i++) {
-            endButtonPrefab = (GameObject)Instantiate(endButtonObject[i]); 
-            scaleX = endButtonPrefab.transform.localScale.x;
-            scaleY = endButtonPrefab.transform.localScale.y;
-            scaleZ = endButtonPrefab.transform.localScale.z;
-
-            endButtonPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-
-            //Canvasの子要素として登録する 
-            endButtonPrefab.transform.SetParent (canvasObject.transform, false);
-            // 4秒かけて、y軸を3倍に拡大
-            iTween.ScaleTo(endButtonPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-
-            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(gameEnd(true));
         }
     }
 
@@ -581,7 +467,23 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     }
 
     public void instructionGameFailed() {
+        //networkPlayerScript.gameEnd();
+
+        startFlg = false;
         isEnd = true;
-        StartCoroutine(gameFailed());
+        StartCoroutine(gameEnd());
+    }
+
+    public GameObject getMoveFloorObject(int mv) {
+        //mvが何番目のフロアか調べる
+        int floorNumber = 0;
+        for (int i = 0; i <= mv; i++) {
+            if (floorData[i] == -2) {
+                floorNumber++;
+                i += 2;
+            }
+        }
+
+        return (GameObject) moveFloorObjectList[(floorNumber-1)];
     }
 }

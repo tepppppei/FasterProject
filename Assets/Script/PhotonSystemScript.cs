@@ -21,6 +21,7 @@ public class PhotonSystemScript : Photon.MonoBehaviour {
     void OnJoinedRoom() {
         Debug.Log("部屋に入室");
         GameObject chara = PhotonNetwork.Instantiate("Character", new Vector3(-1.29f, 11.56f, -1f), new Quaternion(0, 180f, 0f, 0f), 0) as GameObject;
+
         gameStartScript.charaSetting(chara);
     }
 

@@ -83,6 +83,11 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
         bombSpeedPetern = bomb;
         moveFloorSpeedPetern = moveFloor;
     }
+
+    //ゲーム切断
+    public void gameEnd() {
+        PhotonNetwork.Disconnect();
+    }
 }
 
 
