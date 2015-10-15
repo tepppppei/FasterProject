@@ -425,7 +425,9 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         float progressAddX = 286 * progressPercent;
 
         if (defaultProgressX == 0) {
-            defaultProgressX = enemyProgressObject.transform.localPosition.x;
+            if (enemyProgressObject != null) {
+                defaultProgressX = enemyProgressObject.transform.localPosition.x;
+            }
         }
 
         if (latestProgressX < progressAddX) {

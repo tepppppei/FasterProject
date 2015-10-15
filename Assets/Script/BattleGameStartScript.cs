@@ -12,7 +12,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     public float addCubePositionY = -1.05f;
     public float moveSpeed = 0.16f;
     public int backNumber = 5;
-    public int limitTime = 80;
+    private int limitTime = 60;
 
     //変速設定系
     public float[] bombSpeedPetern = new float[10];
@@ -85,6 +85,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     private int moveFloorCount = 0;
     //動く床のオブジェクト
     private ArrayList moveFloorObjectList = new ArrayList();
+    //設定値を送信したか
+    private bool isSettingSend = false;
 
     //BattleCharaScript
     private BattleCharaScript battleCharaScript;
@@ -93,6 +95,9 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
     //PhotonNetworkのScript
     private NetworkPlayerScript networkPlayerScript;
+
+    //メッセージ用オブジェクト
+    private Text messageObject;
 
 
     // Use this for initialization
@@ -109,6 +114,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         //sr = chara.GetComponent<SpriteRenderer>();
         //charaDefaultPositionX = chara.transform.localPosition.x;
 
+        messageObject = GameObject.Find("Message").GetComponent<Text>();
+
         if (!firstCreateFlg) {
             firstCreateFlg = true;
             StartCoroutine(createFloor(5));
@@ -116,12 +123,9 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
         //フロアの設定値を事前に作成
         for (int i = 0; i < 10; i++) {
-            bombSpeedPetern[i] = UnityEngine.Random.Range(0.3F, 0.8F);
+            bombSpeedPetern[i] = UnityEngine.Random.Range(0.1F, 0.7F);
             moveFloorSpeedPetern[i] = UnityEngine.Random.Range(0.5F, 1.4F);
         }
-
-        //photon network
-        networkPlayerScript = this.gameObject.GetComponent <NetworkPlayerScript>();
     }
 
     // Update is called once per frame
@@ -133,22 +137,39 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             if (!isStartAnimation && characters != null && characters.Length >= 2) {
                 isStartAnimation = true;
 
-                //自分がマスターの場合は対戦相手に設定値を送信
-                if (isMaster) {
-                    if (networkPlayerScript != null) {
-                        networkPlayerScript.updateSettings(bombSpeedPetern, moveFloorSpeedPetern);
-                        //networkPlayerScript.bombSpeedPetern = bombSpeedPetern;
-                        //networkPlayerScript.moveFloorSpeedPetern = moveFloorSpeedPetern;
-
-                        battleCharaScript = this.gameObject.GetComponent<BattleCharaScript>();
-                        battleEnemyScript = this.gameObject.GetComponent<BattleEnemyScript>();
-
-                    }
-                }
-
                 StartCoroutine(gameStart());
             } else if (!isStartAnimation) {
                 characters = GameObject.FindGameObjectsWithTag("Chara");
+            }
+        }
+    }
+
+    void LateUpdate() {
+        //自分がマスターの場合は対戦相手に設定値を送信
+        if (isMaster) {
+            if (networkPlayerScript != null) {
+                if (!isSettingSend) {
+                    Debug.Log("設定値を送信します");
+                    networkPlayerScript.updateSettings(bombSpeedPetern, moveFloorSpeedPetern);
+                    //networkPlayerScript.bombSpeedPetern = bombSpeedPetern;
+                    //networkPlayerScript.moveFloorSpeedPetern = moveFloorSpeedPetern;
+
+                    battleCharaScript = characters[0].GetComponent<BattleCharaScript>();
+                    battleEnemyScript = characters[0].GetComponent<BattleEnemyScript>();
+
+                    isSettingSend = true;
+                }
+            } else {
+                if (characters.Length > 0) {
+                    sendMessage("WAITING");
+                    //photon network
+                    networkPlayerScript = characters[0].gameObject.GetComponent <NetworkPlayerScript>();
+                }
+            }
+        } else {
+            if (characters.Length > 0 && networkPlayerScript == null) {
+                //photon network
+                networkPlayerScript = characters[0].gameObject.GetComponent <NetworkPlayerScript>();
             }
         }
     }
@@ -322,6 +343,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
 
     IEnumerator gameStart() {
+        sendMessage("");
         yield return new WaitForSeconds(0.5f);
         //GameObjectを生成、生成したオブジェクトを変数に代入
         GameObject prefab = (GameObject)Instantiate(startObject[0]);
@@ -356,9 +378,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         int totalTime = 0;
         if (startFlg) {
             TimeSpan pastTime = DateTime.Now - startTime;
-            cd = limitTime - pastTime.Seconds;
-
             totalTime = pastTime.Seconds + (pastTime.Minutes * 60);
+            cd = limitTime - totalTime;
         }
 
         // カウントダウン機能
@@ -401,7 +422,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             startFlg = false;
             isEnd = true;
 
-            //networkPlayerScript.gameEnd();
+            networkPlayerScript.gameEnd();
 
             //タイムオーバーの場合は進んでいる方が勝利
             int myMVC = battleCharaScript.getMoveCount();
@@ -447,11 +468,21 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
             yield return new WaitForSeconds(0.5f);
         }
+
+        networkPlayerScript.gameEnd();
     }
 
     public void goal() {
         if (startFlg) {
             startFlg = false;
+            StartCoroutine(gameEnd(true));
+        }
+    }
+
+    public void win() {
+        if (!isEnd) {
+            startFlg = false;
+            isEnd = true;
             StartCoroutine(gameEnd(true));
         }
     }
@@ -467,8 +498,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     }
 
     public void instructionGameFailed() {
-        //networkPlayerScript.gameEnd();
-
+        networkPlayerScript.isGameEnd = true;
         startFlg = false;
         isEnd = true;
         StartCoroutine(gameEnd());
@@ -485,5 +515,11 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         }
 
         return (GameObject) moveFloorObjectList[(floorNumber-1)];
+    }
+
+    private void sendMessage(string mes) {
+        if (messageObject != null) {
+            messageObject.text = mes;
+        }
     }
 }

@@ -15,9 +15,17 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
     public float[] bombSpeedPetern = new float[10];
     public float[] moveFloorSpeedPetern = new float[10];
 
+    //設定値を反映したか
+    private bool isSettingUpdate = false;
+
+    //ゲーム終了フラグ(フラグをtrueにした人が負け)
+    public bool isGameEnd = false;
+
     void Start() {
         battleEnemyScript = this.gameObject.GetComponent <BattleEnemyScript>();
-        battleGameStartScript = this.gameObject.GetComponent <BattleGameStartScript>();
+
+        GameObject gameStartObj = GameObject.Find("GameStartObj");
+        battleGameStartScript =  gameStartObj.GetComponent<BattleGameStartScript>();
     }
 
     void Update () {
@@ -48,6 +56,9 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
             stream.SendNext(bombSpeedPetern);
             stream.SendNext(moveFloorSpeedPetern);
 
+            //ゲーム終了フラグ
+            stream.SendNext(isGameEnd);
+
         //データを受け取る
         } else {
             //現在地と角度を受信
@@ -68,9 +79,18 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
             //設定値を受信
             float[] bombSetting = (float[]) stream.ReceiveNext();
             float[] moveFloorSetting = (float[]) stream.ReceiveNext();
-            if (bombSetting[0] != null && bombSetting[0] > 0) {
+            if (bombSetting[0] != null && bombSetting[0] > 0 && !isSettingUpdate) {
                 battleGameStartScript.bombSpeedPetern = bombSetting;
                 battleGameStartScript.moveFloorSpeedPetern = moveFloorSetting;
+                isSettingUpdate = true;
+            }
+
+            //ゲーム終了フラグを受信
+            bool gameEndFlg = (bool) stream.ReceiveNext();
+            Debug.Log("GAME END FLG:" + gameEndFlg);
+            if (gameEndFlg) {
+                Debug.Log("WIN");
+                battleGameStartScript.win();
             }
         }
     }
@@ -80,6 +100,9 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
     }
 
     public void updateSettings(float[] bomb, float[] moveFloor) {
+        Debug.Log("キテルカ");
+        Debug.Log(bomb);
+        Debug.Log(moveFloor);
         bombSpeedPetern = bomb;
         moveFloorSpeedPetern = moveFloor;
     }
