@@ -7,10 +7,10 @@ using System.Collections.Generic;
 
 public class GameTopScript : MonoBehaviour {
 
-	// Use this for initialization
-	private int stageEasy = 20;
-	private int stageNormal = 20;
-	private int stageHard = 20;
+    // Use this for initialization
+    private int stageEasy = 20;
+    private int stageNormal = 20;
+    private int stageHard = 20;
 
     private DataTable easyDataTable;
     private DataTable normalDataTable;
@@ -18,33 +18,38 @@ public class GameTopScript : MonoBehaviour {
 
     private string currentDifficulty = "easy";
 
-	void Start () {
-		databaseInit();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    void Start () {
+        databaseInit();
+    }
 
-	//トップボタン一覧
-	public GameObject[] topButtonList;
+    // Update is called once per frame
+    void Update () {
 
-	public GameObject stageSelectPanel;
-	public GameObject stageBase;
-	public GameObject scrollViewContent;
+    }
 
-	public void sceneStageSelect() {
-		//ステージ選択パネルを表示する
-		StartCoroutine(showStageSelect());
+    //トップボタン一覧
+    public GameObject[] topButtonList;
 
-		string stg = "easy";
+    public GameObject stageSelectPanel;
+    public GameObject stageBase;
+    public GameObject scrollViewContent;
+
+    public void sceneStageSelect() {
+        //ステージ選択パネルを表示する
+        StartCoroutine(showStageSelect());
+
+        string stg = "easy";
         currentDifficulty = stg;
-		StartCoroutine(showStageList(stg));
-	}
+        StartCoroutine(showStageList(stg));
+    }
 
-	//ステージ選択画面表示用
+    //ステージ選択画面表示用
     IEnumerator showStageSelect() {
+        //スタートボタン系を削除
+        foreach (GameObject n in topButtonList) {
+            Destroy(n);
+        }
+
         iTween.MoveTo(stageSelectPanel, iTween.Hash(
                     "position", new Vector3(0, 0, 0),
                     "time", 0.2f, 
@@ -62,12 +67,16 @@ public class GameTopScript : MonoBehaviour {
     }
 
     public void stageSelect(int stageNumber) {
+        PlayerPrefs.SetString ("difficulty", currentDifficulty);
+        PlayerPrefs.SetInt ("stage_number", stageNumber);
         Debug.Log("難易度：" + currentDifficulty);
         Debug.Log("ステージ番号：" + stageNumber);
+
+        Application.LoadLevel("RaceScene");
     }
 
-	//ステージ一覧表示
-	private GameObject temporaryObject;
+    //ステージ一覧表示
+    private GameObject temporaryObject;
     IEnumerator showStageList(string difficulty) {
         //ステージ一覧をリセット（削除）
         foreach (Transform n in scrollViewContent.transform) {
@@ -80,15 +89,15 @@ public class GameTopScript : MonoBehaviour {
         int currentStage = 0;
         DataTable currentDataTable = new DataTable();
         if (difficulty == "easy") {
-        	loop = stageEasy;
+            loop = stageEasy;
             currentStage = easyDataTable.Rows.Count;
             currentDataTable = easyDataTable;
         } else if (difficulty == "normal") {
-        	loop = stageNormal;
+            loop = stageNormal;
             currentStage = normalDataTable.Rows.Count;
             currentDataTable = normalDataTable;
         } else if (difficulty == "hard") {
-        	loop = stageHard;
+            loop = stageHard;
             currentStage = hardDataTable.Rows.Count;
             currentDataTable = hardDataTable;
         }
@@ -101,11 +110,11 @@ public class GameTopScript : MonoBehaviour {
         Sprite starLock = Resources.Load <Sprite> ("Prefab/Stage/" + difficulty + "/selectbutton1_4");
 
         //未クリア＆クリア済みステージのみ表示
-    	for(int i = 0; i < (currentStage+1); i++) {
-    		temporaryObject = GameObject.Instantiate(stageBase) as GameObject;
+        for(int i = 0; i < (currentStage+1); i++) {
+            temporaryObject = GameObject.Instantiate(stageBase) as GameObject;
             temporaryObject.GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
-        	//Canvasの子要素として登録する 
-        	temporaryObject.transform.SetParent (scrollViewContent.transform, false);
+            //Canvasの子要素として登録する 
+            temporaryObject.transform.SetParent (scrollViewContent.transform, false);
 
             int starCount = 0;
             //星の数を設定
@@ -129,14 +138,14 @@ public class GameTopScript : MonoBehaviour {
                 childObject.GetComponent<Text>().text = (i+1).ToString();
             }
 
-        	iTween.ValueTo(gameObject, iTween.Hash(
-        		"from", 0,
-        		"to", 1.0f,
-        		"time", 0.05f,
-        		"onupdate", "fadeInObject"  // 毎フレーム SetAlpha() を呼びます。
-            ));
+            iTween.ValueTo(gameObject, iTween.Hash(
+                        "from", 0,
+                        "to", 1.0f,
+                        "time", 0.05f,
+                        "onupdate", "fadeInObject"  // 毎フレーム SetAlpha() を呼びます。
+                        ));
 
-        	yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.15f);
         }
 
         //最後のステージじゃなければ、ロックステージを追加
@@ -156,11 +165,11 @@ public class GameTopScript : MonoBehaviour {
             }
 
             iTween.ValueTo(gameObject, iTween.Hash(
-                "from", 0,
-                "to", 1.0f,
-                "time", 0.1f,
-                "onupdate", "fadeInObject"  // 毎フレーム SetAlpha() を呼びます。
-            ));
+                        "from", 0,
+                        "to", 1.0f,
+                        "time", 0.1f,
+                        "onupdate", "fadeInObject"  // 毎フレーム SetAlpha() を呼びます。
+                        ));
         }
 
         yield return new WaitForSeconds(0.2f);
@@ -168,7 +177,7 @@ public class GameTopScript : MonoBehaviour {
 
     //ステージボタンを大きくする
     private void fadeInObject(float value) {
-    	temporaryObject.GetComponent<RectTransform>().localScale = new Vector3 (value, value, value);
+        temporaryObject.GetComponent<RectTransform>().localScale = new Vector3 (value, value, value);
     }
 
     private void CompleteHandler() {
@@ -177,7 +186,7 @@ public class GameTopScript : MonoBehaviour {
     //データベース系
     private void databaseInit() {
         //本来はマスターデータ取得
-    	string jsonString = "{\"easy\": 10, \"normal\": 11, \"hard\": 12}";
+        string jsonString = "{\"easy\": 10, \"normal\": 11, \"hard\": 12}";
         var json = Json.Deserialize(jsonString) as Dictionary<string, object>;
 
         stageEasy = int.Parse(json["easy"].ToString());
@@ -196,34 +205,34 @@ public class GameTopScript : MonoBehaviour {
         selectQuery = "select * from Stage where difficulty = 3";
         hardDataTable = sqlDB.ExecuteQuery(selectQuery);
 
-/*
-        foreach(DataRow dr in dataTable.Rows){
-            //id = (string)dr["name"];
-            Debug.Log (dr["id"]);
+        /*
+           foreach(DataRow dr in dataTable.Rows){
+        //id = (string)dr["name"];
+        Debug.Log (dr["id"]);
         }
         */
 
 
         /*
 
-        string query = "insert into Stage values";
-        int loopCount = 1;
+           string query = "insert into Stage values";
+           int loopCount = 1;
 
-        int easyNum = int.Parse(json["easy"].ToString());
-        easyNum = 1;
-        if (easyNum > 0) {
-            for (int i = 0; i < easyNum; i++) {
-                query += "(" + loopCount.ToString() + "," + (i+1) + ",1,0,0,0,datetime(),datetime())";
-                if (i != (easyNum-1)) {
-                    query += ",";
-                }
-                loopCount++;
-            }
-        }
+           int easyNum = int.Parse(json["easy"].ToString());
+           easyNum = 1;
+           if (easyNum > 0) {
+           for (int i = 0; i < easyNum; i++) {
+           query += "(" + loopCount.ToString() + "," + (i+1) + ",1,0,0,0,datetime(),datetime())";
+           if (i != (easyNum-1)) {
+           query += ",";
+           }
+           loopCount++;
+           }
+           }
 
-        Debug.Log(query);
-        sqlDB.ExecuteNonQuery(query);
-        */
+           Debug.Log(query);
+           sqlDB.ExecuteNonQuery(query);
+           */
 
     }
 }

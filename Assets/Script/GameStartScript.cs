@@ -89,6 +89,11 @@ public class GameStartScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        string difficulty = PlayerPrefs.GetString ("difficulty");
+        int stageNumber = PlayerPrefs.GetInt ("stage_number");
+        Debug.Log("DIFFICULTY:" + difficulty);
+        Debug.Log("STAGE NUMBER:" + stageNumber);
+
         // プレハブを取得
         floorPrefab = (GameObject)Resources.Load("Prefab/FloorCube");
         bombPrefab = (GameObject)Resources.Load("Prefab/Bomb");
