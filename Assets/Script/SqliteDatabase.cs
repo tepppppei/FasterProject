@@ -142,6 +142,8 @@ public class SqliteDatabase
 		if (IsConnectionOpen) {
 			throw new SqliteException ("There is already an open connection");
 		}
+
+		Debug.Log(path);
         
 		if (sqlite3_open (path, out _connection) != SQLITE_OK) {
 			throw new SqliteException ("Could not open database file: " + path);
