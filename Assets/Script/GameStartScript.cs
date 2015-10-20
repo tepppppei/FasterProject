@@ -50,8 +50,7 @@ public class GameStartScript : MonoBehaviour {
     //ゲームクリア系
     public GameObject clearDialogObject;
     public GameObject completeObject;
-    public GameObject decTimeObject;
-    public GameObject decHpObject;
+    public GameObject resultDialogObject;
     public GameObject[] starObject;
     public GameObject[] endButtonObject;
 
@@ -158,7 +157,7 @@ public class GameStartScript : MonoBehaviour {
         }
         // 失敗
         else{
-            Debug.Log("Get Failure");           
+            Debug.Log("Get Failure");
         }
     }
 
@@ -925,7 +924,7 @@ public class GameStartScript : MonoBehaviour {
         panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
         //Canvasの子要素として登録する 
         panelPrefab.transform.SetParent (canvasObject.transform, false);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         //ダイアログの表示
         GameObject clearDialogPrefab = (GameObject)Instantiate(clearDialogObject); 
@@ -936,7 +935,7 @@ public class GameStartScript : MonoBehaviour {
         //Canvasの子要素として登録する 
         clearDialogPrefab.transform.SetParent (canvasObject.transform, false);
         iTween.ScaleTo(clearDialogPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         //Complete
         GameObject completePrefab = (GameObject)Instantiate(completeObject); 
@@ -947,19 +946,58 @@ public class GameStartScript : MonoBehaviour {
         //Canvasの子要素として登録する 
         completePrefab.transform.SetParent (canvasObject.transform, false);
         iTween.ScaleTo(completePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
-        //残り時間
-        GameObject decTimePrefab = (GameObject)Instantiate(decTimeObject); 
-        scaleX = decTimePrefab.transform.localScale.x;
-        scaleY = decTimePrefab.transform.localScale.y;
-        scaleZ = decTimePrefab.transform.localScale.z;
-        decTimePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-        //Canvasの子要素として登録する 
-        decTimePrefab.transform.SetParent (canvasObject.transform, false);
-        GameObject decTimeChild1 = decTimePrefab.transform.FindChild("time_number_1").gameObject;
-        GameObject decTimeChild2 = decTimePrefab.transform.FindChild("time_number_2").gameObject;
-        GameObject decTimeChild3 = decTimePrefab.transform.FindChild("time_number_3").gameObject;
+        //star
+        //星の数を計算する
+        float decPer = (clearTime * 1.0f) / (limitTime * 1.0f);
+        float decHpPer = (hp * 1.0f) / 2 * decPer;
+        float totalPer = decPer + decHpPer;
+        Debug.Log("DEC PER:" + decPer);
+        Debug.Log("DEC HP PER:" + decHpPer);
+        Debug.Log("TOTAL PER:" + totalPer);
+
+        //星の数
+        int starCount = 1;
+        if (totalPer >= 0.49f) {
+            starCount = 3;
+        } else if (totalPer >= 0.35f) {
+            starCount = 2;
+        }
+
+        int score = (int) Math.Ceiling(totalPer * 10000);
+        int coin = (int) Math.Ceiling(totalPer * 100);
+
+        //セーブ
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string selectQuery = "select * from Stage where stage_number = " + stageNumber + " and difficulty = " + difficultyType;
+        DataTable stageTable = sqlDB.ExecuteQuery(selectQuery);
+        //インサート
+        if (stageTable.Rows.Count == 0) {
+            string query = "insert into Stage(stage_number, difficulty, star, remaining_time, remaining_hp, score, created, updated) values(" + stageNumber + "," + difficultyType + "," + starCount + "," + clearTime + "," + hp + "," + score + ",datetime(),datetime())";
+            sqlDB.ExecuteNonQuery(query);
+        //アップデート
+        } else {
+            int beforeScore = (int)stageTable.Rows[0]["score"];
+            int stageID = (int)stageTable.Rows[0]["id"];
+            if (beforeScore < score) {
+                string query = "update Stage set star=" + starCount + ", remaining_time=" + hp +", remaining_hp=" + hp + ", score=" + score + ",updated=dateTime() where id=" + stageID;
+                sqlDB.ExecuteNonQuery(query);
+            }
+        }
+
+        //結果ダイアログ
+        GameObject resultPrefab = (GameObject)Instantiate(resultDialogObject);
+        scaleX = resultPrefab.transform.localScale.x;
+        scaleY = resultPrefab.transform.localScale.y;
+        scaleZ = resultPrefab.transform.localScale.z;
+        resultPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+
+        //Canvasの子要素として登録する
+        resultPrefab.transform.SetParent (canvasObject.transform, false);
+        GameObject decTimeChild1 = resultPrefab.transform.FindChild("time_number_1").gameObject;
+        GameObject decTimeChild2 = resultPrefab.transform.FindChild("time_number_2").gameObject;
+        GameObject decTimeChild3 = resultPrefab.transform.FindChild("time_number_3").gameObject;
 
         String stTime = clearTime.ToString();
         String number1 = "0";
@@ -985,61 +1023,30 @@ public class GameStartScript : MonoBehaviour {
         timeSpriteRenderer = decTimeChild3.GetComponent<SpriteRenderer>();
         timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number3);
 
-        iTween.ScaleTo(decTimePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
-
-        //残りHP
-        GameObject decHpPrefab = (GameObject)Instantiate(decHpObject); 
-        scaleX = decHpPrefab.transform.localScale.x;
-        scaleY = decHpPrefab.transform.localScale.y;
-        scaleZ = decHpPrefab.transform.localScale.z;
-        decHpPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-        //Canvasの子要素として登録する 
-        decHpPrefab.transform.SetParent (canvasObject.transform, false);
-        GameObject decHpChild = decHpPrefab.transform.FindChild("hp_number_1").gameObject;
+        //hp設定
+        GameObject decHpChild = resultPrefab.transform.FindChild("hp_number_1").gameObject;
         String stHp = hp.ToString();
         SpriteRenderer hpSpriteRenderer;
         hpSpriteRenderer = decHpChild.GetComponent<SpriteRenderer>();
         hpSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + stHp);
-        iTween.ScaleTo(decHpPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-        yield return new WaitForSeconds(0.5f);
 
-        //star
-        //星の数を計算する
-        float decPer = (clearTime * 1.0f) / (limitTime * 1.0f);
-        float decHpPer = (hp * 1.0f) / 2 * decPer;
-        float totalPer = decPer + decHpPer;
-        Debug.Log("DEC PER:" + decPer);
-        Debug.Log("DEC HP PER:" + decHpPer);
-        Debug.Log("TOTAL PER:" + totalPer);
-
-        //星の数
-        int starCount = 1;
-        if (totalPer >= 0.49f) {
-            starCount = 3;
-        } else if (totalPer >= 0.35f) {
-            starCount = 2;
-        }
-
-        int score = (int) Math.Ceiling(totalPer * 10000);
-
-        //セーブ
-        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
-        string selectQuery = "select * from Stage where stage_number = " + stageNumber + " and difficulty = " + difficultyType;
-        DataTable stageTable = sqlDB.ExecuteQuery(selectQuery);
-        //インサート
-        if (stageTable.Rows.Count == 0) {
-            string query = "insert into Stage(stage_number, difficulty, star, remaining_time, remaining_hp, score, created, updated) values(" + stageNumber + "," + difficultyType + "," + starCount + "," + clearTime + "," + hp + "," + score + ",datetime(),datetime())";
-            sqlDB.ExecuteNonQuery(query);
-        //アップデート
+        //coin設定
+        GameObject coinChild1 = resultPrefab.transform.FindChild("coin_number_1").gameObject;
+        GameObject coinChild2 = resultPrefab.transform.FindChild("coin_number_2").gameObject;
+        String stCoin = coin.ToString();
+        String coin1= "0";
+        String coin2= "0";
+        if (stCoin.Length >= 2) {
+            coin1 = stCoin.Substring(0, 1);
+            coin2 = stCoin.Substring(1, 1);
         } else {
-            int beforeScore = (int)stageTable.Rows[0]["score"];
-            int stageID = (int)stageTable.Rows[0]["id"];
-            if (beforeScore < score) {
-                string query = "update Stage set star=" + starCount + ", remaining_time=" + hp +", remaining_hp=" + hp + ", score=" + score + ",updated=dateTime() where id=" + stageID;
-                sqlDB.ExecuteNonQuery(query);
-            }
+            coin1 = stCoin.Substring(0, 1);
         }
+        coinChild1.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin1);
+        coinChild2.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin2);
+
+        iTween.ScaleTo(resultPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.2f);
 
         GameObject starPrefab;
         for (int i = 0; i < starObject.Length; i++) {
@@ -1062,13 +1069,13 @@ public class GameStartScript : MonoBehaviour {
             // 4秒かけて、y軸を3倍に拡大
             iTween.ScaleTo(starPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
 
         //button
         GameObject endButtonPrefab;
         for (int i = 0; i < endButtonObject.Length; i++) {
-            endButtonPrefab = (GameObject)Instantiate(endButtonObject[i]); 
+            endButtonPrefab = (GameObject)Instantiate(endButtonObject[i]);
             scaleX = endButtonPrefab.transform.localScale.x;
             scaleY = endButtonPrefab.transform.localScale.y;
             scaleZ = endButtonPrefab.transform.localScale.z;
@@ -1080,7 +1087,7 @@ public class GameStartScript : MonoBehaviour {
             // 4秒かけて、y軸を3倍に拡大
             iTween.ScaleTo(endButtonPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 }
