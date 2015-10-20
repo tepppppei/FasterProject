@@ -23,6 +23,9 @@ public class GameStartScript : MonoBehaviour {
     //-6:ランダム速度の動く床
     private int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 2, -5, 2, 1, 1, -3, 1, -3, 1, -1, 1, 2, -5, 2, 3, -1, 3, 2, -2, -2, -2, -2, -2, -2, 2,
         -4, 2, 1, 1, -1, 1, 2, 3, -5, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -5, 3, 4, 4};
+    private int stageNumber;
+    private int difficultyType;
+
     //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
     public GameObject chara;
@@ -89,11 +92,8 @@ public class GameStartScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        string difficulty = PlayerPrefs.GetString ("difficulty");
-        int stageNumber = PlayerPrefs.GetInt ("stage_number");
-        Debug.Log("DIFFICULTY:" + difficulty);
-        Debug.Log("STAGE NUMBER:" + stageNumber);
-
+        //キャラを落ちないように設定
+        chara.GetComponent<Rigidbody2D>().isKinematic = true;
         // プレハブを取得
         floorPrefab = (GameObject)Resources.Load("Prefab/FloorCube");
         bombPrefab = (GameObject)Resources.Load("Prefab/Bomb");
@@ -104,16 +104,62 @@ public class GameStartScript : MonoBehaviour {
         goalStarPrefab = (GameObject)Resources.Load("Prefab/GoalStar");
 
         sr = chara.GetComponent<SpriteRenderer>();
-
         charaDefaultPositionX = chara.transform.localPosition.x;
 
-        if (!firstCreateFlg) {
-            firstCreateFlg = true;
-            StartCoroutine(createFloor(5));
+        StartCoroutine(gameInit());
+    }
+
+    IEnumerator gameInit() {
+        string difficulty = PlayerPrefs.GetString ("difficulty");
+        stageNumber = PlayerPrefs.GetInt ("stage_number");
+        Debug.Log("DIFFICULTY:" + difficulty);
+        Debug.Log("STAGE NUMBER:" + stageNumber);
+
+        if (difficulty == "easy") {
+            difficultyType = 1;
+        } else if (difficulty == "normal") {
+            difficultyType = 2;
+        } else if (difficulty == "hard") {
+            difficultyType = 3;
         }
 
-        //ゲーム開始処理
-        StartCoroutine(gameStart());
+        string url = "http://pe-yan.top/faster/stages/stageDetail/" + difficultyType.ToString() + "/" + stageNumber.ToString();
+        // HEADERはHashtableで記述
+        // 送信開始
+        WWW www = new WWW (url);
+        yield return www;
+
+        // 成功
+        if (www.error == null) {
+            Debug.Log("Get Success");
+
+            // 本来はサーバからのレスポンスとしてjsonを戻し、www.textを使用するが
+            // 今回は便宜上、下記のjsonを使用する
+            //string txt = "{\"name\": \"okude\", \"level\": 99, \"friend_names\": [\"ichiro\", \"jiro\", \"saburo\"]}";
+
+            string response = www.text;
+            // カンマ区切りで分割して配列に格納する
+            string[] fd = response.Split(',');
+            //floorData = fd.Select(e => int.Parse(e)).ToArray();
+            floorData = Array.ConvertAll<string, int>(fd,
+                delegate(string value) {
+                    return int.Parse(value);
+                });
+
+            //制限時間を設定
+            limitTime = (int) Math.Ceiling(floorData.Length * 1.0f * 1.2f);
+
+            if (!firstCreateFlg) {
+                firstCreateFlg = true;
+                StartCoroutine(createFloor(5));
+            }
+            //ゲーム開始処理
+            StartCoroutine(gameStart());
+        }
+        // 失敗
+        else{
+            Debug.Log("Get Failure");           
+        }
     }
 
     // Update is called once per frame
@@ -686,6 +732,8 @@ public class GameStartScript : MonoBehaviour {
     }
 
     IEnumerator gameStart() {
+        chara.GetComponent<Rigidbody2D>().isKinematic = false;
+
         yield return new WaitForSeconds(0.5f);
         //GameObjectを生成、生成したオブジェクトを変数に代入
         GameObject prefab = (GameObject)Instantiate(startObject[0]); 
@@ -964,6 +1012,34 @@ public class GameStartScript : MonoBehaviour {
         Debug.Log("DEC PER:" + decPer);
         Debug.Log("DEC HP PER:" + decHpPer);
         Debug.Log("TOTAL PER:" + totalPer);
+
+        //星の数
+        int starCount = 1;
+        if (totalPer >= 0.49f) {
+            starCount = 3;
+        } else if (totalPer >= 0.35f) {
+            starCount = 2;
+        }
+
+        int score = (int) Math.Ceiling(totalPer * 10000);
+
+        //セーブ
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string selectQuery = "select * from Stage where stage_number = " + stageNumber + " and difficulty = " + difficultyType;
+        DataTable stageTable = sqlDB.ExecuteQuery(selectQuery);
+        //インサート
+        if (stageTable.Rows.Count == 0) {
+            string query = "insert into Stage(stage_number, difficulty, star, remaining_time, remaining_hp, score, created, updated) values(" + stageNumber + "," + difficultyType + "," + starCount + "," + clearTime + "," + hp + "," + score + ",datetime(),datetime())";
+            sqlDB.ExecuteNonQuery(query);
+        //アップデート
+        } else {
+            int beforeScore = (int)stageTable.Rows[0]["score"];
+            int stageID = (int)stageTable.Rows[0]["id"];
+            if (beforeScore < score) {
+                string query = "update Stage set star=" + starCount + ", remaining_time=" + hp +", remaining_hp=" + hp + ", score=" + score + ",updated=dateTime() where id=" + stageID;
+                sqlDB.ExecuteNonQuery(query);
+            }
+        }
 
         GameObject starPrefab;
         for (int i = 0; i < starObject.Length; i++) {

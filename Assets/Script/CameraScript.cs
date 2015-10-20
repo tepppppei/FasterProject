@@ -22,7 +22,18 @@ public class CameraScript : MonoBehaviour {
     private float pixelPerUnit = 100f;
 
     void Awake () {
-    	float aspect = (float)Screen.height / (float)Screen.width;
+
+/*
+        float screenRate = (float)1024 / Screen.height;
+        if( screenRate > 1 ) screenRate = 1;
+        int width = (int)(Screen.width * screenRate);
+        int height = (int)(Screen.height * screenRate);
+        Screen.SetResolution( width , height, true, 5);
+
+*/
+
+    	//float aspect = (float)Screen.height / (float)Screen.width;
+        float aspect = (float)1024 / (float)Screen.height;
     	float bgAcpect = height / width;
 
     	cam = GetComponent<Camera> ();

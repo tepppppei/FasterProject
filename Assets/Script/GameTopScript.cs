@@ -4,6 +4,7 @@ using MiniJSON;
 using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Text;
 
 public class GameTopScript : MonoBehaviour {
 
@@ -19,7 +20,7 @@ public class GameTopScript : MonoBehaviour {
     private string currentDifficulty = "easy";
 
     void Start () {
-        databaseInit();
+        StartCoroutine(databaseInit());
     }
 
     // Update is called once per frame
@@ -29,6 +30,8 @@ public class GameTopScript : MonoBehaviour {
 
     //トップボタン一覧
     public GameObject[] topButtonList;
+
+    public GameObject[] difficultyButtonList;
 
     public GameObject stageSelectPanel;
     public GameObject stageBase;
@@ -62,6 +65,35 @@ public class GameTopScript : MonoBehaviour {
     }
 
     public void stageChange(string difficulty) {
+        Sprite activeButton = Resources.Load <Sprite> ("Prefab/Stage/Button/button_theme1_rectangle");
+        Sprite visibleButton = Resources.Load <Sprite> ("Prefab/Stage/Button/button_theme5_rectangle");
+
+        if (difficulty == "easy") {
+            for (int i = 0; i < difficultyButtonList.Length; i++) {
+                if (i == 0) {
+                    difficultyButtonList[i].GetComponent<Image>().sprite = activeButton;
+                } else {
+                    difficultyButtonList[i].GetComponent<Image>().sprite = visibleButton;
+                }
+            }
+        } else if (difficulty == "normal") {
+            for (int i = 0; i < difficultyButtonList.Length; i++) {
+                if (i == 1) {
+                    difficultyButtonList[i].GetComponent<Image>().sprite = activeButton;
+                } else {
+                    difficultyButtonList[i].GetComponent<Image>().sprite = visibleButton;
+                }
+            }
+        } else if (difficulty == "hard") {
+            for (int i = 0; i < difficultyButtonList.Length; i++) {
+                if (i == 2) {
+                    difficultyButtonList[i].GetComponent<Image>().sprite = activeButton;
+                } else {
+                    difficultyButtonList[i].GetComponent<Image>().sprite = visibleButton;
+                }
+            }
+        }
+
         currentDifficulty = difficulty;
         StartCoroutine(showStageList(difficulty));
     }
@@ -111,15 +143,18 @@ public class GameTopScript : MonoBehaviour {
 
         //未クリア＆クリア済みステージのみ表示
         for(int i = 0; i < (currentStage+1); i++) {
+            Debug.Log("AAA");
             temporaryObject = GameObject.Instantiate(stageBase) as GameObject;
             temporaryObject.GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
             //Canvasの子要素として登録する 
             temporaryObject.transform.SetParent (scrollViewContent.transform, false);
+            Debug.Log("BBB");
 
             int starCount = 0;
             //星の数を設定
             Sprite currentStarSprite = star0;
-            if (currentStage > 0 && currentDataTable.Rows[i] != null) {
+            if (currentStage > 0 && i != currentDataTable.Rows.Count && currentDataTable.Rows[i] != null) {
+            Debug.Log("CCC");
                 starCount = (int) currentDataTable.Rows[i]["star"];
                 if (starCount == 1) {
                     currentStarSprite = star1;
@@ -129,6 +164,8 @@ public class GameTopScript : MonoBehaviour {
                     currentStarSprite = star3;
                 }
             }
+
+            Debug.Log("DDD");
             //ボタンの画像を変更
             temporaryObject.GetComponent<Image>().sprite = currentStarSprite;
 
@@ -137,6 +174,7 @@ public class GameTopScript : MonoBehaviour {
             if (childObject != null) {
                 childObject.GetComponent<Text>().text = (i+1).ToString();
             }
+            Debug.Log("EEE");
 
             iTween.ValueTo(gameObject, iTween.Hash(
                         "from", 0,
@@ -146,10 +184,15 @@ public class GameTopScript : MonoBehaviour {
                         ));
 
             yield return new WaitForSeconds(0.15f);
+
+            if ((i+1) >= loop) {
+                break;
+            }
         }
 
         //最後のステージじゃなければ、ロックステージを追加
-        if (currentStage != loop) {
+        Debug.Log("CURRENT STAGE:" + currentStage);
+        if ((currentStage+1) < loop) {
             temporaryObject = GameObject.Instantiate(stageBase) as GameObject;
             temporaryObject.GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
             //Canvasの子要素として登録する 
@@ -184,27 +227,63 @@ public class GameTopScript : MonoBehaviour {
     }
 
     //データベース系
-    private void databaseInit() {
+    IEnumerator databaseInit() {
+        string url = "http://pe-yan.top/faster/stages/master";
+        // HEADERはHashtableで記述
+        // 送信開始
+        WWW www = new WWW (url);
+        yield return www;
+
+        // 成功
+        if (www.error == null) {
+            Debug.Log("Get Success");
+
+            // 本来はサーバからのレスポンスとしてjsonを戻し、www.textを使用するが
+            // 今回は便宜上、下記のjsonを使用する
+            //string txt = "{\"name\": \"okude\", \"level\": 99, \"friend_names\": [\"ichiro\", \"jiro\", \"saburo\"]}";
+
+            string response = www.text;            
+
+            Debug.Log(response);
+            var json = Json.Deserialize(response) as Dictionary<string, object>;
+
+            stageEasy = int.Parse(json["easy"].ToString());
+            stageNormal = int.Parse(json["normal"].ToString());
+            stageHard = int.Parse(json["hard"].ToString());
+
+            SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+
+            // Select
+            string selectQuery = "select * from Stage where difficulty = 1";
+            easyDataTable = sqlDB.ExecuteQuery(selectQuery);
+
+            selectQuery = "select * from Stage where difficulty = 2";
+            normalDataTable = sqlDB.ExecuteQuery(selectQuery);
+
+            selectQuery = "select * from Stage where difficulty = 3";
+            hardDataTable = sqlDB.ExecuteQuery(selectQuery);
+
+
+            // 自作したTestResponseクラスにレスポンスを格納する
+            /*
+            TestResponse response = JsonMapper.ToObject<TestResponse> (txt);
+            Debug.Log("name: " + response.name);
+            Debug.Log("level: " + response.level);
+            Debug.Log("friend_names[0]: " + response.friend_names[0]);
+            Debug.Log("friend_names[1]: " + response.friend_names[1]);
+            Debug.Log("friend_names[2]: " + response.friend_names[2]);
+            */
+        }
+        // 失敗
+        else{
+            Debug.Log("Get Failure");           
+        }
+
+
+
+
         //本来はマスターデータ取得
-        string jsonString = "{\"easy\": 10, \"normal\": 11, \"hard\": 12}";
-        var json = Json.Deserialize(jsonString) as Dictionary<string, object>;
-
-        stageEasy = int.Parse(json["easy"].ToString());
-        stageNormal = int.Parse(json["normal"].ToString());
-        stageHard = int.Parse(json["hard"].ToString());
-
-        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
-
-        // Select
-        string selectQuery = "select * from Stage where difficulty = 1";
-        easyDataTable = sqlDB.ExecuteQuery(selectQuery);
-
-        selectQuery = "select * from Stage where difficulty = 2";
-        normalDataTable = sqlDB.ExecuteQuery(selectQuery);
-
-        selectQuery = "select * from Stage where difficulty = 3";
-        hardDataTable = sqlDB.ExecuteQuery(selectQuery);
-
+        //string jsonString = "{\"easy\": 10, \"normal\": 11, \"hard\": 12}";
         /*
            foreach(DataRow dr in dataTable.Rows){
         //id = (string)dr["name"];
@@ -233,6 +312,6 @@ public class GameTopScript : MonoBehaviour {
            Debug.Log(query);
            sqlDB.ExecuteNonQuery(query);
            */
-
     }
+
 }
