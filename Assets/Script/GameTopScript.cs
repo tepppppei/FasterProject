@@ -143,18 +143,15 @@ public class GameTopScript : MonoBehaviour {
 
         //未クリア＆クリア済みステージのみ表示
         for(int i = 0; i < (currentStage+1); i++) {
-            Debug.Log("AAA");
             temporaryObject = GameObject.Instantiate(stageBase) as GameObject;
             temporaryObject.GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
             //Canvasの子要素として登録する 
             temporaryObject.transform.SetParent (scrollViewContent.transform, false);
-            Debug.Log("BBB");
 
             int starCount = 0;
             //星の数を設定
             Sprite currentStarSprite = star0;
             if (currentStage > 0 && i != currentDataTable.Rows.Count && currentDataTable.Rows[i] != null) {
-            Debug.Log("CCC");
                 starCount = (int) currentDataTable.Rows[i]["star"];
                 if (starCount == 1) {
                     currentStarSprite = star1;
@@ -165,7 +162,6 @@ public class GameTopScript : MonoBehaviour {
                 }
             }
 
-            Debug.Log("DDD");
             //ボタンの画像を変更
             temporaryObject.GetComponent<Image>().sprite = currentStarSprite;
 
@@ -174,7 +170,6 @@ public class GameTopScript : MonoBehaviour {
             if (childObject != null) {
                 childObject.GetComponent<Text>().text = (i+1).ToString();
             }
-            Debug.Log("EEE");
 
             iTween.ValueTo(gameObject, iTween.Hash(
                         "from", 0,
@@ -263,6 +258,49 @@ public class GameTopScript : MonoBehaviour {
             selectQuery = "select * from Stage where difficulty = 3";
             hardDataTable = sqlDB.ExecuteQuery(selectQuery);
 
+            //Statusが無ければインサート
+            selectQuery = "select * from UserStatus";
+            DataTable statusTable = sqlDB.ExecuteQuery(selectQuery);
+            if (statusTable.Rows.Count > 0) {
+                int baseMoney = (int) statusTable.Rows[0]["money"];
+                string money = baseMoney.ToString();
+
+                Debug.Log("MONEY:" + money);
+
+                GameObject money1 = GameObject.Find("number1").gameObject;
+                GameObject money2 = GameObject.Find("number2").gameObject;
+                GameObject money3 = GameObject.Find("number3").gameObject;
+                GameObject money4 = GameObject.Find("number4").gameObject;
+
+                String m1 = "0";
+                String m2 = "0";
+                String m3 = "0";
+                String m4 = "0";
+
+                if (money.Length >= 4) {
+                    m4 = money.Substring(0, 1);
+                    m3 = money.Substring(1, 1);
+                    m2 = money.Substring(2, 1);
+                    m1 = money.Substring(3, 1);
+                } else if (money.Length >= 3) {
+                    m3 = money.Substring(0, 1);
+                    m2 = money.Substring(1, 1);
+                    m1 = money.Substring(2, 1);
+                } else if (money.Length >= 2) {
+                    m2 = money.Substring(0, 1);
+                    m1 = money.Substring(1, 1);
+                } else {
+                    m1 = money.Substring(0, 1);
+                }
+
+                money1.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m1);
+                money2.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m2);
+                money3.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m3);
+                money4.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m4);
+            } else {
+                string query = "insert into UserStatus(user_name, money, created, updated) values('NoName', 0, datetime(), datetime())";
+                sqlDB.ExecuteNonQuery(query);
+            }
 
             // 自作したTestResponseクラスにレスポンスを格納する
             /*

@@ -146,7 +146,7 @@ public class GameStartScript : MonoBehaviour {
                 });
 
             //制限時間を設定
-            limitTime = (int) Math.Ceiling(floorData.Length * 1.0f * 1.2f);
+            limitTime = (int) Math.Ceiling(floorData.Length * 1.0f * 0.9f);
 
             if (!firstCreateFlg) {
                 firstCreateFlg = true;
@@ -950,8 +950,8 @@ public class GameStartScript : MonoBehaviour {
 
         //star
         //星の数を計算する
-        float decPer = (clearTime * 1.0f) / (limitTime * 1.0f);
-        float decHpPer = (hp * 1.0f) / 2 * decPer;
+        float decPer = (clearTime * 0.5f) / (limitTime * 1.0f);
+        float decHpPer = (hp * 0.5f) / 2 * decPer;
         float totalPer = decPer + decHpPer;
         Debug.Log("DEC PER:" + decPer);
         Debug.Log("DEC HP PER:" + decHpPer);
@@ -966,25 +966,32 @@ public class GameStartScript : MonoBehaviour {
         }
 
         int score = (int) Math.Ceiling(totalPer * 10000);
-        int coin = (int) Math.Ceiling(totalPer * 100);
+        int coin = (int) Math.Ceiling(totalPer * 10);
+        Debug.Log("COIN:" + coin);
 
         //セーブ
         SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
         string selectQuery = "select * from Stage where stage_number = " + stageNumber + " and difficulty = " + difficultyType;
         DataTable stageTable = sqlDB.ExecuteQuery(selectQuery);
+
+        string query;
         //インサート
         if (stageTable.Rows.Count == 0) {
-            string query = "insert into Stage(stage_number, difficulty, star, remaining_time, remaining_hp, score, created, updated) values(" + stageNumber + "," + difficultyType + "," + starCount + "," + clearTime + "," + hp + "," + score + ",datetime(),datetime())";
+            query = "insert into Stage(stage_number, difficulty, star, remaining_time, remaining_hp, score, created, updated) values(" + stageNumber + "," + difficultyType + "," + starCount + "," + clearTime + "," + hp + "," + score + ",datetime(),datetime())";
             sqlDB.ExecuteNonQuery(query);
         //アップデート
         } else {
             int beforeScore = (int)stageTable.Rows[0]["score"];
             int stageID = (int)stageTable.Rows[0]["id"];
             if (beforeScore < score) {
-                string query = "update Stage set star=" + starCount + ", remaining_time=" + hp +", remaining_hp=" + hp + ", score=" + score + ",updated=dateTime() where id=" + stageID;
+                query = "update Stage set star=" + starCount + ", remaining_time=" + hp +", remaining_hp=" + hp + ", score=" + score + ",updated=dateTime() where id=" + stageID;
                 sqlDB.ExecuteNonQuery(query);
             }
         }
+
+        //お金アップデート
+        query = "update UserStatus set money = (money + " + coin + ") where id = 1";
+        sqlDB.ExecuteNonQuery(query);
 
         //結果ダイアログ
         GameObject resultPrefab = (GameObject)Instantiate(resultDialogObject);
@@ -1037,8 +1044,8 @@ public class GameStartScript : MonoBehaviour {
         String coin1= "0";
         String coin2= "0";
         if (stCoin.Length >= 2) {
-            coin1 = stCoin.Substring(0, 1);
-            coin2 = stCoin.Substring(1, 1);
+            coin2 = stCoin.Substring(0, 1);
+            coin1 = stCoin.Substring(1, 1);
         } else {
             coin1 = stCoin.Substring(0, 1);
         }
