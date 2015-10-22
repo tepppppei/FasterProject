@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class BackgroundScript : MonoBehaviour {
+
+/*	
 	public GameObject chara;
     public Vector3 offset;
     private float defaultX;
@@ -22,7 +24,6 @@ public class BackgroundScript : MonoBehaviour {
         this.transform.position = new Vector3 (x, this.offset.y ,1);
     }
 
-/*	
 	void Update () {
 		// 時間によってYの値が0から1に変化していく。1になったら0に戻り、繰り返す。
 
@@ -35,4 +36,33 @@ public class BackgroundScript : MonoBehaviour {
 		renderer.sharedMaterial.SetTextureOffset ("_MainTex", offset);
 	}
 	*/
+
+    [Range(0, 10)]
+    public float speed = 10;
+    public int spriteCount = 3;
+    Vector3 spriteSize;
+    Vector3 spritePosition;
+
+    void Start () {
+        spriteSize = GetComponent<SpriteRenderer>().bounds.size;
+        spritePosition = transform.localPosition;
+        Debug.Log("SPRITE SIZE:" + spriteSize);
+    }
+    void Update () {
+        transform.position += Vector3.left * speed * Time.deltaTime;
+        #if UNITY_EDITOR
+        var spritex = (transform.position + spriteSize / 2).x ;
+        if( spritex < ScreenManager.Instance.screenRect.x ) {
+            Debug.Log("ついかー");
+            OnBecameInvisible();
+        }
+        #endif
+    }
+
+    void OnBecameInvisible () {
+        float width = GetComponent<SpriteRenderer> ().bounds.size.x;
+        Debug.Log("WIDTH:" + width);
+        transform.position += Vector3.right * width * spriteCount;
+        //transform.localPosition = spritePosition;
+    }
 }
