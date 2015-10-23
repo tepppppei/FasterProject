@@ -36,23 +36,69 @@ public class GameTopScript : MonoBehaviour {
     public GameObject stageSelectPanel;
     public GameObject stageBase;
     public GameObject scrollViewContent;
+    public GameObject charaSelectPanel;
 
+    //初期位置
+    private Vector3 stageSelectPanelDefaultPosition; 
+    private Vector3 charaSelectPanelDefaultPosition;
+
+    //ステージ選択表示用
     public void sceneStageSelect() {
         //ステージ選択パネルを表示する
         StartCoroutine(showStageSelect());
 
         string stg = "easy";
         currentDifficulty = stg;
-        StartCoroutine(showStageList(stg));
+        stageChange(stg);
+    }
+
+    //キャラ選択表示用
+    public void sceneCharaSelect() {
+        //ステージ選択パネルを表示する
+        StartCoroutine(showCharaSelect());
+    }
+
+    //ステージ選択クローズ用
+    public void closeStage() {
+        StartCoroutine(closeStageSelect());
+    }
+
+    //キャラ選択クローズ用
+    public void closeChara() {
+        StartCoroutine(closeCharaSelect());
+    }
+
+    //キャラ選択画面表示用
+    IEnumerator showCharaSelect() {
+        //スタートボタン系を削除
+        foreach (GameObject n in topButtonList) {
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(n, iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.05f));
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        charaSelectPanelDefaultPosition = charaSelectPanel.transform.localPosition;
+        iTween.MoveTo(charaSelectPanel, iTween.Hash(
+                    "position", new Vector3(0, 0, 0),
+                    "time", 0.2f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(1.0f);
     }
 
     //ステージ選択画面表示用
     IEnumerator showStageSelect() {
         //スタートボタン系を削除
         foreach (GameObject n in topButtonList) {
-            Destroy(n);
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(n, iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.05f));
+            yield return new WaitForSeconds(0.1f);
         }
 
+        stageSelectPanelDefaultPosition = stageSelectPanel.transform.localPosition;
         iTween.MoveTo(stageSelectPanel, iTween.Hash(
                     "position", new Vector3(0, 0, 0),
                     "time", 0.2f, 
@@ -62,6 +108,44 @@ public class GameTopScript : MonoBehaviour {
                     ));
 
         yield return new WaitForSeconds(1.0f);
+    }
+
+    //ステージ選択画面を閉じる
+    IEnumerator closeStageSelect() {
+        iTween.MoveTo(stageSelectPanel, iTween.Hash(
+                    "position", stageSelectPanelDefaultPosition,
+                    "time", 0.2f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(0.1f);
+
+        foreach (GameObject n in topButtonList) {
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(n, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.05f));
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    //キャラ選択画面を閉じる
+    IEnumerator closeCharaSelect() {
+        iTween.MoveTo(charaSelectPanel, iTween.Hash(
+                    "position", charaSelectPanelDefaultPosition,
+                    "time", 0.2f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(0.1f);
+
+        foreach (GameObject n in topButtonList) {
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(n, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.05f));
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     public void stageChange(string difficulty) {
@@ -171,14 +255,19 @@ public class GameTopScript : MonoBehaviour {
                 childObject.GetComponent<Text>().text = (i+1).ToString();
             }
 
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(temporaryObject, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.05f));
+
+/*
             iTween.ValueTo(gameObject, iTween.Hash(
                         "from", 0,
                         "to", 1.0f,
                         "time", 0.05f,
                         "onupdate", "fadeInObject"  // 毎フレーム SetAlpha() を呼びます。
                         ));
+                        */
 
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.1f);
 
             if ((i+1) >= loop) {
                 break;
@@ -302,54 +391,10 @@ public class GameTopScript : MonoBehaviour {
                 sqlDB.ExecuteNonQuery(query);
             }
 
-            // 自作したTestResponseクラスにレスポンスを格納する
-            /*
-            TestResponse response = JsonMapper.ToObject<TestResponse> (txt);
-            Debug.Log("name: " + response.name);
-            Debug.Log("level: " + response.level);
-            Debug.Log("friend_names[0]: " + response.friend_names[0]);
-            Debug.Log("friend_names[1]: " + response.friend_names[1]);
-            Debug.Log("friend_names[2]: " + response.friend_names[2]);
-            */
         }
         // 失敗
         else{
             Debug.Log("Get Failure");           
         }
-
-
-
-
-        //本来はマスターデータ取得
-        //string jsonString = "{\"easy\": 10, \"normal\": 11, \"hard\": 12}";
-        /*
-           foreach(DataRow dr in dataTable.Rows){
-        //id = (string)dr["name"];
-        Debug.Log (dr["id"]);
-        }
-        */
-
-
-        /*
-
-           string query = "insert into Stage values";
-           int loopCount = 1;
-
-           int easyNum = int.Parse(json["easy"].ToString());
-           easyNum = 1;
-           if (easyNum > 0) {
-           for (int i = 0; i < easyNum; i++) {
-           query += "(" + loopCount.ToString() + "," + (i+1) + ",1,0,0,0,datetime(),datetime())";
-           if (i != (easyNum-1)) {
-           query += ",";
-           }
-           loopCount++;
-           }
-           }
-
-           Debug.Log(query);
-           sqlDB.ExecuteNonQuery(query);
-           */
     }
-
 }

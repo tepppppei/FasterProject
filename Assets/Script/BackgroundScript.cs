@@ -50,19 +50,17 @@ public class BackgroundScript : MonoBehaviour {
     }
     void Update () {
         transform.position += Vector3.left * speed * Time.deltaTime;
-        #if UNITY_EDITOR
         var spritex = (transform.position + spriteSize / 2).x ;
         if( spritex < ScreenManager.Instance.screenRect.x ) {
             Debug.Log("ついかー");
             OnBecameInvisible();
         }
-        #endif
     }
 
     void OnBecameInvisible () {
         float width = GetComponent<SpriteRenderer> ().bounds.size.x;
-        Debug.Log("WIDTH:" + width);
-        transform.position += Vector3.right * width * spriteCount;
-        //transform.localPosition = spritePosition;
+        Debug.Log("WIDTH:" + (ScreenManager.Instance.screenRect.x + (width / 2)));
+        //transform.position += Vector3.right * width * spriteCount;
+        transform.position = new Vector3((ScreenManager.Instance.screenRect.x + (width * 0.9f)), transform.position.y, transform.position.z);
     }
 }
