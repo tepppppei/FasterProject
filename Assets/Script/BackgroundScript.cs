@@ -45,13 +45,13 @@ public class BackgroundScript : MonoBehaviour {
 
     void Start () {
         spriteSize = GetComponent<SpriteRenderer>().bounds.size;
-        spritePosition = transform.localPosition;
-        Debug.Log("SPRITE SIZE:" + spriteSize);
+        spritePosition = this.gameObject.transform.position;
     }
     void Update () {
-        transform.position += Vector3.left * speed * Time.deltaTime;
-        var spritex = (transform.position + spriteSize / 2).x ;
-        if( spritex < ScreenManager.Instance.screenRect.x ) {
+        this.gameObject.transform.position += Vector3.left * speed * Time.deltaTime;
+        var spritex = (this.gameObject.transform.position + spriteSize / 2).x ;
+        float cameraX = Camera.main.transform.localPosition.x;
+        if( spritex < (cameraX + ScreenManager.Instance.screenRect.x)) {
             Debug.Log("ついかー");
             OnBecameInvisible();
         }
@@ -59,8 +59,10 @@ public class BackgroundScript : MonoBehaviour {
 
     void OnBecameInvisible () {
         float width = GetComponent<SpriteRenderer> ().bounds.size.x;
-        Debug.Log("WIDTH:" + (ScreenManager.Instance.screenRect.x + (width / 2)));
+        float cameraX = Camera.main.transform.localPosition.x;
+        Debug.Log("TRANFORM POSITION:" + this.gameObject.transform.position.x);
+        Debug.Log("WIDTH:" + (ScreenManager.Instance.screenRect.x + (width * 0.9f)));
         //transform.position += Vector3.right * width * spriteCount;
-        transform.position = new Vector3((ScreenManager.Instance.screenRect.x + (width * 0.9f)), transform.position.y, transform.position.z);
+        this.gameObject.transform.position = new Vector3((cameraX + ScreenManager.Instance.screenRect.x + (width * 0.9f)), transform.position.y, transform.position.z);
     }
 }

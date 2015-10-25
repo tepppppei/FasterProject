@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraScript : MonoBehaviour {
 
-	public GameObject chara;
+	private GameObject chara;
     public Vector3 offset;
 
     // Use this for initialization
@@ -12,8 +12,12 @@ public class CameraScript : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-        this.transform.position = new Vector3 (this.chara.transform.position.x + this.offset.x, this.offset.y , this.chara.transform.position.z + this.offset.z);
+    void LateUpdate () {
+        if (chara == null) {
+            chara = GameObject.Find("Character");
+        } else {
+            this.transform.position = new Vector3 (this.chara.transform.position.x + this.offset.x, this.offset.y , this.chara.transform.position.z + this.offset.z);
+        }
     }
 
     private Camera cam;

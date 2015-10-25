@@ -28,7 +28,8 @@ public class GameStartScript : MonoBehaviour {
 
     //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
-    public GameObject chara;
+    private GameObject chara;
+    public GameObject charaHeadImage;
     public SpriteRenderer sr; 
     private GameObject floorPrefab;
     private GameObject bombPrefab;
@@ -91,21 +92,34 @@ public class GameStartScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //キャラを落ちないように設定
-        chara.GetComponent<Rigidbody2D>().isKinematic = true;
-        // プレハブを取得
-        floorPrefab = (GameObject)Resources.Load("Prefab/FloorCube");
-        bombPrefab = (GameObject)Resources.Load("Prefab/Bomb");
-        jumpBombPrefab = (GameObject)Resources.Load("Prefab/JumpBomb");
-        moveFloorPrefab = (GameObject)Resources.Load("Prefab/FloorMove");
-        rockPrefab = (GameObject)Resources.Load("Prefab/FloorRock");
-        wallPrefab = (GameObject)Resources.Load("Prefab/FloorWall");
-        goalStarPrefab = (GameObject)Resources.Load("Prefab/GoalStar");
+        //使用中のキャラ取得
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string selectQuery = "select * from Character where select_flg = 1";
+        DataTable characterTable = sqlDB.ExecuteQuery(selectQuery);
+        if (characterTable.Rows.Count >= 1) {
+            int charaNumber = (int) characterTable.Rows[0]["id"];
+            charaHeadImage.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumber + "/head");
+            GameObject selectCharaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + charaNumber);
+            chara = GameObject.Instantiate(selectCharaPrefab) as GameObject;
+            chara.transform.localPosition = new Vector3(-1.24f, 11.56f, -1.0f);
+            chara.name = "Character";
 
-        sr = chara.GetComponent<SpriteRenderer>();
-        charaDefaultPositionX = chara.transform.localPosition.x;
+            //キャラを落ちないように設定
+            chara.GetComponent<Rigidbody2D>().isKinematic = true;
+            // プレハブを取得
+            floorPrefab = (GameObject)Resources.Load("Prefab/FloorCube");
+            bombPrefab = (GameObject)Resources.Load("Prefab/Bomb");
+            jumpBombPrefab = (GameObject)Resources.Load("Prefab/JumpBomb");
+            moveFloorPrefab = (GameObject)Resources.Load("Prefab/FloorMove");
+            rockPrefab = (GameObject)Resources.Load("Prefab/FloorRock");
+            wallPrefab = (GameObject)Resources.Load("Prefab/FloorWall");
+            goalStarPrefab = (GameObject)Resources.Load("Prefab/GoalStar");
 
-        StartCoroutine(gameInit());
+            sr = chara.GetComponent<SpriteRenderer>();
+            charaDefaultPositionX = chara.transform.localPosition.x;
+
+            StartCoroutine(gameInit());
+        }
     }
 
     IEnumerator gameInit() {

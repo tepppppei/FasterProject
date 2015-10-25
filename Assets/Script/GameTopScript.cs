@@ -17,6 +17,9 @@ public class GameTopScript : MonoBehaviour {
     private DataTable normalDataTable;
     private DataTable hardDataTable;
 
+    //キャラテーブル
+    private DataTable characterTable;
+
     private string currentDifficulty = "easy";
 
     void Start () {
@@ -37,10 +40,17 @@ public class GameTopScript : MonoBehaviour {
     public GameObject stageBase;
     public GameObject scrollViewContent;
     public GameObject charaSelectPanel;
+    public GameObject charaHeadImage;
+    public Text charaNameText;
 
     //初期位置
     private Vector3 stageSelectPanelDefaultPosition; 
     private Vector3 charaSelectPanelDefaultPosition;
+
+    //選択中のキャラ番号
+    private int selectedCharaNumber;
+    private int selectedCharaTableNumber;
+    private GameObject selectCharaObject;
 
     //ステージ選択表示用
     public void sceneStageSelect() {
@@ -326,7 +336,7 @@ public class GameTopScript : MonoBehaviour {
             // 今回は便宜上、下記のjsonを使用する
             //string txt = "{\"name\": \"okude\", \"level\": 99, \"friend_names\": [\"ichiro\", \"jiro\", \"saburo\"]}";
 
-            string response = www.text;            
+            string response = www.text;
 
             Debug.Log(response);
             var json = Json.Deserialize(response) as Dictionary<string, object>;
@@ -391,10 +401,84 @@ public class GameTopScript : MonoBehaviour {
                 sqlDB.ExecuteNonQuery(query);
             }
 
+            //キャラクター系設定
+            selectQuery = "select * from Character where get_flg = 1";
+            characterTable = sqlDB.ExecuteQuery(selectQuery);
+            string charaName = "";
+            //現在選択中のキャラ
+            for (int i = 0; i < characterTable.Rows.Count; i++) {
+                if ((int)characterTable.Rows[i]["select_flg"] == 1) {
+                    selectedCharaNumber = (int) characterTable.Rows[i]["id"];
+                    charaName = (string) characterTable.Rows[i]["name"];
+                    selectedCharaTableNumber = i;
+                    break;
+                }
+            }
+
+            //キャラ画像設定
+            charaHeadImage.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + selectedCharaNumber + "/head");
+            GameObject selectCharaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + selectedCharaNumber);
+            selectCharaObject = GameObject.Instantiate(selectCharaPrefab) as GameObject;
+            //Canvasの子要素として登録する
+            selectCharaObject.transform.SetParent (charaSelectPanel.transform, false);
+            //位置とスケールを設定
+            selectCharaObject.transform.localScale = new Vector3(0.13f, 0.13f, 0.13f);
+            selectCharaObject.transform.localPosition = new Vector3(-4.0f, 89.0f, -100.0f);
+            selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
+            charaNameText.text = charaName;
         }
         // 失敗
         else{
-            Debug.Log("Get Failure");           
+            Debug.Log("Get Failure");
         }
+    }
+
+    public void charaSelectNext(int nextType=0) {
+        if (nextType == 0) {
+            if (selectedCharaTableNumber == (characterTable.Rows.Count - 1)) {
+                selectedCharaTableNumber = 0;
+            } else {
+                selectedCharaTableNumber++;
+            }
+        } else {
+            if (selectedCharaTableNumber == 0) {
+                selectedCharaTableNumber = (characterTable.Rows.Count - 1);
+            } else {
+                selectedCharaTableNumber--;
+            }
+        }
+        selectedCharaNumber = (int)characterTable.Rows[selectedCharaTableNumber]["id"];
+
+        //既存キャラを削除
+        iTween.ScaleTo(selectCharaObject, iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.1f));
+        Destroy(selectCharaObject);
+
+        //キャラ画像設定
+        string charaName = "";
+        charaName = (string) characterTable.Rows[selectedCharaTableNumber]["name"];
+
+        //charaHeadImage.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + selectedCharaNumber + "/head");
+        GameObject selectCharaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + selectedCharaNumber);
+        selectCharaObject = GameObject.Instantiate(selectCharaPrefab) as GameObject;
+        selectCharaObject.transform.localScale = new Vector3(0, 0, 0);
+        //Canvasの子要素として登録する
+        selectCharaObject.transform.SetParent (charaSelectPanel.transform, false);
+        //位置とスケールを設定
+        selectCharaObject.transform.localPosition = new Vector3(-4.0f, 89.0f, -100.0f);
+        selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        charaNameText.text = charaName;
+        iTween.ScaleTo(selectCharaObject, iTween.Hash("x", 0.13f, "y", 0.13f, "z", 0.13f, "time", 0.1f));
+    }
+
+    public void charaChange() {
+        selectedCharaNumber = (int)characterTable.Rows[selectedCharaTableNumber]["id"];
+        charaHeadImage.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + selectedCharaNumber + "/head");
+
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string query = "update Character set select_flg=0";
+        sqlDB.ExecuteNonQuery(query);
+
+        query = "update Character set select_flg=1 where id = " + selectedCharaNumber;
+        sqlDB.ExecuteNonQuery(query);
     }
 }

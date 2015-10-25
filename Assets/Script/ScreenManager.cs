@@ -16,7 +16,7 @@ public class ScreenManager {
                 Vector3.zero + Vector3.forward * 10);
         Vector3 rd = Camera.main.ViewportToWorldPoint (
                 new Vector3 (1, 1, 0) + Vector3.forward * 10);
-        screenRect.x = tl.x;
+        screenRect.x = Camera.main.transform.localPosition.x + tl.x;
         screenRect.y = tl.y;
         screenRect.width = (rd - tl).x;
         screenRect.height = (rd - tl).y;
