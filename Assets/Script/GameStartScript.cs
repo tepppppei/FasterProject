@@ -1063,20 +1063,14 @@ public class GameStartScript : MonoBehaviour {
             number3 = stTime.Substring(0, 1);
         }
 
-        SpriteRenderer timeSpriteRenderer;
-        timeSpriteRenderer = decTimeChild1.GetComponent<SpriteRenderer>();
-        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number1);
-        timeSpriteRenderer = decTimeChild2.GetComponent<SpriteRenderer>();
-        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number2);
-        timeSpriteRenderer = decTimeChild3.GetComponent<SpriteRenderer>();
-        timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number3);
+        decTimeChild1.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number1);
+        decTimeChild2.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number2);
+        decTimeChild3.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + number3);
 
         //hp設定
         GameObject decHpChild = resultPrefab.transform.FindChild("hp_number_1").gameObject;
         String stHp = hp.ToString();
-        SpriteRenderer hpSpriteRenderer;
-        hpSpriteRenderer = decHpChild.GetComponent<SpriteRenderer>();
-        hpSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + stHp);
+        decHpChild.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + stHp);
 
         //coin設定
         GameObject coinChild1 = resultPrefab.transform.FindChild("coin_number_1").gameObject;
@@ -1090,8 +1084,8 @@ public class GameStartScript : MonoBehaviour {
         } else {
             coin1 = stCoin.Substring(0, 1);
         }
-        coinChild1.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin1);
-        coinChild2.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin2);
+        coinChild1.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin1);
+        coinChild2.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin2);
 
         iTween.ScaleTo(resultPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
         yield return new WaitForSeconds(0.2f);
