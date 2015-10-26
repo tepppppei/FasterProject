@@ -28,6 +28,7 @@ public class GameStartScript : MonoBehaviour {
 
     //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
+    public GameObject[] sceneChangeObject;
     private GameObject chara;
     public GameObject charaHeadImage;
     public SpriteRenderer sr; 
@@ -92,6 +93,8 @@ public class GameStartScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        StartCoroutine(viewStart());
+
         //使用中のキャラ取得
         SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
         string selectQuery = "select * from Character where select_flg = 1";
@@ -120,6 +123,25 @@ public class GameStartScript : MonoBehaviour {
 
             StartCoroutine(gameInit());
         }
+    }
+
+    IEnumerator viewStart() {
+        iTween.MoveTo(sceneChangeObject[0], iTween.Hash(
+                    "position", new Vector3(3, 479, -500),
+                    "time", 1.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+        iTween.MoveTo(sceneChangeObject[1], iTween.Hash(
+                    "position", new Vector3(3, -487, -500),
+                    "time", 1.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(1.1f);
     }
 
     IEnumerator gameInit() {
@@ -804,23 +826,19 @@ public class GameStartScript : MonoBehaviour {
             number3 = stTime.Substring(0, 1);
         }
 
-        SpriteRenderer timeSpriteRenderer;
         if (showNumber1 != number1) {
             showNumber1 = number1;
-            timeSpriteRenderer = timeObject[0].GetComponent<SpriteRenderer>();
-            timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number1);
+            timeObject[0].GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number1);
         }
 
         if (showNumber2 != number2) {
             showNumber2 = number2;
-            timeSpriteRenderer = timeObject[1].GetComponent<SpriteRenderer>();
-            timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number2);
+            timeObject[1].GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number2);
         }
 
         if (showNumber3 != number3) {
             showNumber3 = number3;
-            timeSpriteRenderer = timeObject[2].GetComponent<SpriteRenderer>();
-            timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number3);
+            timeObject[2].GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number3);
         }
 
         if (totalTime >= limitTime) {
@@ -917,7 +935,11 @@ public class GameStartScript : MonoBehaviour {
             //Canvasの子要素として登録する 
             endPrefab.transform.SetParent (canvasObject.transform, false);
             // 4秒かけて、y軸を3倍に拡大
-            iTween.ScaleTo(endPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+            if (endPrefab.GetComponent<Text>() == null) {
+                iTween.ScaleTo(endPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+            } else {
+                iTween.ScaleTo(endPrefab, iTween.Hash("x", 0.3f, "y", 0.3f, "z", 0.3f, "time", 0.3f));
+            }
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -959,7 +981,12 @@ public class GameStartScript : MonoBehaviour {
         completePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
         //Canvasの子要素として登録する 
         completePrefab.transform.SetParent (canvasObject.transform, false);
-        iTween.ScaleTo(completePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        if (completePrefab.GetComponent<Text>() == null) {
+            iTween.ScaleTo(completePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        } else {
+            iTween.ScaleTo(completePrefab, iTween.Hash("x", 0.3f, "y", 0.3f, "z", 0.3f, "time", 0.3f));
+        }
+
         yield return new WaitForSeconds(0.2f);
 
         //star
@@ -1110,5 +1137,37 @@ public class GameStartScript : MonoBehaviour {
 
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    public void retryGame() {
+        StartCoroutine(viewChange("RaceScene"));
+    }
+
+    public void gameTop() {
+        StartCoroutine(viewChange("TopScene"));
+    }
+
+    IEnumerator viewChange(string sceneName) {
+        sceneChangeObject[0].transform.SetAsLastSibling();
+        sceneChangeObject[1].transform.SetAsLastSibling();
+
+        iTween.MoveTo(sceneChangeObject[0], iTween.Hash(
+                    "position", new Vector3(3, 159, -500),
+                    "time", 1.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+        iTween.MoveTo(sceneChangeObject[1], iTween.Hash(
+                    "position", new Vector3(3, -159, -500),
+                    "time", 1.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(1.1f);
+
+        Application.LoadLevel(sceneName);
     }
 }

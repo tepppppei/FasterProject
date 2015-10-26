@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 145542}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fadac2f780e04242a5c660d1fcbab2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5081580fe790a0d468022994d619ccb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11422884
@@ -97,7 +97,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11413550}
-        m_MethodName: restartScene
+        m_MethodName: retryScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -129,8 +129,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: -2, y: -169.000092}
-  m_SizeDelta: {x: 70, y: 70}
+  m_AnchoredPosition: {x: 5, y: -160}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: .5, y: .5}
 --- !u!1001 &100100000
 Prefab:

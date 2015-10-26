@@ -43,6 +43,9 @@ public class GameTopScript : MonoBehaviour {
     public GameObject charaHeadImage;
     public Text charaNameText;
 
+    //シーン変更時のオブジェクト
+    public GameObject[] sceneChangeObject;
+
     //初期位置
     private Vector3 stageSelectPanelDefaultPosition; 
     private Vector3 charaSelectPanelDefaultPosition;
@@ -197,6 +200,56 @@ public class GameTopScript : MonoBehaviour {
         PlayerPrefs.SetInt ("stage_number", stageNumber);
         Debug.Log("難易度：" + currentDifficulty);
         Debug.Log("ステージ番号：" + stageNumber);
+
+        StartCoroutine(viewChange("RaceScene"));
+    }
+
+    IEnumerator viewStart() {
+        yield return new WaitForSeconds(1.1f);
+
+        sceneChangeObject[0].transform.SetAsLastSibling();
+        sceneChangeObject[1].transform.SetAsLastSibling();
+
+        iTween.MoveTo(sceneChangeObject[0], iTween.Hash(
+                    "position", new Vector3(3, 479, -500),
+                    "time", 2.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+        iTween.MoveTo(sceneChangeObject[1], iTween.Hash(
+                    "position", new Vector3(3, -487, -500),
+                    "time", 2.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(2.1f);
+    }
+
+    IEnumerator viewChange(string sceneName) {
+        Destroy(charaHeadImage);
+
+        sceneChangeObject[0].transform.SetAsLastSibling();
+        sceneChangeObject[1].transform.SetAsLastSibling();
+
+        iTween.MoveTo(sceneChangeObject[0], iTween.Hash(
+                    "position", new Vector3(3, 159, -500),
+                    "time", 1.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+        iTween.MoveTo(sceneChangeObject[1], iTween.Hash(
+                    "position", new Vector3(3, -159, -500),
+                    "time", 1.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(1.1f);
 
         Application.LoadLevel("RaceScene");
     }
@@ -392,10 +445,10 @@ public class GameTopScript : MonoBehaviour {
                     m1 = money.Substring(0, 1);
                 }
 
-                money1.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m1);
-                money2.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m2);
-                money3.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m3);
-                money4.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m4);
+                money1.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m1);
+                money2.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m2);
+                money3.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m3);
+                money4.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m4);
             } else {
                 string query = "insert into UserStatus(user_name, money, created, updated) values('NoName', 0, datetime(), datetime())";
                 sqlDB.ExecuteNonQuery(query);
@@ -426,6 +479,8 @@ public class GameTopScript : MonoBehaviour {
             selectCharaObject.transform.localPosition = new Vector3(-4.0f, 89.0f, -100.0f);
             selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
             charaNameText.text = charaName;
+
+            StartCoroutine(viewStart());
         }
         // 失敗
         else{
