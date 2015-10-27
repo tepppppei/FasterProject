@@ -48,7 +48,35 @@ public class ButtonAnimationScript : MonoBehaviour {
 	        	"looptype","pingpong",
 				"onupdate", "valueChangePosition"
 				));
+	    //縦移動系
+		} else if (animationType == 4) {
+			defaultPositionX = transform.localPosition.x;
+			defaultPositionY = transform.localPosition.y;
+
+	        iTween.ValueTo(this.gameObject, iTween.Hash(
+	        	"from", defaultPositionY,
+	        	"to", (defaultPositionY + 5.0f),
+	        	"time", 0.5f,
+	        	"looptype","pingpong",
+				"onupdate", "valueChangePositionY"
+				));
+	    //縦移動系&消去
+		} else if (animationType == 5) {
+			defaultPositionX = transform.localPosition.x;
+			defaultPositionY = transform.localPosition.y;
+
+			iTween.MoveTo(this.gameObject, iTween.Hash(
+				"position", new Vector3(defaultPositionX, (defaultPositionY + 5.0f), transform.localPosition.z),
+				"time", 0.7f, 
+				"islocal", true,
+				"oncomplete", "CompleteDestroy", 
+				"oncompletetarget", gameObject
+				));
 		}
+	}
+
+	private void CompleteDestroy() {
+		Destroy(this.gameObject);
 	}
 	
 	// Update is called once per frame
@@ -64,4 +92,7 @@ public class ButtonAnimationScript : MonoBehaviour {
         transform.localPosition = new Vector3(value, transform.localPosition.y, transform.localPosition.z);
     }
 
+    void valueChangePositionY(float value){
+        transform.localPosition = new Vector3(transform.localPosition.x, value, transform.localPosition.z);
+    }
 }

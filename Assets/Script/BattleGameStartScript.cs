@@ -99,6 +99,18 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     //メッセージ用オブジェクト
     private Text messageObject;
 
+    //待機ルーム用オブジェクト
+    public GameObject[] sceneChangeObject;
+    public GameObject fukidashiBase;
+    public GameObject scrollViewContent;
+    public GameObject[] fukidashiObject;
+
+    //キャラ番号
+    public int charaNumber;
+    public GameObject charaHeadImage;
+
+    private bool gameStartCountdownFlg = false;
+    private bool isGameStartAction = false;
 
     // Use this for initialization
     void Start () {
@@ -126,6 +138,9 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             bombSpeedPetern[i] = UnityEngine.Random.Range(0.1F, 0.7F);
             moveFloorSpeedPetern[i] = UnityEngine.Random.Range(0.5F, 1.4F);
         }
+
+        charaInit();
+        waitingRoomInit();
     }
 
     // Update is called once per frame
@@ -135,13 +150,60 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
         if (!startFlg) {
             if (!isStartAnimation && characters != null && characters.Length >= 2) {
-                isStartAnimation = true;
+                //isStartAnimation = true;
+                //StartCoroutine(gameStart());
 
-                StartCoroutine(gameStart());
+                if (!isGameStartAction) {
+                    isGameStartAction = true;
+                    gameStartCountdownFlg = true;
+                    gsStartTime = DateTime.Now;
+                }
             } else if (!isStartAnimation) {
                 characters = GameObject.FindGameObjectsWithTag("Chara");
             }
         }
+
+        if (!startFlg && gameStartCountdownFlg) {
+            Debug.Log("BBBBBBBBBBBBB");
+            gameStartCountdown();
+        }
+    }
+
+
+    private int gsCd; 
+    private DateTime gsStartTime;
+    private void gameStartCountdown() {
+        gsCd = 10;
+        int totalTime = 0;
+        TimeSpan pastTime = DateTime.Now - gsStartTime;
+        totalTime = pastTime.Seconds + (pastTime.Minutes * 60);
+        gsCd = 10 - totalTime;
+
+        sendMessage("ゲーム開始まで" + gsCd.ToString() + "秒");
+        if (totalTime >= 10) {
+            gameStartCountdownFlg = false;
+            StartCoroutine(gameStartSetting());
+        }
+    }
+
+    IEnumerator gameStartSetting() {
+                Debug.Log("DDDDDDDDDDDD");
+        //閉じる
+        StartCoroutine(viewEnd());
+
+        //カメラを移動
+        Camera.main.transform.localPosition = new Vector3(0.31f, 0.78f, -100);
+
+        //キャラクター達を移動
+        characters[0].transform.localPosition = new Vector3(-1.29f, 11.56f, -1);
+        characters[1].transform.localPosition = new Vector3(-1.29f, 11.56f, -1);
+
+        StartCoroutine(viewStart());
+
+        isStartAnimation = true;
+        StartCoroutine(gameStart());
+
+        yield return new WaitForSeconds(0.1f);
     }
 
     void LateUpdate() {
@@ -521,5 +583,113 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         if (messageObject != null) {
             messageObject.text = mes;
         }
+    }
+
+    private void waitingRoomInit() {
+        StartCoroutine(viewStart());
+        //吹き出しリストを作成
+        string[] fukidashiStringList = new string[] {
+            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+        };
+
+        GameObject temporaryObject;
+        foreach (string n in fukidashiStringList) {
+            temporaryObject = GameObject.Instantiate(fukidashiBase) as GameObject;
+            temporaryObject.transform.SetParent (scrollViewContent.transform, false);
+            GameObject childObject = temporaryObject.transform.FindChild("Text").gameObject;
+            if (childObject != null) {
+                childObject.GetComponent<Text>().text = n;
+            }
+        }
+    }
+
+    //自分が送信したメッセージ
+    public void showFukidashiMessage(string s) {
+        GameObject temporaryObject = GameObject.Instantiate(fukidashiObject[0]) as GameObject;
+        temporaryObject.transform.SetParent (canvasObject.transform, false);
+        GameObject childObject = temporaryObject.transform.FindChild("Text").gameObject;
+        if (childObject != null) {
+            childObject.GetComponent<Text>().text = s;
+        }
+
+        if (networkPlayerScript != null) {
+            sendMessage("メッセージ送信成功");
+            networkPlayerScript.messageString = s;
+        } else {
+            sendMessage("メッセージ送信失敗");
+        }
+    }
+
+    //敵が送信したメッセージ
+    public void sendFukidashiMessage(string s) {
+        GameObject temporaryObject = GameObject.Instantiate(fukidashiObject[1]) as GameObject;
+        temporaryObject.transform.SetParent (canvasObject.transform, false);
+        GameObject childObject = temporaryObject.transform.FindChild("Text").gameObject;
+        if (childObject != null) {
+            childObject.GetComponent<Text>().text = s;
+        }
+    }
+
+    IEnumerator viewStart() {
+        yield return new WaitForSeconds(1.1f);
+        sceneChangeObject[0].transform.SetAsLastSibling();
+        sceneChangeObject[1].transform.SetAsLastSibling();
+
+        iTween.MoveTo(sceneChangeObject[0], iTween.Hash(
+                    "position", new Vector3(3, 479, -500),
+                    "time", 2.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+        iTween.MoveTo(sceneChangeObject[1], iTween.Hash(
+                    "position", new Vector3(3, -487, -500),
+                    "time", 2.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(2.1f);
+    }
+
+    IEnumerator viewEnd() {
+        sceneChangeObject[0].transform.SetAsLastSibling();
+        sceneChangeObject[1].transform.SetAsLastSibling();
+
+        iTween.MoveTo(sceneChangeObject[0], iTween.Hash(
+                    "position", new Vector3(3, 159, -500),
+                    "time", 2.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+        iTween.MoveTo(sceneChangeObject[1], iTween.Hash(
+                    "position", new Vector3(3, -159, -500),
+                    "time", 2.0f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(2.1f);
+    }
+
+    private void charaInit() {
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+
+        //キャラクター系設定
+        string selectQuery = "select * from Character where get_flg = 1";
+        DataTable characterTable = sqlDB.ExecuteQuery(selectQuery);
+        //現在選択中のキャラ
+        for (int i = 0; i < characterTable.Rows.Count; i++) {
+            if ((int)characterTable.Rows[i]["select_flg"] == 1) {
+                charaNumber = (int) characterTable.Rows[i]["id"];
+                break;
+            }
+        }
+
+        //キャラ画像設定
+        charaHeadImage.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumber + "/head");
     }
 }

@@ -18,6 +18,10 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
     //設定値を反映したか
     private bool isSettingUpdate = false;
 
+    //メッセージ送信系
+    public string messageString = "";
+    public bool isSendMessage;
+
     //ゲーム終了フラグ(フラグをtrueにした人が負け)
     public bool isGameEnd = false;
 
@@ -59,6 +63,8 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
             //ゲーム終了フラグ
             stream.SendNext(isGameEnd);
 
+            stream.SendNext(messageString);
+            messageString = "";
         //データを受け取る
         } else {
             //現在地と角度を受信
@@ -91,6 +97,11 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
             if (gameEndFlg) {
                 Debug.Log("WIN");
                 battleGameStartScript.win();
+            }
+
+            string message = (string)stream.ReceiveNext();
+            if (message != "") {
+                battleGameStartScript.sendFukidashiMessage(message);
             }
         }
     }

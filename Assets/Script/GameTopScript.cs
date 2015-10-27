@@ -204,6 +204,10 @@ public class GameTopScript : MonoBehaviour {
         StartCoroutine(viewChange("RaceScene"));
     }
 
+    public void gameBattle() {
+        StartCoroutine(viewChange("RaceBattleScene"));
+    }
+
     IEnumerator viewStart() {
         yield return new WaitForSeconds(1.1f);
 
@@ -251,7 +255,7 @@ public class GameTopScript : MonoBehaviour {
 
         yield return new WaitForSeconds(1.1f);
 
-        Application.LoadLevel("RaceScene");
+        Application.LoadLevel(sceneName);
     }
 
     //ステージ一覧表示

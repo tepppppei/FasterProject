@@ -49,8 +49,13 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
     private float enemyColor = 0.3f;
 
+    //同じキャラか
+    private bool isSameCharacter = false;
+
     // Use this for initialization
     void Start () {
+        this.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+
         GameObject obj = GameObject.Find("GameStartObj");
         gameStartScript = obj.GetComponent<BattleGameStartScript>();
         updateDefaultSettings();
@@ -60,15 +65,28 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
         canvasObject = GameObject.Find("Canvas");
         if (!photonView.isMine) {
-            enemyProgressPrefab = (GameObject)Resources.Load("Image/Character/Chara1/cara_sprite_0");
-            enemyProgressObject = (GameObject)Instantiate(enemyProgressPrefab);
+            //キャラの位置をずらす
+            this.gameObject.transform.localPosition = new Vector3(2.1f, -6.36f, -1f);
+            this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
 
-            //オブジェクトにマテリアルを追加
-            Material glayMaterial = (Material) Resources.Load("Material/GlayMaterial");
-            enemyProgressObject.GetComponent<Image>().material = glayMaterial;
+            string charaNumberStringDefault = this.gameObject.name;
+            string charaNumberString = charaNumberStringDefault.Replace("", "Character");
+
+            enemyProgressPrefab = (GameObject)Resources.Load("Image/Character/Chara" + charaNumberString + "/head");
+            enemyProgressObject = (GameObject)Instantiate(enemyProgressPrefab, new Vector3(-134, 257, -12), Quaternion.identity);
+
+            int charaNumber = gameStartScript.charaNumber;
+            if (charaNumber.ToString() == charaNumberString) {
+                isSameCharacter = true;
+                //オブジェクトにマテリアルを追加
+                Material glayMaterial = (Material) Resources.Load("Material/GlayMaterial");
+                enemyProgressObject.GetComponent<Image>().material = glayMaterial;
+            }
 
             //Canvasの子要素として登録する
             enemyProgressObject.transform.SetParent (canvasObject.transform, false);
+        } else {
+            this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
         }
 
         //photon network
@@ -77,8 +95,11 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
     void LateUpdate() {
         if (!photonView.isMine) {
-            //敵キャラの色を変更
-            this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(enemyColor, enemyColor, enemyColor, 1.0f));
+            if (isSameCharacter) {
+                //敵キャラの色を変更
+                this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(enemyColor, enemyColor, enemyColor, 1.0f));
+
+            }
         }
     }
 
