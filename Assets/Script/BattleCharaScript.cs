@@ -57,7 +57,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         sr = this.gameObject.GetComponent<SpriteRenderer>();
         charaDefaultPositionX = this.gameObject.transform.localPosition.x;
 
-        progressObject = GameObject.Find("cara_sprite_0");
+        progressObject = GameObject.Find("ProgressChara");
         GameObject hpObject1 = GameObject.Find("item_heart1");
         GameObject hpObject2 = GameObject.Find("item_heart2");
         GameObject hpObject3 = GameObject.Find("item_heart3");
@@ -473,11 +473,13 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             int vBlockCount = 0;
             bool isBreak = false;
             for (int i = backNumber; i <= (backNumber + backNumber) && isBreak == false; i++) {
-                vBlockCount = floorData[(charaMoveCount - i)];
-                if (vBlockCount >= 1) {
-                    charaMoveCount -= i;
-                    isBreak = true;
-                    break;
+                if ((charaMoveCount - i) >= 0) {
+                    vBlockCount = floorData[(charaMoveCount - i)];
+                    if (vBlockCount >= 1) {
+                        charaMoveCount -= i;
+                        isBreak = true;
+                        break;
+                    }
                 }
             }
 

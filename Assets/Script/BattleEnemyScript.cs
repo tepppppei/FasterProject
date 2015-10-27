@@ -66,14 +66,18 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         canvasObject = GameObject.Find("Canvas");
         if (!photonView.isMine) {
             //キャラの位置をずらす
-            this.gameObject.transform.localPosition = new Vector3(2.1f, -6.36f, -1f);
+            this.gameObject.transform.localPosition = new Vector3(2.1f, -8.05f, -1f);
+            this.gameObject.transform.localScale = new Vector3(-0.0018f, 0.0018f, 0.0018f);
             this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
 
             string charaNumberStringDefault = this.gameObject.name;
-            string charaNumberString = charaNumberStringDefault.Replace("", "Character");
+            string charaNumberString = charaNumberStringDefault.Replace("Character", "");
+            charaNumberString = charaNumberString.Replace("(Clone)", "");
 
-            enemyProgressPrefab = (GameObject)Resources.Load("Image/Character/Chara" + charaNumberString + "/head");
-            enemyProgressObject = (GameObject)Instantiate(enemyProgressPrefab, new Vector3(-134, 257, -12), Quaternion.identity);
+            Debug.Log("CHARA NUMBER STRING:" + charaNumberString);
+
+            enemyProgressObject = GameObject.Find("ProgressEnemy");
+            enemyProgressObject.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumberString.ToString() + "/head");
 
             int charaNumber = gameStartScript.charaNumber;
             if (charaNumber.ToString() == charaNumberString) {
@@ -245,8 +249,8 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "position", new Vector3(posX, this.gameObject.transform.localPosition.y, 0),
-                    "time", moveSpeed, 
-                    "oncomplete", "CompleteHandler", 
+                    "time", moveSpeed,
+                    "oncomplete", "CompleteHandler",
                     "oncompletetarget", gameObject
                     ));
 

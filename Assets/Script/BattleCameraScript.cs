@@ -7,6 +7,8 @@ public class BattleCameraScript : MonoBehaviour {
 
     private GameObject[] charas;
 
+    public bool cameraStartFlg = false;
+
     // Use this for initialization
     void Start () {
         this.offset = this.transform.position;
@@ -15,7 +17,9 @@ public class BattleCameraScript : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate () {
         if (chara != null) {
-            //this.transform.position = new Vector3 (this.chara.transform.position.x + this.offset.x, this.offset.y , this.chara.transform.position.z + this.offset.z);
+            if (cameraStartFlg) {
+                this.transform.position = new Vector3 (this.chara.transform.position.x + this.offset.x, 0.78f, this.chara.transform.position.z + this.offset.z);
+            }
         } else {
             charas = GameObject.FindGameObjectsWithTag("Chara");
             for (int i = 0; i < charas.Length; i++) {

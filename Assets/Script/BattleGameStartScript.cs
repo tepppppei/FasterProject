@@ -164,13 +164,12 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         }
 
         if (!startFlg && gameStartCountdownFlg) {
-            Debug.Log("BBBBBBBBBBBBB");
             gameStartCountdown();
         }
     }
 
 
-    private int gsCd; 
+    private int gsCd;
     private DateTime gsStartTime;
     private void gameStartCountdown() {
         gsCd = 10;
@@ -187,9 +186,16 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     }
 
     IEnumerator gameStartSetting() {
-                Debug.Log("DDDDDDDDDDDD");
         //閉じる
         StartCoroutine(viewEnd());
+
+        //canvasの不要なオブジェクトを削除
+        GameObject tempObj = GameObject.Find("FailFrameSet");
+        Destroy(tempObj);
+        tempObj = GameObject.Find("FukidashiMessage");
+        Destroy(tempObj);
+        tempObj = GameObject.Find("MessageBackground");
+        Destroy(tempObj);
 
         //カメラを移動
         Camera.main.transform.localPosition = new Vector3(0.31f, 0.78f, -100);
@@ -197,13 +203,18 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         //キャラクター達を移動
         characters[0].transform.localPosition = new Vector3(-1.29f, 11.56f, -1);
         characters[1].transform.localPosition = new Vector3(-1.29f, 11.56f, -1);
+        characters[1].transform.localScale = new Vector3(0.0018f, 0.0018f, 0.0018f);
 
+        GameObject cam = GameObject.Find("Main Camera");
+        BattleCameraScript bcs = cam.GetComponent<BattleCameraScript>();
+        bcs.cameraStartFlg = true;
+
+        yield return new WaitForSeconds(0.5f);
         StartCoroutine(viewStart());
+        yield return new WaitForSeconds(0.5f);
 
         isStartAnimation = true;
         StartCoroutine(gameStart());
-
-        yield return new WaitForSeconds(0.1f);
     }
 
     void LateUpdate() {
@@ -428,7 +439,6 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
         startFlg = true;
         startTime = DateTime.Now;
-
     }
 
     private string showNumber1 = "0";
@@ -464,20 +474,17 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         SpriteRenderer timeSpriteRenderer;
         if (showNumber1 != number1) {
             showNumber1 = number1;
-            timeSpriteRenderer = timeObject[0].GetComponent<SpriteRenderer>();
-            timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number1);
+            timeObject[0].GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number1);
         }
 
         if (showNumber2 != number2) {
             showNumber2 = number2;
-            timeSpriteRenderer = timeObject[1].GetComponent<SpriteRenderer>();
-            timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number2);
+            timeObject[1].GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number2);
         }
 
         if (showNumber3 != number3) {
             showNumber3 = number3;
-            timeSpriteRenderer = timeObject[2].GetComponent<SpriteRenderer>();
-            timeSpriteRenderer.sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number3);
+            timeObject[2].GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + number3);
         }
 
         if (totalTime >= limitTime) {
