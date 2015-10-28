@@ -77,7 +77,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                 Destroy(bcs);
             }
 
-            if (startFlg && !isBack) {
+            if (startFlg && !isBack && hp > 0) {
                 moveProgress();
                 if (Input.GetMouseButtonDown(0)) {
                     touchPos = Input.mousePosition;
@@ -421,6 +421,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             this.gameObject.transform.localPosition = new Vector3(posX, posY, this.gameObject.transform.localPosition.z);
         }
 
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
         isMove = false;
     }
 
@@ -523,7 +524,6 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
             //進捗バーも戻す
             goBackProgress();
-
             StartCoroutine(stopAction(1.0f));
         }
     }
@@ -539,9 +539,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         float passX = charaDefaultPositionX + (addCubePositionX * -1 * charaMoveCount);
         float passY = this.gameObject.transform.localPosition.y;
 
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         this.gameObject.transform.localPosition = new Vector3(passX, passY, 0);
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
     }
 
     private void goBackProgress() {

@@ -67,4 +67,13 @@ public class PhotonSystemScript : Photon.MonoBehaviour {
             messageObject.text = mes;
         }
     }
+
+    //エラー系
+    void OnLeftRoom(){
+        gameStartScript.connectError();
+    }
+
+    void OnPhotonPlayerDisconnected(PhotonPlayer player){
+        gameStartScript.connectError();
+    }
 }

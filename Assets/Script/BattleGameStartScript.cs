@@ -470,7 +470,6 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     private string showNumber3 = "0";
     private void countdown() {
         cd = limitTime;
-
         int totalTime = 0;
         if (startFlg) {
             TimeSpan pastTime = DateTime.Now - startTime;
@@ -519,6 +518,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             //タイムオーバーの場合は進んでいる方が勝利
             int myMVC = battleCharaScript.getMoveCount();
             int enemyMVC = battleEnemyScript.getMoveCount();
+            sendMessage("タイムオーバー");
             if (myMVC <= enemyMVC) {
                 StartCoroutine(gameEnd(false));
             } else {
@@ -613,6 +613,15 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         }
     }
 
+    public void connectError() {
+        if (!isEnd && cd >= 5) {
+            sendMessage("相手が逃げました。");
+            startFlg = false;
+            isEnd = true;
+            StartCoroutine(gameEnd(true));
+        }
+    }
+
     public void lose() {
         sendMessage("相手がゴールしました。");
         messageBackground.transform.localScale = new Vector3(1, 1, 1);
@@ -637,13 +646,12 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
     public void instructionGameFailed() {
         networkPlayerScript.isGameEnd = true;
-        startFlg = false;
-
         int myMVC = battleCharaScript.getMoveCount();
         int enemyMVC = battleEnemyScript.getMoveCount();
         Debug.Log("MY MVC:" + myMVC);
         Debug.Log("ENEMY MVC:" + enemyMVC);
         if (myMVC <= enemyMVC) {
+            startFlg = false;
             sendMessage("HPが0になりました。");
             messageBackground.transform.localScale = new Vector3(1, 1, 1);
             messageBackground.transform.SetAsLastSibling();
@@ -653,7 +661,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             }
         } else {
             sendMessage("HPが0になりました。待機中。");
-            messageBackground.transform.localScale = new Vector3(1, 1, 1);        
+            messageBackground.transform.localScale = new Vector3(1, 1, 1);
             myDieFlg = true;
             myLastMoveCount = myMVC;
         }
@@ -719,9 +727,12 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         return (GameObject) moveFloorObjectList[(floorNumber-1)];
     }
 
-    private void sendMessage(string mes) {
+    public void sendMessage(string mes) {
         if (messageObject != null) {
             messageObject.text = mes;
+            if (messageBackground != null && messageObject.text != "") {
+                messageBackground.transform.localScale = new Vector3(1, 1, 1);
+            }
         }
     }
 

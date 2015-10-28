@@ -146,7 +146,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         }
 
         this.gameObject.GetComponent<Animation>().Play("Move");
-        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "path", path,
                     "time", moveSpeed,
@@ -186,7 +186,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         }
 
         this.gameObject.GetComponent<Animation>().Play("Jump");
-        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "path", path,
                     "time", moveSpeed,
@@ -226,7 +226,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         }
 
         this.gameObject.GetComponent<Animation>().Play("Move");
-        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "path", path,
                     "time", moveSpeed,
@@ -250,7 +250,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         charaMoveCount += step;
 
         this.gameObject.GetComponent<Animation>().Play("Sliding");
-        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "position", new Vector3(posX, this.gameObject.transform.localPosition.y, 0),
                     "time", moveSpeed,
