@@ -61,10 +61,16 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         updateDefaultSettings();
 
         sr = this.gameObject.GetComponent<SpriteRenderer>();
-        charaDefaultPositionX = this.gameObject.transform.localPosition.x;
-
         canvasObject = GameObject.Find("Canvas");
         if (!photonView.isMine) {
+            //scriptを削除
+            if (this.gameObject.GetComponent<BattleCharaScript>() != null) {
+                BattleCharaScript bcs = this.gameObject.GetComponent<BattleCharaScript>();
+                Destroy(bcs);
+            }
+
+            charaDefaultPositionX = this.gameObject.transform.localPosition.x;
+
             //キャラの位置をずらす
             this.gameObject.transform.localPosition = new Vector3(2.1f, -8.05f, -1f);
             this.gameObject.transform.localScale = new Vector3(-0.0018f, 0.0018f, 0.0018f);
@@ -127,17 +133,6 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         path[0] = new Vector3(pass1x, pass1y, 0);
         path[1] = new Vector3(pass2x, pass2y, 0);
 
-        this.gameObject.GetComponent<Animation>().Play("Move");
-
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-        iTween.MoveTo(this.gameObject, iTween.Hash(
-                    "path", path,
-                    "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
-                    "oncompletetarget", gameObject
-                    ));
-
         int step = 1;
         //動く床の場合は3つ移動
         if (floorData[charaMoveCount] == -2) {
@@ -149,6 +144,16 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         } else {
             charaMoveCount++;
         }
+
+        this.gameObject.GetComponent<Animation>().Play("Move");
+        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+                    "path", path,
+                    "time", moveSpeed,
+                    "easetype", iTween.EaseType.easeOutSine,
+                    "oncomplete", "CompleteHandler",
+                    "oncompletetarget", this.gameObject
+                    ));
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -173,23 +178,22 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         path[0] = new Vector3(pass1x, pass1y, 0);
         path[1] = new Vector3(pass2x, pass2y, 0);
 
-        this.gameObject.GetComponent<Animation>().Play("Jump");
-
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-        iTween.MoveTo(this.gameObject, iTween.Hash(
-                    "path", path,
-                    "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
-                    "oncompletetarget", gameObject
-                    ));
-
         //動く床の場合は3つ移動
         if (floorData[charaMoveCount] == -2) {
             charaMoveCount += 3;
         } else {
             charaMoveCount += step;
         }
+
+        this.gameObject.GetComponent<Animation>().Play("Jump");
+        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+                    "path", path,
+                    "time", moveSpeed,
+                    "easetype", iTween.EaseType.easeOutSine,
+                    "oncomplete", "CompleteHandler",
+                    "oncompletetarget", this.gameObject
+                    ));
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -209,18 +213,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         path[0] = new Vector3(pass1x, pass1y, 0);
         path[1] = new Vector3(pass2x, pass2y, 0);
 
-        this.gameObject.GetComponent<Animation>().Play("Move");
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-        iTween.MoveTo(this.gameObject, iTween.Hash(
-                    "path", path,
-                    "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
-                    "oncompletetarget", gameObject
-                    ));
-
         int step = 1;
-
         //動く床の場合は3つ移動
         if (floorData[charaMoveCount] == -2) {
             charaMoveCount += 3;
@@ -232,6 +225,15 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             charaMoveCount++;
         }
 
+        this.gameObject.GetComponent<Animation>().Play("Move");
+        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+                    "path", path,
+                    "time", moveSpeed,
+                    "easetype", iTween.EaseType.easeOutSine,
+                    "oncomplete", "CompleteHandler",
+                    "oncompletetarget", this.gameObject
+                    ));
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -245,17 +247,16 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         int step = 2;
         float posX = this.gameObject.transform.localPosition.x + (addCubePositionX * step * -1);
 
+        charaMoveCount += step;
+
         this.gameObject.GetComponent<Animation>().Play("Sliding");
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "position", new Vector3(posX, this.gameObject.transform.localPosition.y, 0),
                     "time", moveSpeed,
                     "oncomplete", "CompleteHandler",
-                    "oncompletetarget", gameObject
+                    "oncompletetarget", this.gameObject
                     ));
-
-        charaMoveCount += step;
-
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -293,6 +294,17 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
     private void CompleteHandler() {
         this.gameObject.GetComponent<Animation>().Play("Idle");
+
+        //位置補正
+        if (floorData[charaMoveCount] > 0 && floorData[charaMoveCount] <= floorData[(charaMoveCount + 1)]) {
+            this.gameObject.GetComponent<Animation>().Play("Idle");
+            //正しいx座標
+            float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+            //正しいy座標
+            float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (floorData[charaMoveCount] + 1)));
+            this.gameObject.transform.localPosition = new Vector3(posX, posY, this.gameObject.transform.localPosition.z);
+        }
+
         this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
     }
 
@@ -376,7 +388,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                         "position", new Vector3(posX, posY, 0),
                         "time", 0.5f,
                         "oncomplete", "goBackComplete",
-                        "oncompletetarget", gameObject,
+                        "oncompletetarget", this.gameObject,
                         "easeType", "linear"
                         ));
 
@@ -409,7 +421,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         float passX = charaDefaultPositionX + (addCubePositionX * -1 * charaMoveCount);
         float passY = this.gameObject.transform.localPosition.y;
 
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         this.gameObject.transform.localPosition = new Vector3(passX, passY, 0);
         this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
     }
@@ -433,7 +445,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                     "time", 0.5f,
                     "islocal", true,
                     "oncomplete", "goBackComplete",
-                    "oncompletetarget", gameObject
+                    "oncompletetarget", enemyProgressObject
                     ));
 
         int rotateZ = 360 * 3;

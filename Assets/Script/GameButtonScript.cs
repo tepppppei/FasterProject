@@ -58,4 +58,12 @@ public class GameButtonScript : MonoBehaviour {
 			battleGameStartScript.showFukidashiMessage(s);
 		}
 	}
+
+	public void battleGameTopScene() {
+		battleGameStartScript.sceneTop();
+	}
+
+	public void battleGameRetryScene() {
+		battleGameStartScript.sceneRetry();
+	}
 }

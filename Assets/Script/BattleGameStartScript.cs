@@ -26,9 +26,9 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     //-4:壁
     //-5:跳ねるボム
     //-6:ランダム速度の動く床
-    public int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 2, -5, 2, 1, 1, -3, 1, -3, 1, -1, 1, 2, -5, 2, 3, -1, 3, 2, -2, -2, -2, -2, -2, -2, 2,
-        -4, 2, 1, 1, -1, 1, 2, 3, -5, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -5, 3, 4, 4};
-    //private int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    //public int[] floorData = new int[] { 1, 1, 1, 1, -4, 1, 2, -5, 2, 1, 1, -3, 1, -3, 1, -1, 1, 2, -5, 2, 3, -1, 3, 2, -2, -2, -2, -2, -2, -2, 2,
+        //-4, 2, 1, 1, -1, 1, 2, 3, -5, 3, 4, 5, 1, 2, -1, 2, 3, 1, 2, -1, 2, 3, 3, -2, -2, -2, 3, 4, 5, 2, 2, 3, -3, 3, 3, -5, 3, 4, 4};
+    public int[] floorData = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     //GameObject系
     public GameObject chara;
     public SpriteRenderer sr;
@@ -48,8 +48,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     //ゲーム終了系
     public GameObject panelObject;
     //順次表示する
-    public GameObject[] winObject;
-    public GameObject[] failObject;
+    public GameObject[] gameEndObject;
 
     //canvas系
     public GameObject[] timeObject;
@@ -104,6 +103,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     public GameObject fukidashiBase;
     public GameObject scrollViewContent;
     public GameObject[] fukidashiObject;
+    private GameObject messageBackground;
 
     //キャラ番号
     public int charaNumber;
@@ -111,6 +111,13 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
     private bool gameStartCountdownFlg = false;
     private bool isGameStartAction = false;
+
+    //相手が死んだか
+    private bool enemyDieFlg = false;
+    private int enemyLastMoveCount = 0;
+    //自分が死んだか
+    private bool myDieFlg = false;
+    private int myLastMoveCount = 0;
 
     // Use this for initialization
     void Start () {
@@ -161,10 +168,19 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             } else if (!isStartAnimation) {
                 characters = GameObject.FindGameObjectsWithTag("Chara");
             }
+
         }
 
         if (!startFlg && gameStartCountdownFlg) {
             gameStartCountdown();
+        }
+
+        if (!isEnd && enemyDieFlg) {
+            checkOvertake();
+        }
+
+        if (!isEnd && myDieFlg) {
+            checkEnemyOvertake();
         }
     }
 
@@ -194,8 +210,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         Destroy(tempObj);
         tempObj = GameObject.Find("FukidashiMessage");
         Destroy(tempObj);
-        tempObj = GameObject.Find("MessageBackground");
-        Destroy(tempObj);
+        messageBackground = GameObject.Find("MessageBackground");
+        messageBackground.transform.localScale = new Vector3(0, 0, 0);
 
         //カメラを移動
         Camera.main.transform.localPosition = new Vector3(0.31f, 0.78f, -100);
@@ -226,10 +242,6 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
                     networkPlayerScript.updateSettings(bombSpeedPetern, moveFloorSpeedPetern);
                     //networkPlayerScript.bombSpeedPetern = bombSpeedPetern;
                     //networkPlayerScript.moveFloorSpeedPetern = moveFloorSpeedPetern;
-
-                    battleCharaScript = characters[0].GetComponent<BattleCharaScript>();
-                    battleEnemyScript = characters[0].GetComponent<BattleEnemyScript>();
-
                     isSettingSend = true;
                 }
             } else {
@@ -243,6 +255,18 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             if (characters.Length > 0 && networkPlayerScript == null) {
                 //photon network
                 networkPlayerScript = characters[0].gameObject.GetComponent <NetworkPlayerScript>();
+            }
+        }
+
+
+        if (characters.Length >= 2 && (battleCharaScript == null || battleEnemyScript == null)) {
+            BattleCharaScript temps = characters[0].GetComponent<BattleCharaScript>();
+            if (temps.checkIsMine()) {
+                battleCharaScript = characters[0].GetComponent<BattleCharaScript>();
+                battleEnemyScript = characters[1].GetComponent<BattleEnemyScript>();
+            } else {
+                battleCharaScript = characters[1].GetComponent<BattleCharaScript>();
+                battleEnemyScript = characters[0].GetComponent<BattleEnemyScript>();
             }
         }
     }
@@ -492,10 +516,9 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             isEnd = true;
 
             networkPlayerScript.gameEnd();
-
             //タイムオーバーの場合は進んでいる方が勝利
             int myMVC = battleCharaScript.getMoveCount();
-            int enemyMVC = battleCharaScript.getMoveCount();
+            int enemyMVC = battleEnemyScript.getMoveCount();
             if (myMVC <= enemyMVC) {
                 StartCoroutine(gameEnd(false));
             } else {
@@ -512,18 +535,23 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         panelPrefab.transform.SetParent (canvasObject.transform, false);
         yield return new WaitForSeconds(0.5f);
 
-        GameObject[] endObject;
-        //勝利した場合
+        int coin = 0;
         if (winFlg) {
-            endObject = winObject;
+            coin = 10;
         } else {
-            endObject = failObject;
+            coin = 1;
         }
+
+        //データベースに登録
+        //お金アップデート
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string query = "update UserStatus set money = (money + " + coin + ") where id = 1";
+        sqlDB.ExecuteNonQuery(query);
 
         //end object群を全部表示
         GameObject endPrefab;
-        for (int i = 0; i < endObject.Length; i++) {
-            endPrefab = (GameObject)Instantiate(endObject[i]);
+        for (int i = 0; i < gameEndObject.Length; i++) {
+            endPrefab = (GameObject)Instantiate(gameEndObject[i]);
             float scaleX = endPrefab.transform.localScale.x;
             float scaleY = endPrefab.transform.localScale.y;
             float scaleZ = endPrefab.transform.localScale.z;
@@ -532,9 +560,36 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
             //Canvasの子要素として登録する 
             endPrefab.transform.SetParent (canvasObject.transform, false);
-            // 4秒かけて、y軸を3倍に拡大
-            iTween.ScaleTo(endPrefab, iTween.Hash("x", scaleX, "y", scaleY, "z", scaleZ, "time", 0.3f));
 
+            if (endPrefab.GetComponent<Text>() != null) {
+                if (winFlg) {
+                    endPrefab.GetComponent<Text>().text = "勝利";
+                } else {
+                    endPrefab.GetComponent<Text>().text = "敗北";
+                }
+            }
+
+            string prefabName = endPrefab.name;
+            prefabName = prefabName.Replace("(Clone)", "");
+            if (prefabName == "BattleResultDialog") {
+                //coin設定
+                GameObject coinChild1 = endPrefab.transform.FindChild("coin_number_1").gameObject;
+                GameObject coinChild2 = endPrefab.transform.FindChild("coin_number_2").gameObject;
+
+                String stCoin = coin.ToString();
+                String coin1= "0";
+                String coin2= "0";
+                if (stCoin.Length >= 2) {
+                    coin2 = stCoin.Substring(0, 1);
+                    coin1 = stCoin.Substring(1, 1);
+                } else {
+                    coin1 = stCoin.Substring(0, 1);
+                }
+                coinChild1.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin1);
+                coinChild2.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number4_red_" + coin2);
+            }
+
+            iTween.ScaleTo(endPrefab, iTween.Hash("x", scaleX, "y", scaleY, "z", scaleZ, "time", 0.3f));
             yield return new WaitForSeconds(0.5f);
         }
 
@@ -544,6 +599,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     public void goal() {
         if (startFlg) {
             startFlg = false;
+            networkPlayerScript.goalFlg = true;
+
             StartCoroutine(gameEnd(true));
         }
     }
@@ -553,6 +610,18 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             startFlg = false;
             isEnd = true;
             StartCoroutine(gameEnd(true));
+        }
+    }
+
+    public void lose() {
+        sendMessage("相手がゴールしました。");
+        messageBackground.transform.localScale = new Vector3(1, 1, 1);
+        messageBackground.transform.SetAsLastSibling();
+
+        if (!isEnd) {
+            startFlg = false;
+            isEnd = true;
+            StartCoroutine(gameEnd(false));
         }
     }
 
@@ -569,8 +638,72 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     public void instructionGameFailed() {
         networkPlayerScript.isGameEnd = true;
         startFlg = false;
-        isEnd = true;
-        StartCoroutine(gameEnd());
+
+        int myMVC = battleCharaScript.getMoveCount();
+        int enemyMVC = battleEnemyScript.getMoveCount();
+        Debug.Log("MY MVC:" + myMVC);
+        Debug.Log("ENEMY MVC:" + enemyMVC);
+        if (myMVC <= enemyMVC) {
+            sendMessage("HPが0になりました。");
+            messageBackground.transform.localScale = new Vector3(1, 1, 1);
+            messageBackground.transform.SetAsLastSibling();
+            if (!isEnd) {
+                isEnd = true;
+                StartCoroutine(gameEnd());
+            }
+        } else {
+            sendMessage("HPが0になりました。待機中。");
+            messageBackground.transform.localScale = new Vector3(1, 1, 1);        
+            myDieFlg = true;
+            myLastMoveCount = myMVC;
+        }
+    }
+
+    public void enemyDied() {
+        int myMVC = battleCharaScript.getMoveCount();
+        int enemyMVC = battleEnemyScript.getMoveCount();
+
+        Debug.Log("MY MVC:" + myMVC);
+        Debug.Log("ENEMY MVC:" + enemyMVC);
+        if (myMVC <= enemyMVC) {
+            sendMessage("相手が倒れました。追い越せば勝利。");
+            messageBackground.transform.localScale = new Vector3(1, 1, 1);        
+            enemyDieFlg = true;
+            enemyLastMoveCount = enemyMVC;
+        } else {
+            sendMessage("相手が倒れました。");
+            messageBackground.transform.localScale = new Vector3(1, 1, 1);
+            messageBackground.transform.SetAsLastSibling();
+            if (!isEnd) {
+                startFlg = false;
+                isEnd = true;
+                StartCoroutine(gameEnd(true));
+            }
+        }
+    }
+
+    private void checkOvertake() {
+        int myMVC = battleCharaScript.getMoveCount();
+        int enemyMVC = battleEnemyScript.getMoveCount();
+        if (myMVC > enemyMVC) {
+            if (!isEnd) {
+                startFlg = false;
+                isEnd = true;
+                StartCoroutine(gameEnd(true));
+            }
+        }
+    }
+
+    private void checkEnemyOvertake() {
+        int myMVC = battleCharaScript.getMoveCount();
+        int enemyMVC = battleEnemyScript.getMoveCount();
+        if (myMVC <= enemyMVC) {
+            if (!isEnd) {
+                startFlg = false;
+                isEnd = true;
+                StartCoroutine(gameEnd(false));
+            }
+        }
     }
 
     public GameObject getMoveFloorObject(int mv) {
@@ -595,8 +728,14 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     private void waitingRoomInit() {
         StartCoroutine(viewStart());
         //吹き出しリストを作成
+        /*
         string[] fukidashiStringList = new string[] {
             "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+        };
+        */
+
+        string[] fukidashiStringList = new string[] {
+            "よろしくね", "がんばろう", "おはよう", "こんにちは", "こんばんは"
         };
 
         GameObject temporaryObject;
@@ -620,10 +759,8 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         }
 
         if (networkPlayerScript != null) {
-            sendMessage("メッセージ送信成功");
             networkPlayerScript.messageString = s;
         } else {
-            sendMessage("メッセージ送信失敗");
         }
     }
 
@@ -698,5 +835,15 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
         //キャラ画像設定
         charaHeadImage.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumber + "/head");
+    }
+
+    public void sceneTop() {
+        StartCoroutine(viewEnd());
+        Application.LoadLevel("TopScene");
+    }
+
+    public void sceneRetry() {
+        StartCoroutine(viewEnd());
+        Application.LoadLevel("RaceBattleScene");
     }
 }

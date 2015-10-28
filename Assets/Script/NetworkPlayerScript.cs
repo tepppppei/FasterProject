@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof(PhotonView))]
-[RequireComponent (typeof(PlayerAnimScript))] //Animationの設定を行うスクリプト
+//[RequireComponent (typeof(PlayerAnimScript))] //Animationの設定を行うスクリプト
 
 public class NetworkPlayerScript : Photon.MonoBehaviour {
     private Vector3 correctPlayerPos = Vector3.zero;
@@ -22,7 +22,10 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
     public string messageString = "";
     public bool isSendMessage;
 
-    //ゲーム終了フラグ(フラグをtrueにした人が負け)
+    //ゴールしたか
+    public bool goalFlg = false;
+
+    //ゲーム終了フラグ(相手の死亡フラグ)
     public bool isGameEnd = false;
 
     void Start() {
@@ -43,6 +46,7 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
     void OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info) {
         //データを送る
         if (stream.isWriting) {
+            /*
             //現在地と角度を送信
             stream.SendNext (transform.position);
             stream.SendNext (transform.rotation);
@@ -51,6 +55,7 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
             PlayerAnimScript AnimeScript = GetComponent<PlayerAnimScript> ();
             stream.SendNext (AnimeScript.AnimeNoNow);
             stream.SendNext (AnimeScript.AnimeSpeedNow);
+            */
 
             //アクション番号を送信
             stream.SendNext (actionNumber);
@@ -65,8 +70,12 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
 
             stream.SendNext(messageString);
             messageString = "";
+
+            stream.SendNext(goalFlg);
+
         //データを受け取る
         } else {
+            /*
             //現在地と角度を受信
             this.correctPlayerPos = (Vector3)stream.ReceiveNext ();
             this.correctPlayerRot = (Quaternion)stream.ReceiveNext ();
@@ -74,6 +83,7 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
             PlayerAnimScript AnimeScript = GetComponent<PlayerAnimScript> ();
             AnimeScript.AnimeNoNow = (int)stream.ReceiveNext ();
             AnimeScript.AnimeSpeedNow = (float)stream.ReceiveNext ();
+            */
 
             //アクション番号を受信
             int actNum = (int) stream.ReceiveNext();
@@ -93,15 +103,19 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
 
             //ゲーム終了フラグを受信
             bool gameEndFlg = (bool) stream.ReceiveNext();
-            Debug.Log("GAME END FLG:" + gameEndFlg);
             if (gameEndFlg) {
-                Debug.Log("WIN");
-                battleGameStartScript.win();
+                battleGameStartScript.enemyDied();
             }
 
             string message = (string)stream.ReceiveNext();
             if (message != "") {
                 battleGameStartScript.sendFukidashiMessage(message);
+            }
+
+            //ゴールフラグを受信
+            bool gFlg = (bool) stream.ReceiveNext();
+            if (gFlg) {
+                battleGameStartScript.lose();
             }
         }
     }
@@ -111,9 +125,6 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
     }
 
     public void updateSettings(float[] bomb, float[] moveFloor) {
-        Debug.Log("キテルカ");
-        Debug.Log(bomb);
-        Debug.Log(moveFloor);
         bombSpeedPetern = bomb;
         moveFloorSpeedPetern = moveFloor;
     }
