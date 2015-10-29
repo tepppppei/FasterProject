@@ -66,8 +66,8 @@ public class ButtonAnimationScript : MonoBehaviour {
 			defaultPositionY = transform.localPosition.y;
 
 			iTween.MoveTo(this.gameObject, iTween.Hash(
-				"position", new Vector3(defaultPositionX, (defaultPositionY + 5.0f), transform.localPosition.z),
-				"time", 0.7f, 
+				"position", new Vector3(defaultPositionX, (defaultPositionY + 50.0f), transform.localPosition.z),
+				"time", 1.6f, 
 				"islocal", true,
 				"oncomplete", "CompleteDestroy", 
 				"oncompletetarget", gameObject

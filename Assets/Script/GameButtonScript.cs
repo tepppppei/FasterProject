@@ -66,4 +66,12 @@ public class GameButtonScript : MonoBehaviour {
 	public void battleGameRetryScene() {
 		battleGameStartScript.sceneRetry();
 	}
+
+	public void actionSkill() {
+		gameStartScript.actionSkill();
+	}
+
+	public void battleActionSkill() {
+		battleGameStartScript.actionSkill();
+	}
 }

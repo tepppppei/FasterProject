@@ -31,7 +31,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     //キャラの移動回数
     private int charaMoveCount = 0;
     //入力受付
-    private bool isMove = false;
+    public bool isMove = false;
     private Vector3 touchPos;
     //接地フラグ
     private bool isGrounded = true;
@@ -40,7 +40,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     //キャラの初期Ｘ値
     private float charaDefaultPositionX;
     //残りHP
-    private int hp = 3;
+    public int hp = 3;
 
     //GameStartObjectのScript
     BattleGameStartScript gameStartScript;
@@ -90,7 +90,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                     isGrounded = Physics2D.Linecast(
                             this.gameObject.transform.localPosition, this.gameObject.transform.localPosition - this.gameObject.transform.up * 1.2f, groundlayer);
 
-                    if (!isMove && isGrounded) {
+                    if (!isMove && isGrounded && worldPos.y <= 2.3f) {
                         //タッチ判定
                         if (System.Math.Abs(swipeDistanceY) <= 35) {
                             if (checkMove(0)) {
@@ -574,8 +574,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
         //HPをフェードアウト
         if (hp >= 0) {
-            iTween.FadeTo((GameObject)hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
-            Destroy((GameObject)hpObject[hp], 1.0f);
+            //iTween.FadeTo((GameObject)hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
+            iTween.ScaleTo((GameObject)hpObject[hp], iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.5f));
+            //Destroy((GameObject)hpObject[hp], 1.0f);
         }
 
         if (hp == 0) {
@@ -622,5 +623,56 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         } else {
             return false;
         }
+    }
+
+    public void recoveryHP() {
+        Debug.Log("HP RECOVERYYYYYYYYYYYYYYYYYYYY");
+        Debug.Log("HP:" + hp);
+        iTween.ScaleTo((GameObject)hpObject[hp], iTween.Hash("x", 29.3f, "y", 29.3f, "z", 29.3f, "time", 0.4f));
+        hp++;
+        Debug.Log("HP:" + hp);
+    }
+
+    public void backSkill(int backCount) {
+        isBack = true;
+        isMove = true;
+
+        int vBlockCount = 0;
+        bool isBreak = false;
+
+        if ((charaMoveCount - backCount) < 0) {
+            backCount = charaMoveCount;
+        }
+
+        for (int i = backCount; i <= (backCount + backCount) && isBreak == false; i++) {
+            if ((charaMoveCount - i) >= 0) {
+                vBlockCount = floorData[(charaMoveCount - i)];
+                if (vBlockCount >= 1) {
+                    charaMoveCount -= i;
+                    isBreak = true;
+                    break;
+                }
+            }
+        }
+
+        //networkPlayerScript.updateActionNumber(charaMoveCount);
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+
+        float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+        float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
+
+        //一旦上に飛ばす
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "position", new Vector3(this.gameObject.transform.localPosition.x, (this.gameObject.transform.localPosition.y + 17.0f), 0),
+            "time", 0.4f,
+            "oncomplete", "goBackComplete",
+            "oncompletetarget", this.gameObject,
+            "easeType", "linear"
+            ));
+
+        this.gameObject.transform.localPosition = new Vector3(posX, this.gameObject.transform.localPosition.y, this.gameObject.transform.localPosition.z);
+
+        goBackProgress();
+        StartCoroutine(stopAction(1.0f));
     }
 }

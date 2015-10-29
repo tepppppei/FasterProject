@@ -28,6 +28,11 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
     //ゲーム終了フラグ(相手の死亡フラグ)
     public bool isGameEnd = false;
 
+    //スキル系
+    public int skillNumber = 0;
+    public int skillLevel = 0;
+    public string skillName = "";
+
     void Start() {
         battleEnemyScript = this.gameObject.GetComponent <BattleEnemyScript>();
 
@@ -73,6 +78,12 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
 
             stream.SendNext(goalFlg);
 
+            //スキルを送信
+            stream.SendNext(skillNumber);
+            stream.SendNext(skillLevel);
+            stream.SendNext(skillName);
+            skillNumber = 0;
+
         //データを受け取る
         } else {
             /*
@@ -116,6 +127,14 @@ public class NetworkPlayerScript : Photon.MonoBehaviour {
             bool gFlg = (bool) stream.ReceiveNext();
             if (gFlg) {
                 battleGameStartScript.lose();
+            }
+
+            //スキル受信
+            int skn = (int) stream.ReceiveNext();
+            int skl = (int) stream.ReceiveNext();
+            string skName = (string) stream.ReceiveNext();
+            if (skn > 0) {
+                battleGameStartScript.enemyUseSkill(skn, skl, skName);
             }
         }
     }

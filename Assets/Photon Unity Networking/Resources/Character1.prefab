@@ -11095,6 +11095,9 @@ MonoBehaviour:
   isSendMessage: 0
   goalFlg: 0
   isGameEnd: 0
+  skillNumber: 0
+  skillLevel: 0
+  skillName: 
 --- !u!114 &11462676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11125,6 +11128,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   sr: {fileID: 0}
+  enemyCharaNumber: 0
 --- !u!114 &11497536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11140,6 +11144,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   sr: {fileID: 0}
+  hp: 3
 --- !u!137 &13791630
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

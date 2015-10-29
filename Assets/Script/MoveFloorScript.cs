@@ -33,7 +33,6 @@ public class MoveFloorScript : MonoBehaviour {
             posX = this.gameObject.transform.localPosition.x - (addCubePositionX * 2.2f);
         }
 
-
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "position", new Vector3(posX, this.gameObject.transform.position.y, 0),
                     "time", moveSpeed, 
@@ -50,8 +49,16 @@ public class MoveFloorScript : MonoBehaviour {
 
     void OnCollisionExit2D(Collision2D collision){
         if(collision.gameObject.tag == "Chara"){
-            this.gameObject.GetComponent<BoxCollider2D>().isTrigger= true;
-            StartCoroutine(resetTrigger());
+            BattleCharaScript bcs = collision.gameObject.GetComponent<BattleCharaScript>(); 
+            if (bcs != null) {
+                if (bcs.checkIsMine()) {
+                    this.gameObject.GetComponent<BoxCollider2D>().isTrigger= true;
+                    StartCoroutine(resetTrigger());
+                }
+            } else {
+                this.gameObject.GetComponent<BoxCollider2D>().isTrigger= true;
+                StartCoroutine(resetTrigger());
+            }
         }
     }
 

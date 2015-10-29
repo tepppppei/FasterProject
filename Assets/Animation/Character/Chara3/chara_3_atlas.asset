@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 529336600, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
+  m_Name: chara_3_atlas
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: e564c1d3afb425c4d97fe78578e03541, type: 2}
+  uvs:
+  - serializedVersion: 2
+    x: .751953125
+    y: 0
+    width: .0390625
+    height: .03515625
+  - serializedVersion: 2
+    x: .693359375
+    y: 0
+    width: .056640625
+    height: .05078125
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: .595703125
+    height: .591796875
+  - serializedVersion: 2
+    x: .59765625
+    y: 0
+    width: .09375
+    height: .083984375
+  - serializedVersion: 2
+    x: .693359375
+    y: .052734375
+    width: .033203125
+    height: .03125
+  textureGUIDs:
+  - 693c8df0244a3a248bb98fb6aaa02ba8
+  - dbd81de6755445b43b6b430706c30f70
+  - c17a248b6a301aa4fb9ac220658fa117
+  - e45cea1eaf75ce246a79a078392ae35e
+  - babec26f55b0a5349944454fae63472d
+  textureSizes:
+  - {x: 20, y: 18}
+  - {x: 29, y: 26}
+  - {x: 305, y: 303}
+  - {x: 48, y: 43}
+  - {x: 17, y: 16}
+  defaultPivotOffsets:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  textureNames:
+  - body_3
+  - body_2
+  - head
+  - body_1
+  - body_4
+  texturePaths:
+  - Assets/Resources/Image/Character/Chara3/body_3.png
+  - Assets/Resources/Image/Character/Chara3/body_2.png
+  - Assets/Resources/Image/Character/Chara3/head.png
+  - Assets/Resources/Image/Character/Chara3/body_1.png
+  - Assets/Resources/Image/Character/Chara3/body_4.png
+  lastBuildID: 2015102917021816
+  needsRebuilt: 0
+  dataVersion: 4
+  maxAtlasSize: 1024
+  padding: 1
+  forceSquare: 0

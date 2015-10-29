@@ -91,6 +91,19 @@ public class GameStartScript : MonoBehaviour {
     private bool goalAddFlg = false;
     private int cd;
 
+    //スキル設定系
+    private bool skillIntervalFlg = false;
+    public float skillWaitTime = 5.0f;
+    public GameObject skillButtonCoverObject;
+    public GameObject skillButtonCountText;
+    public GameObject skillEffectFrameObject;
+    private int skillNumber = 0;
+    private string skillName = "";
+    private int skillType = 0;
+    private int skillLevel = 1;
+    private int charaNumber = 0;
+    private int skillCount = 1;
+
     // Use this for initialization
     void Start () {
         StartCoroutine(viewStart());
@@ -100,12 +113,20 @@ public class GameStartScript : MonoBehaviour {
         string selectQuery = "select * from Character where select_flg = 1";
         DataTable characterTable = sqlDB.ExecuteQuery(selectQuery);
         if (characterTable.Rows.Count >= 1) {
-            int charaNumber = (int) characterTable.Rows[0]["id"];
+            charaNumber = (int) characterTable.Rows[0]["id"];
             charaHeadImage.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumber + "/head");
             GameObject selectCharaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + charaNumber);
             chara = GameObject.Instantiate(selectCharaPrefab) as GameObject;
             chara.transform.localPosition = new Vector3(-1.24f, 11.56f, -1.0f);
             chara.name = "Character";
+
+            //スキル設定
+            skillNumber = (int) characterTable.Rows[0]["skill_number"];
+            skillName = (string) characterTable.Rows[0]["skill_name"];
+            skillType = (int) characterTable.Rows[0]["skill_type"];
+            skillLevel = (int) characterTable.Rows[0]["get_count"];
+
+            addSkillCount();
 
             //キャラを落ちないように設定
             chara.GetComponent<Rigidbody2D>().isKinematic = true;
@@ -204,6 +225,15 @@ public class GameStartScript : MonoBehaviour {
         if (startFlg) {
             moveProgress();
 
+            if (skillIntervalFlg) {
+                float amo = 1.0f / skillWaitTime * Time.deltaTime;
+                skillButtonCoverObject.GetComponent<Image>().fillAmount -= amo;
+                if (skillButtonCoverObject.GetComponent<Image>().fillAmount <= 0) {
+                    skillIntervalFlg = false;
+                    skillEffectFrameObject.transform.localPosition = new Vector3(410, -10, -100);
+                }
+            }
+
             if (Input.GetMouseButtonDown(0)) {
                 touchPos = Input.mousePosition;
             } else if (Input.GetMouseButtonUp(0)) {
@@ -216,7 +246,7 @@ public class GameStartScript : MonoBehaviour {
                         chara.transform.localPosition, chara.transform.localPosition - chara.transform.up * 1.2f, groundlayer);
 
                 Debug.Log("IS MOVE:" + isMove);
-                if (!isMove && isGrounded) {
+                if (!isMove && isGrounded && worldPos.y <= 2.3f) {
                     //タッチ判定
                     if (System.Math.Abs(swipeDistanceY) <= 35) {
                         if (checkMove(0)) {
@@ -900,8 +930,9 @@ public class GameStartScript : MonoBehaviour {
 
         //HPをフェードアウト
         if (hp >= 0) {
-            iTween.FadeTo(hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
-            Destroy(hpObject[hp], 1.0f);
+            //iTween.FadeTo(hpObject[hp],iTween.Hash ("a", 0, "time", 1.0f));
+            iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.5f));
+            //Destroy(hpObject[hp], 1.0f);
         }
 
         if (hp == 0) {
@@ -1163,5 +1194,106 @@ public class GameStartScript : MonoBehaviour {
         yield return new WaitForSeconds(1.1f);
 
         Application.LoadLevel(sceneName);
+    }
+
+    public void actionSkill() {
+        if (!skillIntervalFlg) {
+            if (skillCheck()) {
+                skillIntervalFlg = true;
+                skillButtonCoverObject.GetComponent<Image>().fillAmount = 1.0f;
+                StartCoroutine(showSkill());
+            }
+        } else {
+            errorMessage("まだ使用できません");
+        }
+    }
+
+    private bool skillCheck() {
+        if (skillType != 1) {
+            errorMessage("このスキルはバトルでのみ使用できます");
+            return false;
+        }
+
+        if (skillCount == 0) {
+            errorMessage("スキル残数がありません");
+            return false;
+        }
+
+        if (skillNumber == 1) {
+            if (hp >= 3) {
+                errorMessage("HPが最大です");
+                return false;
+            } else {
+                skillCount--;
+                changeSkillCountText(skillCount);
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    IEnumerator showSkill() {
+        GameObject skillCharaImage = skillEffectFrameObject.transform.FindChild("SkillChara").gameObject;
+        GameObject skillNameObj = skillEffectFrameObject.transform.FindChild("SkillText").gameObject;
+        //スキルキャラ画像の差し替え
+        skillCharaImage.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumber + "/head");
+        //スキル名差し替え
+        skillNameObj.GetComponent<Text>().text = skillName;
+
+        iTween.MoveTo(skillEffectFrameObject, iTween.Hash(
+                    "position", new Vector3(0, -10, -100),
+                    "time", 0.5f, 
+                    "islocal", true
+                    ));
+        yield return new WaitForSeconds(0.8f);
+
+        iTween.MoveTo(skillEffectFrameObject, iTween.Hash(
+                    "position", new Vector3(-420, -10, -100),
+                    "time", 0.5f, 
+                    "islocal", true
+                    ));
+
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(effectSkill());
+    }
+
+    IEnumerator effectSkill() {
+        //回復スキル
+        if (skillNumber == 1) {
+            GameObject skEffectPrefab = (GameObject)Resources.Load("Effect/Heal");
+            GameObject skEffectObj = GameObject.Instantiate(skEffectPrefab) as GameObject;
+            skEffectObj.transform.SetParent (chara.transform, false);
+            skEffectObj.transform.localPosition = new Vector3(
+                skEffectObj.transform.localPosition.x,
+                (skEffectObj.transform.localPosition.y - 200.0f),
+                skEffectObj.transform.localPosition.z
+                );
+
+            yield return new WaitForSeconds(0.5f);
+            iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 29.3f, "y", 29.3f, "z", 29.3f, "time", 0.4f));
+            hp++;
+        }
+
+        yield return new WaitForSeconds(1.0f);
+    }
+
+    private void errorMessage(string mes) {
+        GameObject errorPrefab = (GameObject)Resources.Load("Prefab/Canvas/ErrorMessage");
+        errorPrefab.GetComponent<Text>().text = mes;
+        GameObject errorObj = GameObject.Instantiate(errorPrefab) as GameObject;
+        errorObj.transform.SetParent (canvasObject.transform, false);
+    }
+
+    private void addSkillCount() {
+        if (skillNumber == 1) {
+            skillCount = skillLevel;
+        }
+
+        changeSkillCountText(skillCount);
+    }
+
+    private void changeSkillCountText(int cnt) {
+        skillButtonCountText.GetComponent<Text>().text = cnt.ToString();
     }
 }

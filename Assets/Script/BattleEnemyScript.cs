@@ -52,6 +52,11 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
     //同じキャラか
     private bool isSameCharacter = false;
 
+    //キャラ番号
+    public int enemyCharaNumber = 0;
+
+    public bool isMove = false;
+
     // Use this for initialization
     void Start () {
         this.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
@@ -81,7 +86,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             charaNumberString = charaNumberString.Replace("(Clone)", "");
 
             Debug.Log("CHARA NUMBER STRING:" + charaNumberString);
-
+            enemyCharaNumber = int.Parse(charaNumberString);
             enemyProgressObject = GameObject.Find("ProgressEnemy");
             enemyProgressObject.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumberString.ToString() + "/head");
 
@@ -286,6 +291,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(enemyColor, enemyColor, enemyColor, enemyColor));
         iTween.Stop(gameObject);
         Debug.Log("IS MOVEをFALSEにする");
+        isMove = false;
     }
 
     void ValueChange(float value){
@@ -485,50 +491,52 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
     public void enemyAction(int actionNumber) {
         Debug.Log("ACTION NUMBER:"+actionNumber);
 
-        int loopCount = 0;
-        while (charaMoveCount != actionNumber) {
-            if (charaMoveCount <= actionNumber) {
-                int nowFloor = floorData[(charaMoveCount)];
-                int nextFloor = floorData[(charaMoveCount+1)];
-                //通常移動
-                if (nextFloor >= 1) {
-                    if (nowFloor == nextFloor) {
-                        actionMove();
-                    } else if (nowFloor < nextFloor) {
-                        actionJump();
-                    } else if (nowFloor > nextFloor) {
-                        actionDown();
+        if (!isMove) {
+            int loopCount = 0;
+            while (charaMoveCount != actionNumber) {
+                if (charaMoveCount <= actionNumber) {
+                    int nowFloor = floorData[(charaMoveCount)];
+                    int nextFloor = floorData[(charaMoveCount+1)];
+                    //通常移動
+                    if (nextFloor >= 1) {
+                        if (nowFloor == nextFloor) {
+                            actionMove();
+                        } else if (nowFloor < nextFloor) {
+                            actionJump();
+                        } else if (nowFloor > nextFloor) {
+                            actionDown();
+                        }
+                    //その他移動
+                    } else {
+                        if (nextFloor == -1) {
+                            actionJump();
+                        } else if (nextFloor == -2) {
+                            //床に乗る処理
+                            //床の座標を取得
+                            GameObject mvObj = gameStartScript.getMoveFloorObject((charaMoveCount + 1));
+                            float mvfX = mvObj.transform.localPosition.x;
+                            float mvfY = mvObj.transform.localPosition.y + 0.6f;
+                            this.gameObject.transform.localPosition = new Vector3(mvfX, mvfY, this.gameObject.transform.localPosition.z);
+                            //actionJump();
+                        } else if (nextFloor == -3) {
+                            actionMove();
+                        } else if (nextFloor == -4) {
+                            actionSliding();
+                        } else if (nextFloor == -5) {
+                            actionJump();
+                        }
                     }
-                //その他移動
                 } else {
-                    if (nextFloor == -1) {
-                        actionJump();
-                    } else if (nextFloor == -2) {
-                        //床に乗る処理
-                        //床の座標を取得
-                        GameObject mvObj = gameStartScript.getMoveFloorObject((charaMoveCount + 1));
-                        float mvfX = mvObj.transform.localPosition.x;
-                        float mvfY = mvObj.transform.localPosition.y + 0.6f;
-                        this.gameObject.transform.localPosition = new Vector3(mvfX, mvfY, this.gameObject.transform.localPosition.z);
-                        //actionJump();
-                    } else if (nextFloor == -3) {
-                        actionMove();
-                    } else if (nextFloor == -4) {
-                        actionSliding();
-                    } else if (nextFloor == -5) {
-                        actionJump();
-                    }
+                    goBack((charaMoveCount - actionNumber));
                 }
-            } else {
-                goBack((charaMoveCount - actionNumber));
-            }
 
-            StartCoroutine(waitAction());
+                StartCoroutine(waitAction());
 
-            loopCount++;
-            if (loopCount >= 10) {
-                charaMoveCount = actionNumber;
-                break;
+                loopCount++;
+                if (loopCount >= 10) {
+                    charaMoveCount = actionNumber;
+                    break;
+                }
             }
         }
     }
@@ -539,5 +547,48 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
     public int getMoveCount() {
         return charaMoveCount;
+    }
+
+    public void backSkill(int backCount) {
+        isBack = true;
+        isMove = true;
+
+        int vBlockCount = 0;
+        bool isBreak = false;
+
+        if ((charaMoveCount - backCount) < 0) {
+            backCount = charaMoveCount;
+        }
+
+        for (int i = backCount; i <= (backCount + backCount) && isBreak == false; i++) {
+            if ((charaMoveCount - i) >= 0) {
+                vBlockCount = floorData[(charaMoveCount - i)];
+                if (vBlockCount >= 1) {
+                    charaMoveCount -= i;
+                    isBreak = true;
+                    break;
+                }
+            }
+        }
+
+        //networkPlayerScript.updateActionNumber(charaMoveCount);
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+
+        float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+        float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
+
+        //一旦上に飛ばす
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "position", new Vector3(this.gameObject.transform.localPosition.x, (this.gameObject.transform.localPosition.y + 17.0f), 0),
+            "time", 0.4f,
+            "oncomplete", "goBackComplete",
+            "oncompletetarget", this.gameObject,
+            "easeType", "linear"
+            ));
+
+        this.gameObject.transform.localPosition = new Vector3(posX, this.gameObject.transform.localPosition.y, this.gameObject.transform.localPosition.z);
+
+        goBackProgress();
+        StartCoroutine(stopAction(1.0f));
     }
 }
