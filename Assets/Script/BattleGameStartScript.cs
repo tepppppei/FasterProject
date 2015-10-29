@@ -130,7 +130,7 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     private string skillName = "";
     private int skillType = 0;
     private int skillLevel = 1;
-    private int skillCount = 1;
+    private int skillCount = 2;
 
     //敵スキル
     private int enemySkillNumber = 0;
@@ -138,9 +138,9 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
     private string enemySkillName = "";
 
     //プレイヤーオブジェクト
-    private GameObject charaObject; 
+    private GameObject charaObject;
     //敵オブジェクト
-    private GameObject enemyObject; 
+    private GameObject enemyObject;
 
     // Use this for initialization
     void Start () {
@@ -250,7 +250,13 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
         //キャラクター達を移動
         characters[0].transform.localPosition = new Vector3(-1.29f, 11.56f, -1);
         characters[1].transform.localPosition = new Vector3(-1.29f, 11.56f, -1);
-        characters[1].transform.localScale = new Vector3(0.0018f, 0.0018f, 0.0018f);
+        int enemyCharaNumber = battleEnemyScript.enemyCharaNumber;
+
+        if (enemyCharaNumber == 3) {
+            characters[1].transform.localScale = new Vector3(0.0026f, 0.0026f, 0.0026f);
+        } else {
+            characters[1].transform.localScale = new Vector3(0.0018f, 0.0018f, 0.0018f);
+        }
 
         GameObject cam = GameObject.Find("Main Camera");
         BattleCameraScript bcs = cam.GetComponent<BattleCameraScript>();

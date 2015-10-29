@@ -30,7 +30,12 @@ public class PhotonSystemScript : Photon.MonoBehaviour {
         //GameObject chara = PhotonNetwork.Instantiate("Character", new Vector3(-1.29f, 11.56f, -1f), new Quaternion(0, 180f, 0f, 0f), 0) as GameObject;
 
         int charaNumber = gameStartScript.charaNumber;
-        GameObject chara = PhotonNetwork.Instantiate("Character"+charaNumber.ToString(), new Vector3(-1.29f, -8.05f, -1f), new Quaternion(0, 180f, 0f, 0f), 0) as GameObject;
+        GameObject chara;
+        if (charaNumber != 3) {
+            chara = PhotonNetwork.Instantiate("Character"+charaNumber.ToString(), new Vector3(-1.29f, -8.05f, -1f), new Quaternion(0, 180f, 0f, 0f), 0) as GameObject;
+        } else {
+            chara = PhotonNetwork.Instantiate("Character"+charaNumber.ToString(), new Vector3(-1.29f, -8.05f, -1f), new Quaternion(0, 0, 0, 0), 0) as GameObject;
+        }
 
         gameStartScript.charaSetting(chara);
     }

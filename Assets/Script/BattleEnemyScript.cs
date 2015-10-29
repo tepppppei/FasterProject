@@ -76,11 +76,6 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
 
             charaDefaultPositionX = this.gameObject.transform.localPosition.x;
 
-            //キャラの位置をずらす
-            this.gameObject.transform.localPosition = new Vector3(2.1f, -8.05f, -1f);
-            this.gameObject.transform.localScale = new Vector3(-0.0018f, 0.0018f, 0.0018f);
-            this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-
             string charaNumberStringDefault = this.gameObject.name;
             string charaNumberString = charaNumberStringDefault.Replace("Character", "");
             charaNumberString = charaNumberString.Replace("(Clone)", "");
@@ -89,6 +84,16 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             enemyCharaNumber = int.Parse(charaNumberString);
             enemyProgressObject = GameObject.Find("ProgressEnemy");
             enemyProgressObject.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + charaNumberString.ToString() + "/head");
+
+            //キャラの位置をずらす
+            this.gameObject.transform.localPosition = new Vector3(2.1f, -8.05f, -1f);
+            if (enemyCharaNumber == 3) {
+                this.gameObject.transform.localScale = new Vector3(-0.0026f, 0.0026f, 0.0026f);
+            } else {
+                this.gameObject.transform.localScale = new Vector3(-0.0018f, 0.0018f, 0.0018f);
+            }
+
+            this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
 
             int charaNumber = gameStartScript.charaNumber;
             if (charaNumber.ToString() == charaNumberString) {
@@ -550,6 +555,10 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
     }
 
     public void backSkill(int backCount) {
+        StartCoroutine(backSkillAction(backCount));
+    }
+
+    IEnumerator backSkillAction(int backCount) {
         isBack = true;
         isMove = true;
 
@@ -560,11 +569,13 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             backCount = charaMoveCount;
         }
 
+        int mvc = 0;
         for (int i = backCount; i <= (backCount + backCount) && isBreak == false; i++) {
             if ((charaMoveCount - i) >= 0) {
                 vBlockCount = floorData[(charaMoveCount - i)];
                 if (vBlockCount >= 1) {
-                    charaMoveCount -= i;
+                    mvc = i;
+                    //charaMoveCount -= i;
                     isBreak = true;
                     break;
                 }
@@ -572,23 +583,47 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         }
 
         //networkPlayerScript.updateActionNumber(charaMoveCount);
-        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
 
-        float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+        float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * (charaMoveCount - mvc)));
         float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
 
         //一旦上に飛ばす
+        Debug.Log("----------------------");
+        Debug.Log("A:" + this.gameObject.transform.localPosition);
+
+        this.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         iTween.MoveTo(this.gameObject, iTween.Hash(
             "position", new Vector3(this.gameObject.transform.localPosition.x, (this.gameObject.transform.localPosition.y + 17.0f), 0),
             "time", 0.4f,
-            "oncomplete", "goBackComplete",
+            //"oncomplete", "goBackComplete",
+            "oncompletetarget", this.gameObject,
+            "easeType", "linear"
+            ));
+        Debug.Log("B:" + this.gameObject.transform.localPosition);
+
+        yield return new WaitForSeconds(0.4f);
+
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "position", new Vector3(posX, this.gameObject.transform.localPosition.y, 0),
+            "time", 0.4f,
+            //"oncomplete", "goBackComplete",
             "oncompletetarget", this.gameObject,
             "easeType", "linear"
             ));
 
-        this.gameObject.transform.localPosition = new Vector3(posX, this.gameObject.transform.localPosition.y, this.gameObject.transform.localPosition.z);
+        yield return new WaitForSeconds(0.4f);
+
+        //this.gameObject.transform.localPosition = new Vector3(posX, this.gameObject.transform.localPosition.y, this.gameObject.transform.localPosition.z);
+        this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        charaMoveCount -= mvc;
+
+        Debug.Log("C:" + this.gameObject.transform.localPosition);
+        Debug.Log("----------------------");
 
         goBackProgress();
         StartCoroutine(stopAction(1.0f));
+
     }
 }
