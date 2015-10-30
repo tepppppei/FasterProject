@@ -133,7 +133,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         updateStartFlg();
     }
 
-    void actionMove() {
+    IEnumerator actionMove() {
         float pass1x = this.gameObject.transform.localPosition.x + (addCubePositionX / -2);
         float pass1y = this.gameObject.transform.localPosition.y + (addCubePositionY * -0.8f);
         float pass2x = this.gameObject.transform.localPosition.x + (addCubePositionX * -1);
@@ -170,9 +170,11 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             step = 5 - (gameStartScript.blockCount - charaMoveCount);
             gameStartScript.instructionCreateFloor(step);
         }
+
+        yield return new WaitForSeconds(0.01f);
     }
 
-    void actionJump() {
+    IEnumerator actionJump() {
         //次がボムの場合
         int step = 1;
         if (floorData[(charaMoveCount + 1)] == -1 || floorData[(charaMoveCount + 1)] == -5) {
@@ -211,9 +213,10 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             gameStartScript.instructionCreateFloor(step);
         }
 
+        yield return new WaitForSeconds(0.01f);
     }
 
-    void actionDown() {
+    IEnumerator actionDown() {
         float pass1x = this.gameObject.transform.localPosition.x + (addCubePositionX / -2);
         float pass1y = this.gameObject.transform.localPosition.y + (addCubePositionY * -0.8f);
         float pass2x = this.gameObject.transform.localPosition.x + (addCubePositionX * -1);
@@ -251,9 +254,10 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             gameStartScript.instructionCreateFloor(step);
         }
 
+        yield return new WaitForSeconds(0.01f);
     }
 
-    void actionSliding() {
+    IEnumerator actionSliding() {
         int step = 2;
         float posX = this.gameObject.transform.localPosition.x + (addCubePositionX * step * -1);
 
@@ -273,6 +277,8 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             step = 5 - (gameStartScript.blockCount - charaMoveCount);
             gameStartScript.instructionCreateFloor(step);
         }
+        
+        yield return new WaitForSeconds(0.01f);
     }
 
     void badMove() {
@@ -294,7 +300,7 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         //sr.color = new Color(1, 1, 1, 1.0f);
         //this.gameObject.GetComponent<SkinnedMeshRenderer>().material.tintColor = new Color(1, 1, 1, 1.0f);
         this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(enemyColor, enemyColor, enemyColor, enemyColor));
-        iTween.Stop(gameObject);
+        iTween.Stop(this.gameObject);
         Debug.Log("IS MOVEをFALSEにする");
         isMove = false;
     }
@@ -505,16 +511,16 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                     //通常移動
                     if (nextFloor >= 1) {
                         if (nowFloor == nextFloor) {
-                            actionMove();
+                            StartCoroutine(actionMove());
                         } else if (nowFloor < nextFloor) {
-                            actionJump();
+                            StartCoroutine(actionJump());
                         } else if (nowFloor > nextFloor) {
-                            actionDown();
+                            StartCoroutine(actionDown());
                         }
                     //その他移動
                     } else {
                         if (nextFloor == -1) {
-                            actionJump();
+                            StartCoroutine(actionJump());
                         } else if (nextFloor == -2) {
                             //床に乗る処理
                             //床の座標を取得
@@ -524,11 +530,11 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
                             this.gameObject.transform.localPosition = new Vector3(mvfX, mvfY, this.gameObject.transform.localPosition.z);
                             //actionJump();
                         } else if (nextFloor == -3) {
-                            actionMove();
+                            StartCoroutine(actionMove());
                         } else if (nextFloor == -4) {
-                            actionSliding();
+                            StartCoroutine(actionSliding());
                         } else if (nextFloor == -5) {
-                            actionJump();
+                            StartCoroutine(actionJump());
                         }
                     }
                 } else {

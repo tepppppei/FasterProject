@@ -95,7 +95,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                         if (System.Math.Abs(swipeDistanceY) <= 35) {
                             if (checkMove(0)) {
                                 touchTrueEffect(worldPos.x, worldPos.y);
-                                actionMove();
+                                StartCoroutine(actionMove());
                             } else {
                                 touchFalseEffect(worldPos.x, worldPos.y);
                                 badMove();
@@ -104,7 +104,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                         } else if (swipeDistanceY > 35) {
                             if (checkMove(1)) {
                                 touchTrueEffect(worldPos.x, worldPos.y);
-                                actionJump();
+                                StartCoroutine(actionJump());
                             } else {
                                 touchFalseEffect(worldPos.x, worldPos.y);
                                 badMove();
@@ -114,9 +114,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                             if (checkMove(2)) {
                                 touchTrueEffect(worldPos.x, worldPos.y);
                                 if (floorData[(charaMoveCount+1)] == -4) {
-                                    actionSliding();
+                                    StartCoroutine(actionSliding());
                                 } else {
-                                    actionDown();
+                                    StartCoroutine(actionDown());
                                 }
                             } else {
                                 touchFalseEffect(worldPos.x, worldPos.y);
@@ -209,9 +209,9 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         }
     }
 
-    void actionMove() {
+    IEnumerator actionMove() {
         this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
-        iTween.Stop(gameObject);
+        iTween.Stop(this.gameObject);
 
         isMove = true;
 
@@ -241,25 +241,44 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         //同期処理
         networkPlayerScript.updateActionNumber(charaMoveCount);
 
-
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "path", path,
                     "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
+                    //"easetype", iTween.EaseType.easeOutSine,
+                    "easetype", iTween.EaseType.linear,
+                    //"oncomplete", "CompleteHandler",
                     "oncompletetarget", this.gameObject
                     ));
+
+        yield return new WaitForSeconds(moveSpeed);
+        this.gameObject.GetComponent<Animation>().Play("Idle");
+        //位置補正
+        /*
+        if (floorData[charaMoveCount] > 0 && floorData[charaMoveCount] <= floorData[(charaMoveCount + 1)]) {
+            this.gameObject.GetComponent<Animation>().Play("Idle");
+            //正しいx座標
+            float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+            //正しいy座標
+            float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (floorData[charaMoveCount] + 1)));
+            this.gameObject.transform.localPosition = new Vector3(posX, posY, this.gameObject.transform.localPosition.z);
+        }
+        */
+
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        isMove = false;
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
             step = 5 - (gameStartScript.blockCount - charaMoveCount);
             gameStartScript.instructionCreateFloor(step);
         }
+
+        yield return new WaitForSeconds(0.01f);
     }
 
-    void actionJump() {
+    IEnumerator actionJump() {
         this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
-        iTween.Stop(gameObject);
+        iTween.Stop(this.gameObject);
 
         isMove = true;
 
@@ -294,10 +313,28 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "path", path,
                     "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
+                    //"easetype", iTween.EaseType.easeOutSine,
+                    "easetype", iTween.EaseType.linear,
+                    //"oncomplete", "CompleteHandler",
                     "oncompletetarget", this.gameObject
                     ));
+
+
+        yield return new WaitForSeconds(moveSpeed);
+        this.gameObject.GetComponent<Animation>().Play("Idle");
+        //位置補正
+        /*
+        if (floorData[charaMoveCount] > 0 && floorData[charaMoveCount] <= floorData[(charaMoveCount + 1)]) {
+            this.gameObject.GetComponent<Animation>().Play("Idle");
+            //正しいx座標
+            float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+            //正しいy座標
+            float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (floorData[charaMoveCount] + 1)));
+            this.gameObject.transform.localPosition = new Vector3(posX, posY, this.gameObject.transform.localPosition.z);
+        }
+        */
+
+        isMove = false;
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -305,11 +342,12 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             gameStartScript.instructionCreateFloor(step);
         }
 
+        yield return new WaitForSeconds(0.01f);
     }
 
-    void actionDown() {
+    IEnumerator actionDown() {
         this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
-        iTween.Stop(gameObject);
+        iTween.Stop(this.gameObject);
 
         isMove = true;
 
@@ -337,14 +375,33 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         //同期処理
         networkPlayerScript.updateActionNumber(charaMoveCount);
 
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         this.gameObject.GetComponent<Animation>().Play("Move");
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "path", path,
                     "time", moveSpeed,
-                    "easetype", iTween.EaseType.easeOutSine,
-                    "oncomplete", "CompleteHandler",
+                    //"easetype", iTween.EaseType.easeOutSine,
+                    "easetype", iTween.EaseType.linear,
+                    //"oncomplete", "CompleteHandler",
                     "oncompletetarget", this.gameObject
                     ));
+
+        yield return new WaitForSeconds(moveSpeed);
+        this.gameObject.GetComponent<Animation>().Play("Idle");
+        //位置補正
+        /*
+        if (floorData[charaMoveCount] > 0 && floorData[charaMoveCount] <= floorData[(charaMoveCount + 1)]) {
+            this.gameObject.GetComponent<Animation>().Play("Idle");
+            //正しいx座標
+            float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+            //正しいy座標
+            float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (floorData[charaMoveCount] + 1)));
+            this.gameObject.transform.localPosition = new Vector3(posX, posY, this.gameObject.transform.localPosition.z);
+        }
+        */
+
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        isMove = false;
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
@@ -352,11 +409,12 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             gameStartScript.instructionCreateFloor(step);
         }
 
+        yield return new WaitForSeconds(0.01f);
     }
 
-    void actionSliding() {
+    IEnumerator actionSliding() {
         this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
-        iTween.Stop(gameObject);
+        iTween.Stop(this.gameObject);
 
         isMove = true;
 
@@ -367,19 +425,45 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         //同期処理
         networkPlayerScript.updateActionNumber(charaMoveCount);
 
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        this.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+
         this.gameObject.GetComponent<Animation>().Play("Sliding");
         iTween.MoveTo(this.gameObject, iTween.Hash(
                     "position", new Vector3(posX, this.gameObject.transform.localPosition.y, 0),
                     "time", moveSpeed, 
-                    "oncomplete", "CompleteHandler", 
+                    "easetype", iTween.EaseType.linear,
+                    //"oncomplete", "CompleteHandler", 
                     "oncompletetarget", this.gameObject
                     ));
+
+        yield return new WaitForSeconds(moveSpeed);
+
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+
+        this.gameObject.GetComponent<Animation>().Play("Idle");
+        //位置補正
+        /*
+        if (floorData[charaMoveCount] > 0 && floorData[charaMoveCount] <= floorData[(charaMoveCount + 1)]) {
+            this.gameObject.GetComponent<Animation>().Play("Idle");
+            //正しいx座標
+            float positionX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+            //正しいy座標
+            float positionY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (floorData[charaMoveCount] + 1)));
+            this.gameObject.transform.localPosition = new Vector3(positionX, positionY, this.gameObject.transform.localPosition.z);
+        }
+        */
+
+        isMove = false;
 
         //ブロック追加
         if ((gameStartScript.blockCount - charaMoveCount) <= 4) {
             step = 5 - (gameStartScript.blockCount - charaMoveCount);
             gameStartScript.instructionCreateFloor(step);
         }
+
+        yield return new WaitForSeconds(0.01f);
     }
 
     void badMove() {
@@ -400,7 +484,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         //sr.color = new Color(1, 1, 1, 1.0f);
         //this.gameObject.GetComponent<SkinnedMeshRenderer>().material.tintColor = new Color(1, 1, 1, 1.0f);
         this.gameObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
-        iTween.Stop(gameObject);
+        iTween.Stop(this.gameObject);
         Debug.Log("IS MOVEをFALSEにする");
         isMove = false;
     }
@@ -481,6 +565,11 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
     //指定場所まで戻す
     public void goBack() {
+        StartCoroutine(goBackAction());
+    }
+
+
+    IEnumerator goBackAction() {
         if (!isBack) {
             isBack = true;
             isMove = true;
@@ -502,6 +591,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             networkPlayerScript.updateActionNumber(charaMoveCount);
 
             this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+            this.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
 
             float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
             float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
@@ -509,7 +599,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             iTween.MoveTo(this.gameObject, iTween.Hash(
                         "position", new Vector3(posX, posY, 0),
                         "time", 0.5f,
-                        "oncomplete", "goBackComplete",
+                        //"oncomplete", "goBackComplete",
                         "oncompletetarget", this.gameObject,
                         "easeType", "linear"
                         ));
@@ -521,6 +611,14 @@ public class BattleCharaScript : Photon.MonoBehaviour {
                         "looptype","pingpong",
                         "onupdate","ValueChange"
                         ));
+
+            yield return new WaitForSeconds(0.6f);
+            this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false; 
+            this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+
+            isBack = false;
+            isMove = false;
+            Debug.Log("IS MOVEをFALSEにする");
 
             //進捗バーも戻す
             goBackProgress(false);
@@ -536,12 +634,26 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     }
 
     public void correctCharaPositionX() {
+        /*
         float passX = charaDefaultPositionX + (addCubePositionX * -1 * charaMoveCount);
         float passY = this.gameObject.transform.localPosition.y;
 
         //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         this.gameObject.transform.localPosition = new Vector3(passX, passY, 0);
         //this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        */
+        //位置補正
+        //if (floorData[charaMoveCount] > 0 && floorData[charaMoveCount] <= floorData[(charaMoveCount + 1)]) {
+            //正しいx座標
+            float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * charaMoveCount));
+            //正しいy座標
+            float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (floorData[charaMoveCount] + 1)));
+            float dec = (posX - this.gameObject.transform.localPosition.x);
+            if (dec > 0.1f || dec < -0.1f) {
+                this.gameObject.GetComponent<Animation>().Play("Idle");
+                this.gameObject.transform.localPosition = new Vector3(posX, posY, this.gameObject.transform.localPosition.z);
+            }
+        //}
     }
 
     private void goBackProgress(bool hpFlg) {
