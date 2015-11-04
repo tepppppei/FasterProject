@@ -102,7 +102,7 @@ public class GameStartScript : MonoBehaviour {
     private int skillType = 0;
     private int skillLevel = 1;
     private int charaNumber = 0;
-    private int skillCount = 1;
+    private int skillCount = 2;
 
     // Use this for initialization
     void Start () {
@@ -774,7 +774,7 @@ public class GameStartScript : MonoBehaviour {
                         ));
 
             //進捗バーも戻す
-            goBackProgress();
+            goBackProgress(false);
 
             StartCoroutine(stopAction(1.0f));
         }
@@ -901,8 +901,10 @@ public class GameStartScript : MonoBehaviour {
         }
     }
 
-    private void goBackProgress() {
-        hp--;
+    private void goBackProgress(bool skillFlg) {
+        if (!skillFlg) {
+            hp--;
+        }
 
         chara.GetComponent<Animation>().Play("Idle");
 
@@ -1228,6 +1230,10 @@ public class GameStartScript : MonoBehaviour {
                 changeSkillCountText(skillCount);
                 return true;
             }
+        } else if (skillNumber == 4) {
+            skillCount--;
+            changeSkillCountText(skillCount);
+            return true;
         } else {
             return false;
         }
@@ -1273,6 +1279,45 @@ public class GameStartScript : MonoBehaviour {
             yield return new WaitForSeconds(0.5f);
             iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 29.3f, "y", 29.3f, "z", 29.3f, "time", 0.4f));
             hp++;
+        //移動スキル
+        } else if (skillNumber == 4) {
+            /*
+            GameObject skEffectPrefab = (GameObject)Resources.Load("Effect/Heal");
+            GameObject skEffectObj = GameObject.Instantiate(skEffectPrefab) as GameObject;
+            skEffectObj.transform.SetParent (chara.transform, false);
+            skEffectObj.transform.localPosition = new Vector3(
+                skEffectObj.transform.localPosition.x,
+                (skEffectObj.transform.localPosition.y - 200.0f),
+                skEffectObj.transform.localPosition.z
+                );
+
+            yield return new WaitForSeconds(0.5f);
+            iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 29.3f, "y", 29.3f, "z", 29.3f, "time", 0.4f));
+            hp++;
+            */
+
+            GameObject wind = (GameObject)Resources.Load("Effect/Wind");
+            GameObject skEffectObj = GameObject.Instantiate(wind) as GameObject;
+            skEffectObj.transform.SetParent (chara.transform, false);
+
+            isMove = true;
+
+            skEffectObj.transform.localPosition = new Vector3(
+                chara.transform.localPosition.x,
+                (chara.transform.localPosition.y - 200.0f),
+                chara.transform.localPosition.z
+                );
+
+            yield return new WaitForSeconds(1.0f);
+            int forwardCount = 3 + (1 * skillLevel);
+
+            //ブロック追加
+            if ((blockCount - (charaMoveCount + forwardCount)) <= 4) {
+                int step = 5 - (blockCount - (charaMoveCount + forwardCount));
+                StartCoroutine(createFloor(step));
+            }
+
+            StartCoroutine(forwardSkillAction(forwardCount));
         }
 
         yield return new WaitForSeconds(1.0f);
@@ -1295,5 +1340,66 @@ public class GameStartScript : MonoBehaviour {
 
     private void changeSkillCountText(int cnt) {
         skillButtonCountText.GetComponent<Text>().text = cnt.ToString();
+    }
+
+    IEnumerator forwardSkillAction(int fc) {
+        isMove = true;
+
+        int vBlockCount = 0;
+        bool isBreak = false;
+
+        if ((charaMoveCount + fc) >= floorData.Length) {
+            fc = (floorData.Length - 1) - charaMoveCount;
+        }
+
+        int mvc = 0;
+        for (int i = fc; i >= 1 && isBreak == false; i--) {
+            if ((charaMoveCount + i) >= 0) {
+                vBlockCount = floorData[(charaMoveCount + i)];
+                if (vBlockCount >= 1) {
+                    mvc = i;
+                    isBreak = true;
+                    break;
+                }
+            }
+        }
+
+        float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * (charaMoveCount + mvc)));
+        float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
+
+        //一旦上に飛ばす
+        Debug.Log("----------------------");
+        Debug.Log("A:" + chara.transform.localPosition);
+        chara.GetComponent<Rigidbody2D>().isKinematic = true;
+        chara.GetComponent<BoxCollider2D>().isTrigger = true;
+        iTween.MoveTo(chara, iTween.Hash(
+            "position", new Vector3(chara.transform.localPosition.x, (chara.transform.localPosition.y + 17.0f), 0),
+            "time", 0.4f,
+            "oncompletetarget", chara,
+            "easeType", "linear"
+            ));
+
+        yield return new WaitForSeconds(0.4f);
+
+        iTween.MoveTo(chara, iTween.Hash(
+            "position", new Vector3(posX, chara.transform.localPosition.y, 0),
+            "time", 0.4f,
+            "oncompletetarget", chara,
+            "easeType", "linear"
+            ));
+
+        yield return new WaitForSeconds(0.4f);
+
+        Debug.Log("B:" + chara.transform.localPosition);
+        chara.GetComponent<Rigidbody2D>().isKinematic = false;
+        chara.GetComponent<BoxCollider2D>().isTrigger = false;
+
+        charaMoveCount += mvc;
+
+        Debug.Log("C:" + chara.transform.localPosition);
+        Debug.Log("----------------------");
+
+        goBackProgress(true);
+        StartCoroutine(stopAction(1.0f));
     }
 }

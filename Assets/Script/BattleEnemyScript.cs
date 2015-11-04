@@ -632,4 +632,69 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
         StartCoroutine(stopAction(1.0f));
 
     }
+
+    public void forwardSkill(int fc) {
+        StartCoroutine(forwardSkillAction(fc));
+    }
+
+    IEnumerator forwardSkillAction(int fc) {
+        isMove = true;
+
+        int vBlockCount = 0;
+        bool isBreak = false;
+
+        if ((charaMoveCount + fc) >= floorData.Length) {
+            fc = (floorData.Length - 1) - charaMoveCount;
+        }
+
+        int mvc = 0;
+        for (int i = fc; i >= 1 && isBreak == false; i--) {
+            if ((charaMoveCount + i) >= 0) {
+                vBlockCount = floorData[(charaMoveCount + i)];
+                if (vBlockCount >= 1) {
+                    mvc = i;
+                    isBreak = true;
+                    break;
+                }
+            }
+        }
+
+        //ブロック追加
+        if ((gameStartScript.blockCount - (charaMoveCount + fc)) <= 4) {
+            int step = 5 - (gameStartScript.blockCount - (charaMoveCount + fc));
+            gameStartScript.instructionCreateFloor(step);
+        }
+
+        float posX = floorDefaultPositionX + (System.Math.Abs(addCubePositionX * (charaMoveCount + mvc)));
+        float posY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (vBlockCount + 1)));
+
+        //一旦上に飛ばす
+        this.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "position", new Vector3(this.gameObject.transform.localPosition.x, (this.gameObject.transform.localPosition.y + 17.0f), 0),
+            "time", 0.4f,
+            "oncompletetarget", this.gameObject,
+            "easeType", "linear"
+            ));
+
+        yield return new WaitForSeconds(0.4f);
+
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "position", new Vector3(posX, this.gameObject.transform.localPosition.y, 0),
+            "time", 0.4f,
+            "oncompletetarget", this.gameObject,
+            "easeType", "linear"
+            ));
+
+        yield return new WaitForSeconds(0.4f);
+
+        this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+
+        charaMoveCount += mvc;
+
+        goBackProgress();
+        StartCoroutine(stopAction(1.0f));
+    }
 }

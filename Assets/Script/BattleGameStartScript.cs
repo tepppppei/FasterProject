@@ -956,6 +956,10 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
                 skillCount--;
                 changeSkillCountText(skillCount);
                 return true;
+        } else if (skillNumber == 4) {
+            skillCount--;
+            changeSkillCountText(skillCount);
+            return true;
         } else {
             return false;
         }
@@ -971,14 +975,14 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
 
         iTween.MoveTo(skillEffectFrameObject, iTween.Hash(
                     "position", new Vector3(0, -10, -100),
-                    "time", 0.5f, 
+                    "time", 0.5f,
                     "islocal", true
                     ));
         yield return new WaitForSeconds(0.8f);
 
         iTween.MoveTo(skillEffectFrameObject, iTween.Hash(
                     "position", new Vector3(-420, -10, -100),
-                    "time", 0.5f, 
+                    "time", 0.5f,
                     "islocal", true
                     ));
 
@@ -1044,6 +1048,23 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             int backCount = 3 + (1 * skillLevel);
 
             battleEnemyScript.backSkill(backCount);
+        } else if (skillNumber == 4) {
+            GameObject wind = (GameObject)Resources.Load("Effect/Wind");
+            GameObject skEffectObj = GameObject.Instantiate(wind) as GameObject;
+            skEffectObj.transform.SetParent (charaObject.transform, false);
+
+            battleCharaScript.isMove = true;
+
+            skEffectObj.transform.localPosition = new Vector3(
+                charaObject.transform.localPosition.x,
+                (charaObject.transform.localPosition.y - 200.0f),
+                charaObject.transform.localPosition.z
+                );
+
+            yield return new WaitForSeconds(1.0f);
+            int forwardCount = 3 + (1 * skillLevel);
+
+            battleCharaScript.forwardSkill(forwardCount);
         }
 
         yield return new WaitForSeconds(1.0f);
@@ -1097,6 +1118,22 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             int backCount = 3 + (1 * enemySkillLevel);
 
             battleCharaScript.backSkill(backCount);
+        //進むスキル
+        } else if (enemySkillNumber == 4) {
+            GameObject wind = (GameObject)Resources.Load("Effect/Wind");
+            GameObject skEffectObj = GameObject.Instantiate(wind) as GameObject;
+            skEffectObj.transform.SetParent (enemyObject.transform, false);
+
+            skEffectObj.transform.localPosition = new Vector3(
+                enemyObject.transform.localPosition.x,
+                (enemyObject.transform.localPosition.y - 200.0f),
+                enemyObject.transform.localPosition.z
+                );
+
+            yield return new WaitForSeconds(1.0f);
+            int forwardCount = 3 + (1 * enemySkillLevel);
+
+            battleEnemyScript.forwardSkill(forwardCount);
         }
 
         enemySkillEffectFrameObject.transform.localPosition = new Vector3(410, -10, -100);
