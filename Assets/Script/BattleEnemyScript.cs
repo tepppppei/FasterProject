@@ -89,6 +89,8 @@ public class BattleEnemyScript : Photon.MonoBehaviour {
             this.gameObject.transform.localPosition = new Vector3(2.1f, -8.05f, -1f);
             if (enemyCharaNumber == 3) {
                 this.gameObject.transform.localScale = new Vector3(-0.0026f, 0.0026f, 0.0026f);
+            } else if (enemyCharaNumber == 4) {
+                this.gameObject.transform.localScale = new Vector3(-0.0018f, 0.0018f, 0.0018f);
             } else {
                 this.gameObject.transform.localScale = new Vector3(-0.0018f, 0.0018f, 0.0018f);
             }

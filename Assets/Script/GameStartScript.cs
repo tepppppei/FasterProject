@@ -1281,21 +1281,6 @@ public class GameStartScript : MonoBehaviour {
             hp++;
         //移動スキル
         } else if (skillNumber == 4) {
-            /*
-            GameObject skEffectPrefab = (GameObject)Resources.Load("Effect/Heal");
-            GameObject skEffectObj = GameObject.Instantiate(skEffectPrefab) as GameObject;
-            skEffectObj.transform.SetParent (chara.transform, false);
-            skEffectObj.transform.localPosition = new Vector3(
-                skEffectObj.transform.localPosition.x,
-                (skEffectObj.transform.localPosition.y - 200.0f),
-                skEffectObj.transform.localPosition.z
-                );
-
-            yield return new WaitForSeconds(0.5f);
-            iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 29.3f, "y", 29.3f, "z", 29.3f, "time", 0.4f));
-            hp++;
-            */
-
             GameObject wind = (GameObject)Resources.Load("Effect/Wind");
             GameObject skEffectObj = GameObject.Instantiate(wind) as GameObject;
             skEffectObj.transform.SetParent (chara.transform, false);

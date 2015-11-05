@@ -444,7 +444,6 @@ public class BattleCharaScript : Photon.MonoBehaviour {
 
         this.gameObject.GetComponent<Animation>().Play("Idle");
         //位置補正
-        /*
         if (floorData[charaMoveCount] > 0 && floorData[charaMoveCount] <= floorData[(charaMoveCount + 1)]) {
             this.gameObject.GetComponent<Animation>().Play("Idle");
             //正しいx座標
@@ -453,7 +452,6 @@ public class BattleCharaScript : Photon.MonoBehaviour {
             float positionY = floorDefaultPositionY + (System.Math.Abs(addCubePositionY * (floorData[charaMoveCount] + 1)));
             this.gameObject.transform.localPosition = new Vector3(positionX, positionY, this.gameObject.transform.localPosition.z);
         }
-        */
 
         isMove = false;
 
@@ -510,7 +508,7 @@ public class BattleCharaScript : Photon.MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D collision){
-        if (photonView.isMine) {
+        if (photonView.isMine && !isBack) {
             if(collision.gameObject.tag == "Bomb"){
                 goBack();
             } else if(collision.gameObject.tag == "Fall"){
