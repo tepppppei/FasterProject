@@ -282,6 +282,7 @@ public class SqliteDatabase
     
     #region Private Methods
  
+	/*
 	private IntPtr Prepare (string query)
 	{
 		IntPtr stmHandle;
@@ -292,7 +293,22 @@ public class SqliteDatabase
 		}
         
 		return stmHandle;
+	}*/
+
+	private IntPtr Prepare (string query)
+	{
+		IntPtr stmHandle;
+		
+		// queryのバイト数取得
+		int byteCount = System.Text.Encoding.GetEncoding("UTF-8").GetByteCount(query);
+		if (sqlite3_prepare_v2 (_connection, query, byteCount, out stmHandle, IntPtr.Zero) != SQLITE_OK) {
+			IntPtr errorMsg = sqlite3_errmsg (_connection);
+			throw new SqliteException (Marshal.PtrToStringAnsi (errorMsg));
+		}
+		
+		return stmHandle;
 	}
+
  
 	private void Finalize (IntPtr stmHandle)
 	{

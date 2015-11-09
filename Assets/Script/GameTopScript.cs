@@ -23,6 +23,7 @@ public class GameTopScript : MonoBehaviour {
     private string currentDifficulty = "easy";
 
     void Start () {
+        StartCoroutine(characterInit());
         StartCoroutine(databaseInit());
     }
 
@@ -375,6 +376,70 @@ public class GameTopScript : MonoBehaviour {
     }
 
     private void CompleteHandler() {
+    }
+
+    //キャラクター更新系
+    IEnumerator characterInit() {
+        string url = "http://pe-yan.top/faster/characters/master";
+        // 送信開始
+        WWW www = new WWW (url);
+        yield return www;
+
+        // 成功
+        if (www.error == null) {
+            Debug.Log("Get Success");
+            string response = www.text;
+
+            var jsonFullData = (IDictionary) MiniJSON.Json.Deserialize (response);
+            var jsonCharaData = (IList) jsonFullData["character_list"];
+
+            //キャラクターデータを取得
+            SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+            //Statusが無ければインサート
+            string selectQuery = "select * from Character";
+            DataTable characterTable = sqlDB.ExecuteQuery(selectQuery);
+
+            for (int i = 0; i < jsonCharaData.Count; i++) {
+                var json = (IDictionary) jsonCharaData[i];
+                string cID = (string) json["id"];
+                string cName = (string) json["name"];
+                string cSkillType = (string) json["skill_type"];
+                string cSkillNumber = (string) json["skill_number"];
+                string cSkillName = (string) json["skill_name"];
+                string cSkillDescription = (string) json["skill_description"];
+                string cSkillPlusDescription = (string) json["skill_plus_description"];
+                int cShowFlg = 0;
+                if ((bool) json["show_flg"]) {
+                    cShowFlg = 1;
+                }
+
+                //存在チェック
+                bool isUpdate = false;
+                foreach (DataRow row in characterTable.Rows) {
+                    if (row["id"].ToString() == cID) {
+                        isUpdate = true;
+                        break;
+                    }
+                }
+
+                //アップデート
+                if (isUpdate) {
+                    string query = "update Character set name='"+cName+"', skill_number="+cSkillNumber+", skill_name='"+cSkillName+"', skill_type="+cSkillType+", skill_description='"+cSkillDescription+"', skill_plus_description='"+cSkillPlusDescription+"', show_flg="+cShowFlg+" where id="+cID;
+                    Debug.Log(query);
+                    sqlDB.ExecuteNonQuery(query);
+                //インサート
+                } else {
+                    string query = "insert into Character(id, name, skill_number, skill_name, skill_description, skill_plus_description, show_flg) values("+cID+",'"+cName+"',"+cSkillNumber+",'"+cSkillName+"','"+cSkillDescription+"','"+cSkillPlusDescription+"',"+cShowFlg+")";
+                    Debug.Log(query);
+                    sqlDB.ExecuteNonQuery(query);
+                }
+            }
+
+        }
+        // 失敗
+        else{
+            Debug.Log("Get Failure");
+        }
     }
 
     //データベース系
