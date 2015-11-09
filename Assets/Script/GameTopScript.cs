@@ -56,6 +56,13 @@ public class GameTopScript : MonoBehaviour {
     private int selectedCharaTableNumber;
     private GameObject selectCharaObject;
 
+    //キャラ選択パネル用オブジェクト
+    public Text levelText;
+    public Text growthText;
+    public Text skillNameText;
+    public Text skillDescriptionText;
+    public GameObject growthProgressObject;
+
     //ステージ選択表示用
     public void sceneStageSelect() {
         //ステージ選択パネルを表示する
@@ -527,11 +534,22 @@ public class GameTopScript : MonoBehaviour {
             selectQuery = "select * from Character where get_flg = 1";
             characterTable = sqlDB.ExecuteQuery(selectQuery);
             string charaName = "";
+            string skName = "";
+            string charaLevel = "";
+            string growth = "";
+            string skDescription = "";
+
             //現在選択中のキャラ
             for (int i = 0; i < characterTable.Rows.Count; i++) {
                 if ((int)characterTable.Rows[i]["select_flg"] == 1) {
                     selectedCharaNumber = (int) characterTable.Rows[i]["id"];
                     charaName = (string) characterTable.Rows[i]["name"];
+                    skName = (string) characterTable.Rows[i]["skill_name"];
+                    charaLevel = (string) characterTable.Rows[i]["get_count"].ToString();
+                    growth = (string) characterTable.Rows[i]["growth"];
+                    growth = "35";
+                    skDescription = (string) characterTable.Rows[i]["skill_description"];
+
                     selectedCharaTableNumber = i;
                     break;
                 }
@@ -545,9 +563,14 @@ public class GameTopScript : MonoBehaviour {
             selectCharaObject.transform.SetParent (charaSelectPanel.transform, false);
             //位置とスケールを設定
             selectCharaObject.transform.localScale = new Vector3(0.13f, 0.13f, 0.13f);
-            selectCharaObject.transform.localPosition = new Vector3(-4.0f, 89.0f, -100.0f);
+            selectCharaObject.transform.localPosition = new Vector3(-4.0f, 118.0f, -100.0f);
             selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
             charaNameText.text = charaName;
+            levelText.text = "Lv." + charaLevel;
+            growthText.text = growth + "%";
+            skillNameText.text = "スキル:" + skName;
+            skillDescriptionText.text = skDescription;
+            growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
 
             StartCoroutine(viewStart());
         }
@@ -579,7 +602,17 @@ public class GameTopScript : MonoBehaviour {
 
         //キャラ画像設定
         string charaName = "";
+        string skName = "";
+        string charaLevel = "";
+        string growth = "";
+        string skDescription = "";
+
         charaName = (string) characterTable.Rows[selectedCharaTableNumber]["name"];
+        skName = (string) characterTable.Rows[selectedCharaTableNumber]["skill_name"];
+        charaLevel = (string) characterTable.Rows[selectedCharaTableNumber]["get_count"].ToString();
+        growth = (string) characterTable.Rows[selectedCharaTableNumber]["growth"];
+        growth = "35";
+        skDescription = (string) characterTable.Rows[selectedCharaTableNumber]["skill_description"];
 
         //charaHeadImage.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + selectedCharaNumber + "/head");
         GameObject selectCharaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + selectedCharaNumber);
@@ -588,9 +621,15 @@ public class GameTopScript : MonoBehaviour {
         //Canvasの子要素として登録する
         selectCharaObject.transform.SetParent (charaSelectPanel.transform, false);
         //位置とスケールを設定
-        selectCharaObject.transform.localPosition = new Vector3(-4.0f, 89.0f, -100.0f);
+        selectCharaObject.transform.localPosition = new Vector3(-4.0f, 118.0f, -100.0f);
         selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
         charaNameText.text = charaName;
+        levelText.text = "Lv." + charaLevel;
+        growthText.text = growth + "%";
+        skillNameText.text = "スキル:" + skName;
+        skillDescriptionText.text = skDescription;
+        growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
+
         iTween.ScaleTo(selectCharaObject, iTween.Hash("x", 0.13f, "y", 0.13f, "z", 0.13f, "time", 0.1f));
     }
 
