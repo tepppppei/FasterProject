@@ -406,7 +406,10 @@ public class GameTopScript : MonoBehaviour {
             string selectQuery = "select * from Character";
             DataTable characterTable = sqlDB.ExecuteQuery(selectQuery);
 
+            Debug.Log(response);
+
             for (int i = 0; i < jsonCharaData.Count; i++) {
+                Debug.Log("AAAAAAAAAAAAAAAAAAAAA");
                 var json = (IDictionary) jsonCharaData[i];
                 string cID = (string) json["id"];
                 string cName = (string) json["name"];
@@ -420,6 +423,8 @@ public class GameTopScript : MonoBehaviour {
                     cShowFlg = 1;
                 }
 
+                Debug.Log("BBBBBBBBBBBBBBBBBBBBBBBB");
+
                 //存在チェック
                 bool isUpdate = false;
                 foreach (DataRow row in characterTable.Rows) {
@@ -428,14 +433,17 @@ public class GameTopScript : MonoBehaviour {
                         break;
                     }
                 }
+                Debug.Log("CCCCCCCCCCCCCCCCCCCCCCCCCC");
 
                 //アップデート
                 if (isUpdate) {
+                Debug.Log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
                     string query = "update Character set name='"+cName+"', skill_number="+cSkillNumber+", skill_name='"+cSkillName+"', skill_type="+cSkillType+", skill_description='"+cSkillDescription+"', skill_plus_description='"+cSkillPlusDescription+"', show_flg="+cShowFlg+" where id="+cID;
                     Debug.Log(query);
                     sqlDB.ExecuteNonQuery(query);
                 //インサート
                 } else {
+                Debug.Log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     string query = "insert into Character(id, name, skill_number, skill_name, skill_description, skill_plus_description, show_flg) values("+cID+",'"+cName+"',"+cSkillNumber+",'"+cSkillName+"','"+cSkillDescription+"','"+cSkillPlusDescription+"',"+cShowFlg+")";
                     Debug.Log(query);
                     sqlDB.ExecuteNonQuery(query);

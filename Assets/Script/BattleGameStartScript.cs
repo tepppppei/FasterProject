@@ -960,6 +960,10 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             skillCount--;
             changeSkillCountText(skillCount);
             return true;
+        } else if (skillNumber == 5) {
+            skillCount--;
+            changeSkillCountText(skillCount);
+            return true;
         } else {
             return false;
         }
@@ -1065,6 +1069,17 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             int forwardCount = 3 + (1 * skillLevel);
 
             battleCharaScript.forwardSkill(forwardCount);
+        } else if (skillNumber == 5) {
+            GameObject thunder = (GameObject)Resources.Load("Effect/Thunder");
+            DestroyScript ds = thunder.GetComponent<DestroyScript>();
+
+            float effectTime = 2.0f + (0.5f * skillLevel);
+            ds.destroyTime = effectTime;
+
+            GameObject skEffectObj = GameObject.Instantiate(thunder) as GameObject;
+            skEffectObj.transform.SetParent (enemyObject.transform, false);
+
+            yield return new WaitForSeconds(1.0f);
         }
 
         yield return new WaitForSeconds(1.0f);
@@ -1134,6 +1149,18 @@ public class BattleGameStartScript : Photon.MonoBehaviour {
             int forwardCount = 3 + (1 * enemySkillLevel);
 
             battleEnemyScript.forwardSkill(forwardCount);
+        //止まるスキル
+        } else if (enemySkillNumber == 5) {
+            GameObject thunder = (GameObject)Resources.Load("Effect/Thunder");
+            DestroyScript ds = thunder.GetComponent<DestroyScript>();
+            float effectTime = 3.0f + (0.5f * enemySkillLevel);
+            ds.destroyTime = effectTime;
+
+            GameObject skEffectObj = GameObject.Instantiate(thunder) as GameObject;
+            skEffectObj.transform.SetParent (charaObject.transform, false);
+
+            yield return new WaitForSeconds(1.0f);
+            battleCharaScript.stopSkill(effectTime);
         }
 
         enemySkillEffectFrameObject.transform.localPosition = new Vector3(410, -10, -100);

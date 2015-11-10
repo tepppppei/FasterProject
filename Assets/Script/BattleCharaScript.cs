@@ -749,6 +749,16 @@ public class BattleCharaScript : Photon.MonoBehaviour {
         StartCoroutine(backSkillAction(backCount));
     }
 
+    public void stopSkill(float effectTime) {
+        StartCoroutine(stopSkillAction(effectTime));
+    }
+
+    IEnumerator stopSkillAction(float effectTime) {
+        isMove = true;
+        yield return new WaitForSeconds(effectTime);
+        isMove = false;
+    }
+
     IEnumerator backSkillAction(int backCount) {
         isBack = true;
         isMove = true;
