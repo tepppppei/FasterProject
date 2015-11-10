@@ -566,11 +566,11 @@ public class GameTopScript : MonoBehaviour {
             selectCharaObject.transform.localPosition = new Vector3(-4.0f, 118.0f, -100.0f);
             selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
             charaNameText.text = charaName;
-            levelText.text = "Lv." + charaLevel;
-            growthText.text = growth + "%";
-            skillNameText.text = "スキル:" + skName;
-            skillDescriptionText.text = skDescription;
-            growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
+            //levelText.text = "Lv." + charaLevel;
+            //growthText.text = growth + "%";
+            //skillNameText.text = "スキル:" + skName;
+            //skillDescriptionText.text = skDescription;
+            //growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
 
             StartCoroutine(viewStart());
         }
@@ -624,11 +624,11 @@ public class GameTopScript : MonoBehaviour {
         selectCharaObject.transform.localPosition = new Vector3(-4.0f, 118.0f, -100.0f);
         selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
         charaNameText.text = charaName;
-        levelText.text = "Lv." + charaLevel;
-        growthText.text = growth + "%";
-        skillNameText.text = "スキル:" + skName;
-        skillDescriptionText.text = skDescription;
-        growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
+        //levelText.text = "Lv." + charaLevel;
+        //growthText.text = growth + "%";
+        //skillNameText.text = "スキル:" + skName;
+        //skillDescriptionText.text = skDescription;
+        //growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
 
         iTween.ScaleTo(selectCharaObject, iTween.Hash("x", 0.13f, "y", 0.13f, "z", 0.13f, "time", 0.1f));
     }
