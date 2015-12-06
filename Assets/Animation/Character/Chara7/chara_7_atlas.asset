@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 529336600, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
+  m_Name: chara_7_atlas
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: cc74b8700049d473a9634ab8a469a4c2, type: 2}
+  uvs:
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: .9765625
+    height: .171875
+  - serializedVersion: 2
+    x: 0
+    y: .172851562
+    width: .677734375
+    height: .182617188
+  - serializedVersion: 2
+    x: .40234375
+    y: .356445312
+    width: .357421875
+    height: .107421875
+  - serializedVersion: 2
+    x: 0
+    y: .356445312
+    width: .400390625
+    height: .227539062
+  - serializedVersion: 2
+    x: .720703125
+    y: .172851562
+    width: .025390625
+    height: .0263671875
+  - serializedVersion: 2
+    x: .6796875
+    y: .172851562
+    width: .0390625
+    height: .0380859375
+  textureGUIDs:
+  - 90771fd61e3cf4e91bb56bf6b8863ce0
+  - e88707a8dbc834da6a538eee2a0f7162
+  - cef16fa8e7440474091d1cdd859d760b
+  - 1a0a37ca20be542bab65edd96f4a7af2
+  - 78f7a0cb8dafa4751a40cea0fda00c32
+  - 57fd3fffc39eb4bf8a645b32be3a022c
+  textureSizes:
+  - {x: 500, y: 176}
+  - {x: 347, y: 187}
+  - {x: 183, y: 110}
+  - {x: 205, y: 233}
+  - {x: 13, y: 27}
+  - {x: 20, y: 39}
+  defaultPivotOffsets:
+  - {x: .0857142806, y: -.11414367}
+  - {x: -.0267857164, y: -.0347927846}
+  - {x: -.428571403, y: -.209439933}
+  - {x: .310714275, y: -.450126439}
+  - {x: .0076923077, y: .00925925933}
+  - {x: 0, y: .0425925925}
+  textureNames:
+  - slice06_06
+  - head
+  - slice05_05
+  - slice01_01
+  - slice03_03
+  - slice04_04
+  texturePaths:
+  - Assets/Resources/Image/Character/Chara7/slice06_06.png
+  - Assets/Resources/Image/Character/Chara7/head.png
+  - Assets/Resources/Image/Character/Chara7/slice05_05.png
+  - Assets/Resources/Image/Character/Chara7/slice01_01.png
+  - Assets/Resources/Image/Character/Chara7/slice03_03.png
+  - Assets/Resources/Image/Character/Chara7/slice04_04.png
+  lastBuildID: 20151206143733229
+  needsRebuilt: 0
+  dataVersion: 4
+  maxAtlasSize: 1024
+  padding: 1
+  forceSquare: 0
