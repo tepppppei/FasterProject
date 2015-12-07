@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 529336600, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
+  m_Name: Chara_8_atlas
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 5edc00cfcc9df48d1aa2ed91154c56eb, type: 2}
+  uvs:
+  - serializedVersion: 2
+    x: .638671875
+    y: 0
+    width: .0859375
+    height: .076171875
+  - serializedVersion: 2
+    x: 0
+    y: .389648438
+    width: .529296875
+    height: .1953125
+  - serializedVersion: 2
+    x: .53125
+    y: .389648438
+    width: .39453125
+    height: .1875
+  - serializedVersion: 2
+    x: .638671875
+    y: .0771484375
+    width: .044921875
+    height: .134765625
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: .63671875
+    height: .388671875
+  textureGUIDs:
+  - 175570c0382a0417f812d6fb5fdcbe53
+  - 3626e774500bb4895a9612fbc2b4bf00
+  - 288cff4a72791498a99201284acbf1f3
+  - d2369bcd55f5646c4a17e55b452fa5c6
+  - c4aeed2f94a0c40989f0d204a5fcef61
+  textureSizes:
+  - {x: 44, y: 78}
+  - {x: 271, y: 200}
+  - {x: 202, y: 192}
+  - {x: 23, y: 138}
+  - {x: 326, y: 398}
+  defaultPivotOffsets:
+  - {x: .354545444, y: -.442592591}
+  - {x: -.0803571418, y: .395611584}
+  - {x: -.0160714276, y: .448074758}
+  - {x: -.13333334, y: -.453703701}
+  - {x: -.155357137, y: -.432219118}
+  textureNames:
+  - slice03_03
+  - slice05_05
+  - head
+  - slice01_01
+  - slice02_02
+  texturePaths:
+  - Assets/Resources/Image/Character/Chara8/slice03_03.png
+  - Assets/Resources/Image/Character/Chara8/slice05_05.png
+  - Assets/Resources/Image/Character/Chara8/head.png
+  - Assets/Resources/Image/Character/Chara8/slice01_01.png
+  - Assets/Resources/Image/Character/Chara8/slice02_02.png
+  lastBuildID: 20151207104228397
+  needsRebuilt: 0
+  dataVersion: 4
+  maxAtlasSize: 1024
+  padding: 1
+  forceSquare: 0
