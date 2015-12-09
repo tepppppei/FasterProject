@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 529336600, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
+  m_Name: Gacha
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 290ad5016ca754b519ec7e8ce0738ee1, type: 2}
+  uvs:
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: .454833984
+    height: .909667969
+  - serializedVersion: 2
+    x: .659667969
+    y: 0
+    width: .220703125
+    height: .279296875
+  - serializedVersion: 2
+    x: .455078125
+    y: 0
+    width: .204345703
+    height: .375976562
+  textureGUIDs:
+  - 4c7ee92e17ad04030bb9dc1ca097245c
+  - 74310bf0403d9465a81c39d5204cfe6f
+  - 2e1d00665bf5246be9e3e1adfd1d3ab6
+  textureSizes:
+  - {x: 1863, y: 1863}
+  - {x: 904, y: 572}
+  - {x: 837, y: 770}
+  defaultPivotOffsets:
+  - {x: -.00206449465, y: .0175482053}
+  - {x: 0, y: .351361126}
+  - {x: 0, y: -.480420917}
+  textureNames:
+  - "\u30AB\u3099\u30C1\u30E3_\u30DE\u30C8\u30EA\u30E7\u30FC\u30B7\u30AB"
+  - slice02_02
+  - slice01_01
+  texturePaths:
+  - "Assets/Resources/Image/Character/Gacha/\u30AB\u3099\u30C1\u30E3_\u30DE\u30C8\u30EA\u30E7\u30FC\u30B7\u30AB.png"
+  - Assets/Resources/Image/Character/Gacha/slice02_02.png
+  - Assets/Resources/Image/Character/Gacha/slice01_01.png
+  lastBuildID: 20151209233933717
+  needsRebuilt: 0
+  dataVersion: 4
+  maxAtlasSize: 1024
+  padding: 1
+  forceSquare: 0
