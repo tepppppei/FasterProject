@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 529336600, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
+  m_Name: Chara_4_reverse_atlas
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: c77068a7c953e4987b829f5ea257268d, type: 2}
+  uvs:
+  - serializedVersion: 2
+    x: .850585938
+    y: .2265625
+    width: .0810546875
+    height: .08203125
+  - serializedVersion: 2
+    x: .639648438
+    y: .2265625
+    width: .12109375
+    height: .068359375
+  - serializedVersion: 2
+    x: .2109375
+    y: .53515625
+    width: .05859375
+    height: .0810546875
+  - serializedVersion: 2
+    x: .918945312
+    y: 0
+    width: .0751953125
+    height: .099609375
+  - serializedVersion: 2
+    x: .515625
+    y: 0
+    width: .40234375
+    height: .225585938
+  - serializedVersion: 2
+    x: .987304688
+    y: .100585938
+    width: .0068359375
+    height: .013671875
+  - serializedVersion: 2
+    x: .932617188
+    y: .2265625
+    width: .064453125
+    height: .083984375
+  - serializedVersion: 2
+    x: .918945312
+    y: .100585938
+    width: .0673828125
+    height: .099609375
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: .514648438
+    height: .354492188
+  - serializedVersion: 2
+    x: 0
+    y: .35546875
+    width: .33203125
+    height: .178710938
+  - serializedVersion: 2
+    x: .76171875
+    y: .2265625
+    width: .087890625
+    height: .0869140625
+  - serializedVersion: 2
+    x: 0
+    y: .53515625
+    width: .209960938
+    height: .235351562
+  - serializedVersion: 2
+    x: .515625
+    y: .2265625
+    width: .123046875
+    height: .0771484375
+  textureGUIDs:
+  - 14f09451153b74bc2881aab27630a0b8
+  - 9d309a81821654cfcbab6aa4259e6caa
+  - f86f83f42c051474692998c86caac6e9
+  - d0361c27e04444e8e9c6d1e1e577880b
+  - eb94236a410ae465ba49c715b03db040
+  - 20953a8abb0ab40e0b851465690468eb
+  - f0348e9a13a1f4dfe912eddb50c40aa9
+  - 705f7e1b3002b4013b222cbf069ade4a
+  - 41876f1cb2bb2491eb1ea7abd917bc8c
+  - ace6141e938ce4e3180470cc7da1a2c4
+  - 24f28a6e780e940c89ff368e80d3c500
+  - d375ed2f600b944ab9bc2b92f812d0b4
+  - f4f95bff2179a44be97503e4aacbad9e
+  textureSizes:
+  - {x: 83, y: 84}
+  - {x: 124, y: 70}
+  - {x: 60, y: 83}
+  - {x: 77, y: 102}
+  - {x: 412, y: 231}
+  - {x: 7, y: 14}
+  - {x: 66, y: 86}
+  - {x: 69, y: 102}
+  - {x: 527, y: 363}
+  - {x: 340, y: 183}
+  - {x: 90, y: 89}
+  - {x: 215, y: 241}
+  - {x: 126, y: 79}
+  defaultPivotOffsets:
+  - {x: -.283928573, y: .352008939}
+  - {x: -.41785714, y: -.251479596}
+  - {x: -.0267857127, y: .443416506}
+  - {x: -.0589285716, y: .450919092}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: -.0428571403, y: .446075559}
+  - {x: -.0273752026, y: .453703701}
+  - {x: -.00535714254, y: -.447203338}
+  - {x: -.444642842, y: .0846018642}
+  - {x: .326785743, y: .414426178}
+  - {x: -.0267857127, y: .451633811}
+  - {x: .433928609, y: -.311867088}
+  textureNames:
+  - slice07_07
+  - slice04_04
+  - slice11_11
+  - slice10_10
+  - slice08_08
+  - slice05_05
+  - slice13_13
+  - slice03_03
+  - head_02
+  - slice12_12
+  - slice06_06
+  - slice09_09
+  - slice01_01
+  texturePaths:
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice07_07.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice04_04.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice11_11.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice10_10.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice08_08.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice05_05.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice13_13.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice03_03.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/head_02.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice12_12.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice06_06.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice09_09.png
+  - Assets/Resources/Image/Character/Chara4/Chara_4_reverse/slice01_01.png
+  lastBuildID: 20151210110543618
+  needsRebuilt: 1
+  dataVersion: 4
+  maxAtlasSize: 1024
+  padding: 1
+  forceSquare: 0
