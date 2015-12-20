@@ -1,88 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &102008
+--- !u!1 &102876
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 463816}
-  m_Layer: 10
-  m_Name: foam_3_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &113212
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 480054}
-  m_Layer: 10
-  m_Name: foot_right_bottom_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &115614
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 491756}
-  m_Layer: 10
-  m_Name: arm_right_bottom_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &119310
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 433702}
-  m_Layer: 10
-  m_Name: head_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &119930
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 459834}
-  m_Layer: 10
-  m_Name: foam_1_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &120264
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 440830}
+  - 4: {fileID: 401404}
   m_Layer: 10
   m_Name: foam_2
   m_TagString: Untagged
@@ -90,74 +15,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &124282
+--- !u!1 &104914
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 463732}
-  m_Layer: 10
-  m_Name: foam_2_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &125796
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 400166}
-  m_Layer: 10
-  m_Name: foot_left_top
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &133588
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 463784}
-  m_Layer: 10
-  m_Name: foot_right_top_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &136254
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 485410}
-  m_Layer: 10
-  m_Name: foam_4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &137326
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 499930}
+  - 4: {fileID: 453138}
   m_Layer: 10
   m_Name: foot_left_bottom
   m_TagString: Untagged
@@ -165,74 +30,74 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &140436
+--- !u!1 &110238
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 499726}
+  - 4: {fileID: 471060}
   m_Layer: 10
-  m_Name: foam_1
+  m_Name: foot_left_bottom_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &141950
+--- !u!1 &115296
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 461104}
+  - 4: {fileID: 482566}
   m_Layer: 10
-  m_Name: arm_right_bottom
+  m_Name: head_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &142904
+--- !u!1 &117522
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 456284}
+  - 4: {fileID: 403146}
   m_Layer: 10
-  m_Name: arm_left_bottom_Sprite
+  m_Name: foot_right_top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &145916
+--- !u!1 &125174
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 460250}
+  - 4: {fileID: 416498}
   m_Layer: 10
-  m_Name: head
+  m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &150982
+--- !u!1 &136800
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 469656}
+  - 4: {fileID: 429612}
   m_Layer: 10
   m_Name: foot_right_bottom
   m_TagString: Untagged
@@ -240,14 +105,44 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &151940
+--- !u!1 &141580
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 470926}
+  - 4: {fileID: 454130}
+  m_Layer: 10
+  m_Name: arm_right_bottom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &141660
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 437672}
+  m_Layer: 10
+  m_Name: foot_left_top_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &146646
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 424308}
   m_Layer: 10
   m_Name: body
   m_TagString: Untagged
@@ -255,31 +150,211 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &163240
+--- !u!1 &148022
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 460206}
+  - 4: {fileID: 458672}
   m_Layer: 10
-  m_Name: arm_left_top
+  m_Name: arm_right_top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &170410
+--- !u!1 &148334
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 440800}
+  - 4: {fileID: 418054}
   m_Layer: 10
-  m_Name: Root
+  m_Name: foot_left_top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &152726
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 422338}
+  m_Layer: 10
+  m_Name: foam_3_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &155878
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 406384}
+  m_Layer: 10
+  m_Name: Root_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &157518
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 473566}
+  m_Layer: 10
+  m_Name: foam_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &160390
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 416014}
+  m_Layer: 10
+  m_Name: foam_4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &162640
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 430654}
+  m_Layer: 10
+  m_Name: body_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &163630
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 454272}
+  m_Layer: 10
+  m_Name: arm_left_top_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &164946
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 447104}
+  m_Layer: 10
+  m_Name: foam_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &165892
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 408718}
+  m_Layer: 10
+  m_Name: foot_right_bottom_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &166490
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 461286}
+  m_Layer: 10
+  m_Name: foam_2_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &168086
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 420692}
+  m_Layer: 10
+  m_Name: foam_1_Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &168128
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 412672}
+  m_Layer: 10
+  m_Name: head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &170470
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 469878}
+  m_Layer: 10
+  m_Name: arm_right_bottom_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -294,14 +369,14 @@ GameObject:
   m_Component:
   - 4: {fileID: 492304}
   - 114: {fileID: 11486344}
-  - 111: {fileID: 11182886}
-  - 137: {fileID: 13770120}
   - 50: {fileID: 5086742}
   - 61: {fileID: 6196984}
   - 114: {fileID: 11405708}
   - 114: {fileID: 11478324}
   - 114: {fileID: 11490398}
   - 114: {fileID: 11475162}
+  - 111: {fileID: 11125632}
+  - 137: {fileID: 13700704}
   m_Layer: 10
   m_Name: Character5
   m_TagString: Chara
@@ -309,44 +384,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &172552
+--- !u!1 &179938
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 451262}
-  m_Layer: 10
-  m_Name: arm_left_top_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &172746
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 445318}
-  m_Layer: 10
-  m_Name: arm_right_top_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &174012
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 453424}
+  - 4: {fileID: 496342}
   m_Layer: 10
   m_Name: foam_4_Sprite
   m_TagString: Untagged
@@ -354,59 +399,44 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &176440
+--- !u!1 &183794
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 428312}
+  - 4: {fileID: 466530}
   m_Layer: 10
-  m_Name: foot_left_bottom_Sprite
+  m_Name: arm_right_top_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &179770
+--- !u!1 &186556
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 472794}
+  - 4: {fileID: 440592}
   m_Layer: 10
-  m_Name: foot_left_top_Sprite
+  m_Name: arm_left_bottom_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &187906
+--- !u!1 &190648
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 482980}
-  m_Layer: 10
-  m_Name: foot_right_top
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &190526
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 409658}
+  - 4: {fileID: 462956}
   m_Layer: 10
   m_Name: arm_left_bottom
   m_TagString: Untagged
@@ -414,428 +444,412 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &191542
+--- !u!1 &193554
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 428764}
+  - 4: {fileID: 488754}
   m_Layer: 10
-  m_Name: arm_right_top
+  m_Name: foot_right_top_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &193446
+--- !u!1 &195814
 GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 451698}
+  - 4: {fileID: 469048}
   m_Layer: 10
-  m_Name: Root_Sprite
+  m_Name: arm_left_top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &195290
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 474262}
-  m_Layer: 10
-  m_Name: foam_3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &195750
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 411390}
-  m_Layer: 10
-  m_Name: body_Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &400166
+--- !u!4 &401404
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 125796}
+  m_GameObject: {fileID: 102876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 97.2972641, y: -145.945892, z: 0}
+  m_LocalPosition: {x: -246.657684, y: 119.183632, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 472794}
-  - {fileID: 499930}
-  m_Father: {fileID: 470926}
-  m_RootOrder: 4
---- !u!4 &409658
+  - {fileID: 461286}
+  m_Father: {fileID: 424308}
+  m_RootOrder: 7
+--- !u!4 &403146
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190526}
+  m_GameObject: {fileID: 117522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.3074608, y: -17.4993954, z: 0}
+  m_LocalPosition: {x: -58.9756432, y: -133.841949, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 456284}
-  m_Father: {fileID: 460206}
+  - {fileID: 488754}
+  - {fileID: 429612}
+  m_Father: {fileID: 424308}
+  m_RootOrder: 5
+--- !u!4 &406384
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155878}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 416498}
+  m_RootOrder: 0
+--- !u!4 &408718
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165892}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 429612}
+  m_RootOrder: 0
+--- !u!4 &412672
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168128}
+  m_LocalRotation: {x: 0, y: 0, z: -.023559764, w: .999722481}
+  m_LocalPosition: {x: 16.5809059, y: 12.7804756, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 482566}
+  m_Father: {fileID: 424308}
   m_RootOrder: 1
---- !u!4 &411390
+--- !u!4 &416014
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 195750}
+  m_GameObject: {fileID: 160390}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 470926}
-  m_RootOrder: 0
---- !u!4 &428312
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176440}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 499930}
-  m_RootOrder: 0
---- !u!4 &428764
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 191542}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -105.714241, y: 0, z: 0}
+  m_LocalPosition: {x: -196.681564, y: -79.2946854, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 445318}
-  - {fileID: 461104}
-  m_Father: {fileID: 470926}
-  m_RootOrder: 3
---- !u!4 &433702
+  - {fileID: 496342}
+  m_Father: {fileID: 424308}
+  m_RootOrder: 9
+--- !u!4 &416498
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119310}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 460250}
-  m_RootOrder: 0
---- !u!4 &440800
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 170410}
+  m_GameObject: {fileID: 125174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 451698}
-  - {fileID: 470926}
+  - {fileID: 406384}
+  - {fileID: 424308}
   m_Father: {fileID: 492304}
   m_RootOrder: 0
---- !u!4 &440830
+--- !u!4 &418054
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 120264}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 299.999664, y: 239.285461, z: 0}
+  m_GameObject: {fileID: 148334}
+  m_LocalRotation: {x: 0, y: 0, z: -.0235597659, w: .999722481}
+  m_LocalPosition: {x: 97.497467, y: -127.161148, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 463732}
-  m_Father: {fileID: 470926}
-  m_RootOrder: 7
---- !u!4 &445318
+  - {fileID: 437672}
+  - {fileID: 453138}
+  m_Father: {fileID: 424308}
+  m_RootOrder: 4
+--- !u!4 &420692
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 172746}
+  m_GameObject: {fileID: 168086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 428764}
+  m_Father: {fileID: 447104}
   m_RootOrder: 0
---- !u!4 &451262
+--- !u!4 &422338
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 172552}
+  m_GameObject: {fileID: 152726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 460206}
+  m_Father: {fileID: 473566}
   m_RootOrder: 0
---- !u!4 &451698
+--- !u!4 &424308
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193446}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 146646}
+  m_LocalRotation: {x: 0, y: 0, z: -.0444912165, w: .999009788}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 440800}
-  m_RootOrder: 0
---- !u!4 &453424
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 174012}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 485410}
-  m_RootOrder: 0
---- !u!4 &456284
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 142904}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 409658}
-  m_RootOrder: 0
---- !u!4 &459834
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119930}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 499726}
-  m_RootOrder: 0
---- !u!4 &460206
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163240}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 103.571381, y: 24.9999886, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 451262}
-  - {fileID: 409658}
-  m_Father: {fileID: 470926}
-  m_RootOrder: 2
---- !u!4 &460250
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 145916}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.10810566, y: 78.3783493, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 433702}
-  m_Father: {fileID: 470926}
+  - {fileID: 430654}
+  - {fileID: 412672}
+  - {fileID: 469048}
+  - {fileID: 458672}
+  - {fileID: 418054}
+  - {fileID: 403146}
+  - {fileID: 447104}
+  - {fileID: 401404}
+  - {fileID: 473566}
+  - {fileID: 416014}
+  m_Father: {fileID: 416498}
   m_RootOrder: 1
---- !u!4 &461104
+--- !u!4 &429612
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 141950}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17, y: -22, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 491756}
-  m_Father: {fileID: 428764}
-  m_RootOrder: 1
---- !u!4 &463732
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124282}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 440830}
-  m_RootOrder: 0
---- !u!4 &463784
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 133588}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 482980}
-  m_RootOrder: 0
---- !u!4 &463816
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102008}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 474262}
-  m_RootOrder: 0
---- !u!4 &469656
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 150982}
+  m_GameObject: {fileID: 136800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -18.7499943, y: -32.8124886, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 480054}
-  m_Father: {fileID: 482980}
+  - {fileID: 408718}
+  m_Father: {fileID: 403146}
   m_RootOrder: 1
---- !u!4 &470926
+--- !u!4 &430654
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 151940}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 411390}
-  - {fileID: 460250}
-  - {fileID: 460206}
-  - {fileID: 428764}
-  - {fileID: 400166}
-  - {fileID: 482980}
-  - {fileID: 499726}
-  - {fileID: 440830}
-  - {fileID: 474262}
-  - {fileID: 485410}
-  m_Father: {fileID: 440800}
-  m_RootOrder: 1
---- !u!4 &472794
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179770}
+  m_GameObject: {fileID: 162640}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 400166}
+  m_Father: {fileID: 424308}
   m_RootOrder: 0
---- !u!4 &474262
+--- !u!4 &437672
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 195290}
+  m_GameObject: {fileID: 141660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 214.285492, y: -67.8570709, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 418054}
+  m_RootOrder: 0
+--- !u!4 &440592
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 186556}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 462956}
+  m_RootOrder: 0
+--- !u!4 &447104
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164946}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.9999886, y: 460.713806, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 463816}
-  m_Father: {fileID: 470926}
+  - {fileID: 420692}
+  m_Father: {fileID: 424308}
+  m_RootOrder: 6
+--- !u!4 &453138
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104914}
+  m_LocalRotation: {x: 0, y: 0, z: -.256289274, w: .96660012}
+  m_LocalPosition: {x: 12.5320015, y: -26.2873325, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 471060}
+  m_Father: {fileID: 418054}
+  m_RootOrder: 1
+--- !u!4 &454130
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141580}
+  m_LocalRotation: {x: 0, y: 0, z: -.0104717603, w: .999945164}
+  m_LocalPosition: {x: -17, y: -22, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 469878}
+  m_Father: {fileID: 458672}
+  m_RootOrder: 1
+--- !u!4 &454272
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 163630}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 469048}
+  m_RootOrder: 0
+--- !u!4 &458672
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 148022}
+  m_LocalRotation: {x: 0, y: 0, z: -.261347115, w: .965244949}
+  m_LocalPosition: {x: -105.714241, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 466530}
+  - {fileID: 454130}
+  m_Father: {fileID: 424308}
+  m_RootOrder: 3
+--- !u!4 &461286
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166490}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 401404}
+  m_RootOrder: 0
+--- !u!4 &462956
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40.3074608, y: -17.4993954, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 440592}
+  m_Father: {fileID: 469048}
+  m_RootOrder: 1
+--- !u!4 &466530
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183794}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 458672}
+  m_RootOrder: 0
+--- !u!4 &469048
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195814}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 124.027611, y: -16.605957, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 454272}
+  - {fileID: 462956}
+  m_Father: {fileID: 424308}
+  m_RootOrder: 2
+--- !u!4 &469878
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170470}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 454130}
+  m_RootOrder: 0
+--- !u!4 &471060
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110238}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 453138}
+  m_RootOrder: 0
+--- !u!4 &473566
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157518}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -178.362244, y: 20.9615326, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 422338}
+  m_Father: {fileID: 424308}
   m_RootOrder: 8
---- !u!4 &480054
+--- !u!4 &482566
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 113212}
+  m_GameObject: {fileID: 115296}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 469656}
+  m_Father: {fileID: 412672}
   m_RootOrder: 0
---- !u!4 &482980
+--- !u!4 &488754
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 187906}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -57.8124809, y: -146.874954, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 463784}
-  - {fileID: 469656}
-  m_Father: {fileID: 470926}
-  m_RootOrder: 5
---- !u!4 &485410
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136254}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 189.285507, y: -114.285591, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 453424}
-  m_Father: {fileID: 470926}
-  m_RootOrder: 9
---- !u!4 &491756
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115614}
+  m_GameObject: {fileID: 193554}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 461104}
+  m_Father: {fileID: 403146}
   m_RootOrder: 0
 --- !u!4 &492304
 Transform:
@@ -847,35 +861,21 @@ Transform:
   m_LocalPosition: {x: -8.05000019, y: 0, z: 0}
   m_LocalScale: {x: .00179999997, y: .00179999997, z: .00179999997}
   m_Children:
-  - {fileID: 440800}
+  - {fileID: 416498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!4 &499726
+--- !u!4 &496342
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 140436}
+  m_GameObject: {fileID: 179938}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.9999886, y: 460.713806, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 459834}
-  m_Father: {fileID: 470926}
-  m_RootOrder: 6
---- !u!4 &499930
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 137326}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.5320015, y: -26.2873325, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 428312}
-  m_Father: {fileID: 400166}
-  m_RootOrder: 1
+  m_Children: []
+  m_Father: {fileID: 416014}
+  m_RootOrder: 0
 --- !u!50 &5086742
 Rigidbody2D:
   serializedVersion: 2
@@ -905,7 +905,7 @@ BoxCollider2D:
   m_Offset: {x: 29.8041763, y: 48.7580223}
   serializedVersion: 2
   m_Size: {x: 234.778122, y: 531.298462}
---- !u!111 &11182886
+--- !u!111 &11125632
 Animation:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1009,8 +1009,8 @@ MonoBehaviour:
   m_Script: {fileID: 2146667132, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mRenderer: {fileID: 13770120}
-  mAnimation: {fileID: 11182886}
+  mRenderer: {fileID: 13700704}
+  mAnimation: {fileID: 11125632}
   mMesh: {fileID: 0}
   mVertices:
   - {x: 0, y: 0, z: 0}
@@ -1021,10 +1021,10 @@ MonoBehaviour:
   - {x: -129.910721, y: -198.549118, z: 0}
   - {x: 161.089279, y: -198.549118, z: 0}
   - {x: 161.089279, y: 50.4508896, z: 0}
-  - {x: -260, y: 345.392853, z: 0}
-  - {x: -260, y: -69.6071472, z: 0}
-  - {x: 260, y: -69.6071472, z: 0}
-  - {x: 260, y: 345.392853, z: 0}
+  - {x: -257.214294, y: 378.821411, z: 0}
+  - {x: -257.214294, y: -36.1785812, z: 0}
+  - {x: 262.785706, y: -36.1785812, z: 0}
+  - {x: 262.785706, y: 378.821411, z: 0}
   - {x: -12.8714294, y: 15.0678577, z: 0}
   - {x: -12.8714294, y: -40.9321442, z: 0}
   - {x: 55.1285706, y: -40.9321442, z: 0}
@@ -1195,10 +1195,11 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
-  animationData: {fileID: 11400000, guid: 57189435f6f39804abb5b78b20a980e0, type: 2}
+  animationData: {fileID: 0}
   animationDataGUID: 57189435f6f39804abb5b78b20a980e0
   mMaterialSource:
   - {fileID: 2100000, guid: 3d9ed6cde7b1aa345948fcb3f81ca900, type: 2}
+  - {fileID: 2100000, guid: 4930a501241e043149196f4690805457, type: 2}
   mBoneSource:
   - boneNodeIndex: 0
     boneDataIndex: 0
@@ -1206,9 +1207,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 0
       vertexIndices: 000000000300000001000000030000000200000001000000
-    gameObject: {fileID: 170410}
-    boneTransform: {fileID: 440800}
-    spriteTransform: {fileID: 451698}
+    gameObject: {fileID: 125174}
+    boneTransform: {fileID: 416498}
+    spriteTransform: {fileID: 406384}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1224,9 +1225,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 1
       vertexIndices: 040000000700000005000000070000000600000005000000
-    gameObject: {fileID: 151940}
-    boneTransform: {fileID: 470926}
-    spriteTransform: {fileID: 411390}
+    gameObject: {fileID: 146646}
+    boneTransform: {fileID: 424308}
+    spriteTransform: {fileID: 430654}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1242,9 +1243,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 2
       vertexIndices: 080000000b000000090000000b0000000a00000009000000
-    gameObject: {fileID: 145916}
-    boneTransform: {fileID: 460250}
-    spriteTransform: {fileID: 433702}
+    gameObject: {fileID: 168128}
+    boneTransform: {fileID: 412672}
+    spriteTransform: {fileID: 482566}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1252,7 +1253,7 @@ MonoBehaviour:
       color: {r: 1, g: 1, b: 1, a: 1}
     active: 1
     visible: 1
-    materialIndex: 0
+    materialIndex: 1
     depth: 9
   - boneNodeIndex: 3
     boneDataIndex: 3
@@ -1260,9 +1261,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 3
       vertexIndices: 0c0000000f0000000d0000000f0000000e0000000d000000
-    gameObject: {fileID: 163240}
-    boneTransform: {fileID: 460206}
-    spriteTransform: {fileID: 451262}
+    gameObject: {fileID: 195814}
+    boneTransform: {fileID: 469048}
+    spriteTransform: {fileID: 454272}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1271,16 +1272,34 @@ MonoBehaviour:
     active: 1
     visible: 1
     materialIndex: 0
-    depth: 8
+    depth: 10
   - boneNodeIndex: 4
     boneDataIndex: 4
     boneName: arm_left_bottom
     boneQuad:
       boneNodeIndex: 4
       vertexIndices: 100000001300000011000000130000001200000011000000
-    gameObject: {fileID: 190526}
-    boneTransform: {fileID: 409658}
-    spriteTransform: {fileID: 456284}
+    gameObject: {fileID: 190648}
+    boneTransform: {fileID: 462956}
+    spriteTransform: {fileID: 440592}
+    boneAnimation: {fileID: 11486344}
+    boneCollider: {fileID: 0}
+    boneColor:
+      blendingWeight: 0
+      color: {r: 1, g: 1, b: 1, a: 1}
+    active: 1
+    visible: 1
+    materialIndex: 0
+    depth: 10
+  - boneNodeIndex: 5
+    boneDataIndex: 5
+    boneName: arm_right_top
+    boneQuad:
+      boneNodeIndex: 5
+      vertexIndices: 140000001700000015000000170000001600000015000000
+    gameObject: {fileID: 148022}
+    boneTransform: {fileID: 458672}
+    spriteTransform: {fileID: 466530}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1290,33 +1309,15 @@ MonoBehaviour:
     visible: 1
     materialIndex: 0
     depth: 7
-  - boneNodeIndex: 5
-    boneDataIndex: 5
-    boneName: arm_right_top
-    boneQuad:
-      boneNodeIndex: 5
-      vertexIndices: 140000001700000015000000170000001600000015000000
-    gameObject: {fileID: 191542}
-    boneTransform: {fileID: 428764}
-    spriteTransform: {fileID: 445318}
-    boneAnimation: {fileID: 11486344}
-    boneCollider: {fileID: 0}
-    boneColor:
-      blendingWeight: 0
-      color: {r: 1, g: 1, b: 1, a: 1}
-    active: 1
-    visible: 1
-    materialIndex: 0
-    depth: 11
   - boneNodeIndex: 6
     boneDataIndex: 6
     boneName: arm_right_bottom
     boneQuad:
       boneNodeIndex: 6
       vertexIndices: 180000001b000000190000001b0000001a00000019000000
-    gameObject: {fileID: 141950}
-    boneTransform: {fileID: 461104}
-    spriteTransform: {fileID: 491756}
+    gameObject: {fileID: 141580}
+    boneTransform: {fileID: 454130}
+    spriteTransform: {fileID: 469878}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1325,16 +1326,16 @@ MonoBehaviour:
     active: 1
     visible: 1
     materialIndex: 0
-    depth: 11
+    depth: 7
   - boneNodeIndex: 7
     boneDataIndex: 7
     boneName: foot_left_top
     boneQuad:
       boneNodeIndex: 7
       vertexIndices: 1c0000001f0000001d0000001f0000001e0000001d000000
-    gameObject: {fileID: 125796}
-    boneTransform: {fileID: 400166}
-    spriteTransform: {fileID: 472794}
+    gameObject: {fileID: 148334}
+    boneTransform: {fileID: 418054}
+    spriteTransform: {fileID: 437672}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1350,9 +1351,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 8
       vertexIndices: 200000002300000021000000230000002200000021000000
-    gameObject: {fileID: 137326}
-    boneTransform: {fileID: 499930}
-    spriteTransform: {fileID: 428312}
+    gameObject: {fileID: 104914}
+    boneTransform: {fileID: 453138}
+    spriteTransform: {fileID: 471060}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1368,9 +1369,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 9
       vertexIndices: 240000002700000025000000270000002600000025000000
-    gameObject: {fileID: 187906}
-    boneTransform: {fileID: 482980}
-    spriteTransform: {fileID: 463784}
+    gameObject: {fileID: 117522}
+    boneTransform: {fileID: 403146}
+    spriteTransform: {fileID: 488754}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1386,9 +1387,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 10
       vertexIndices: 280000002b000000290000002b0000002a00000029000000
-    gameObject: {fileID: 150982}
-    boneTransform: {fileID: 469656}
-    spriteTransform: {fileID: 480054}
+    gameObject: {fileID: 136800}
+    boneTransform: {fileID: 429612}
+    spriteTransform: {fileID: 408718}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1404,9 +1405,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 11
       vertexIndices: 2c0000002f0000002d0000002f0000002e0000002d000000
-    gameObject: {fileID: 140436}
-    boneTransform: {fileID: 499726}
-    spriteTransform: {fileID: 459834}
+    gameObject: {fileID: 164946}
+    boneTransform: {fileID: 447104}
+    spriteTransform: {fileID: 420692}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1422,9 +1423,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 12
       vertexIndices: 300000003300000031000000330000003200000031000000
-    gameObject: {fileID: 120264}
-    boneTransform: {fileID: 440830}
-    spriteTransform: {fileID: 463732}
+    gameObject: {fileID: 102876}
+    boneTransform: {fileID: 401404}
+    spriteTransform: {fileID: 461286}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1440,9 +1441,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 13
       vertexIndices: 340000003700000035000000370000003600000035000000
-    gameObject: {fileID: 195290}
-    boneTransform: {fileID: 474262}
-    spriteTransform: {fileID: 463816}
+    gameObject: {fileID: 157518}
+    boneTransform: {fileID: 473566}
+    spriteTransform: {fileID: 422338}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1458,9 +1459,9 @@ MonoBehaviour:
     boneQuad:
       boneNodeIndex: 14
       vertexIndices: 380000003b000000390000003b0000003a00000039000000
-    gameObject: {fileID: 136254}
-    boneTransform: {fileID: 485410}
-    spriteTransform: {fileID: 453424}
+    gameObject: {fileID: 160390}
+    boneTransform: {fileID: 416014}
+    spriteTransform: {fileID: 496342}
     boneAnimation: {fileID: 11486344}
     boneCollider: {fileID: 0}
     boneColor:
@@ -1471,39 +1472,41 @@ MonoBehaviour:
     materialIndex: 0
     depth: 0
   mBoneTransforms:
-  - {fileID: 440800}
-  - {fileID: 451698}
-  - {fileID: 470926}
-  - {fileID: 411390}
-  - {fileID: 460250}
-  - {fileID: 433702}
-  - {fileID: 460206}
-  - {fileID: 451262}
-  - {fileID: 409658}
-  - {fileID: 456284}
-  - {fileID: 428764}
-  - {fileID: 445318}
-  - {fileID: 461104}
-  - {fileID: 491756}
-  - {fileID: 400166}
-  - {fileID: 472794}
-  - {fileID: 499930}
-  - {fileID: 428312}
-  - {fileID: 482980}
-  - {fileID: 463784}
-  - {fileID: 469656}
-  - {fileID: 480054}
-  - {fileID: 499726}
-  - {fileID: 459834}
-  - {fileID: 440830}
-  - {fileID: 463732}
-  - {fileID: 474262}
-  - {fileID: 463816}
-  - {fileID: 485410}
-  - {fileID: 453424}
+  - {fileID: 416498}
+  - {fileID: 406384}
+  - {fileID: 424308}
+  - {fileID: 430654}
+  - {fileID: 412672}
+  - {fileID: 482566}
+  - {fileID: 469048}
+  - {fileID: 454272}
+  - {fileID: 462956}
+  - {fileID: 440592}
+  - {fileID: 458672}
+  - {fileID: 466530}
+  - {fileID: 454130}
+  - {fileID: 469878}
+  - {fileID: 418054}
+  - {fileID: 437672}
+  - {fileID: 453138}
+  - {fileID: 471060}
+  - {fileID: 403146}
+  - {fileID: 488754}
+  - {fileID: 429612}
+  - {fileID: 408718}
+  - {fileID: 447104}
+  - {fileID: 420692}
+  - {fileID: 401404}
+  - {fileID: 461286}
+  - {fileID: 473566}
+  - {fileID: 422338}
+  - {fileID: 416014}
+  - {fileID: 496342}
   mMaterials:
   - {fileID: 2100000, guid: 3d9ed6cde7b1aa345948fcb3f81ca900, type: 2}
-  buildID: 201511101539527591
+  - {fileID: 2100000, guid: 4930a501241e043149196f4690805457, type: 2}
+  - {fileID: 2100000, guid: 3d9ed6cde7b1aa345948fcb3f81ca900, type: 2}
+  buildID: 201512091845590584
   mFinalImportScale: 1
   mDefaultAnimationName: Idle
   mLastBoneColor:
@@ -1749,11 +1752,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -1763,9 +1766,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -1776,16 +1779,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -1806,7 +1809,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 10
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -1846,7 +1849,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 10
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -1886,7 +1889,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 7
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -1926,7 +1929,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 7
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -2312,11 +2315,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -2326,9 +2329,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -2339,16 +2342,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -2369,7 +2372,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -2449,7 +2452,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -2489,7 +2492,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -2875,11 +2878,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -2889,9 +2892,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -2902,16 +2905,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -2932,7 +2935,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -2972,7 +2975,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -3012,7 +3015,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -3052,7 +3055,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -3478,11 +3481,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -3492,9 +3495,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -3505,16 +3508,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -3535,7 +3538,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -3575,7 +3578,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -3615,7 +3618,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -3655,7 +3658,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -3775,7 +3778,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 684ff2ad7e62f8a40b34e9b8b50edab6
       materialIndex: 0
-      depth: 11
+      depth: 9
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4041,11 +4044,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -4055,9 +4058,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -4068,16 +4071,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -4098,7 +4101,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4138,7 +4141,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4178,7 +4181,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4218,7 +4221,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4338,7 +4341,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 684ff2ad7e62f8a40b34e9b8b50edab6
       materialIndex: 0
-      depth: 11
+      depth: 9
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4604,11 +4607,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -4618,9 +4621,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -4631,16 +4634,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -4661,7 +4664,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4701,7 +4704,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4741,7 +4744,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4781,7 +4784,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -4901,7 +4904,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 684ff2ad7e62f8a40b34e9b8b50edab6
       materialIndex: 0
-      depth: 11
+      depth: 9
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5167,11 +5170,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -5181,9 +5184,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -5194,16 +5197,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -5224,7 +5227,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5264,7 +5267,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5304,7 +5307,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5344,7 +5347,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5464,7 +5467,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 684ff2ad7e62f8a40b34e9b8b50edab6
       materialIndex: 0
-      depth: 11
+      depth: 9
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5730,11 +5733,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -5744,9 +5747,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -5757,16 +5760,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -5787,7 +5790,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5827,7 +5830,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5867,7 +5870,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -5907,7 +5910,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -6027,7 +6030,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 684ff2ad7e62f8a40b34e9b8b50edab6
       materialIndex: 0
-      depth: 11
+      depth: 9
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -6333,11 +6336,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -6347,9 +6350,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -6360,16 +6363,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -6390,7 +6393,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -6430,7 +6433,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -6470,7 +6473,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -6510,7 +6513,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 7
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -6896,11 +6899,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -6910,9 +6913,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -6923,16 +6926,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -6953,7 +6956,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -6993,7 +6996,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -7033,7 +7036,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -7073,7 +7076,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 7
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -7459,11 +7462,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -7473,9 +7476,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -7486,16 +7489,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -7516,7 +7519,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -7556,7 +7559,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -7596,7 +7599,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -7636,7 +7639,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 7
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8022,11 +8025,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -8036,9 +8039,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -8049,16 +8052,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -8079,7 +8082,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8119,7 +8122,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8159,7 +8162,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8199,7 +8202,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 7
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8585,11 +8588,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -8599,9 +8602,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -8612,16 +8615,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -8642,7 +8645,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8682,7 +8685,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8722,7 +8725,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -8762,7 +8765,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 7
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9188,11 +9191,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -9202,9 +9205,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -9215,16 +9218,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -9245,7 +9248,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9285,7 +9288,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9325,7 +9328,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9365,7 +9368,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9751,11 +9754,11 @@ MonoBehaviour:
     - userTriggerTag: 
       boneNodeIndex: 2
       triggerEventTypes: 02000000040000000300000006000000
-      pivotOffset: {x: 0, y: -.332271934}
-      upperLeft: {x: -260, y: 345.392853, z: 0}
-      bottomLeft: {x: -260, y: -69.6071472, z: 0}
-      bottomRight: {x: 260, y: -69.6071472, z: 0}
-      upperRight: {x: 260, y: 345.392853, z: 0}
+      pivotOffset: {x: -.00535714254, y: -.412822694}
+      upperLeft: {x: -257.214294, y: 378.821411, z: 0}
+      bottomLeft: {x: -257.214294, y: -36.1785812, z: 0}
+      bottomRight: {x: 262.785706, y: -36.1785812, z: 0}
+      upperRight: {x: 262.785706, y: 378.821411, z: 0}
       uv:
         serializedVersion: 2
         x: 0
@@ -9765,9 +9768,9 @@ MonoBehaviour:
       localPosition: {x: 0, y: 0, z: 0}
       localRotation: 0
       localScale: {x: 0, y: 0}
-      atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      textureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      materialIndex: 0
+      atlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      textureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      materialIndex: 1
       depth: 9
       collider:
         type: 0
@@ -9778,16 +9781,16 @@ MonoBehaviour:
         layer: 0
         isTrigger: 1
         tag: 
-      originalAtlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
-      originalTextureGUID: 2703d160ae5a8cb45957803c2ae7b8e7
-      originalMaterialIndex: 0
+      originalAtlas: {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
+      originalTextureGUID: 1dafd31e3e76841558b7bc34e25e37b7
+      originalMaterialIndex: 1
       originalUV:
         serializedVersion: 2
         x: 0
         y: 0
         width: .5078125
         height: .810546875
-      originalPivotOffset: {x: 0, y: -.332271934}
+      originalPivotOffset: {x: -.00535714254, y: -.412822694}
     - userTriggerTag: 
       boneNodeIndex: 3
       triggerEventTypes: 02000000040000000300000006000000
@@ -9808,7 +9811,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 106cb6c708ddcc349b9d7b3f0ed35957
       materialIndex: 0
-      depth: 8
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9848,7 +9851,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: f3fb58c775c252a468659e73980a96ea
       materialIndex: 0
-      depth: 7
+      depth: 11
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9888,7 +9891,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 8404a3f577880eb4e80fc0e9ded47cfa
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -9928,7 +9931,7 @@ MonoBehaviour:
       atlas: {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
       textureGUID: 1d5185c62e608a04abf2e569c40b1dea
       materialIndex: 0
-      depth: 11
+      depth: 8
       collider:
         type: 0
         center: {x: 0, y: 0, z: 0}
@@ -10270,10 +10273,11 @@ MonoBehaviour:
       originalPivotOffset: {x: 0, y: 0}
   textureAtlases:
   - {fileID: 11400000, guid: c3e7fd10efd19e844b79d1baf0b11810, type: 2}
+  - {fileID: 11400000, guid: 7432d348560ea430ebd60aa7e1405d8b, type: 2}
   mAnimationClips:
   - animationName: Idle
     fps: 10
-    wrapMode: 2
+    wrapMode: 4
     mix: 0
     blendMode: 0
     layer: 0
@@ -15313,7 +15317,7 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!137 &13770120
+--- !u!137 &13700704
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -15323,6 +15327,8 @@ SkinnedMeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_Materials:
+  - {fileID: 2100000, guid: 3d9ed6cde7b1aa345948fcb3f81ca900, type: 2}
+  - {fileID: 2100000, guid: 4930a501241e043149196f4690805457, type: 2}
   - {fileID: 2100000, guid: 3d9ed6cde7b1aa345948fcb3f81ca900, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -15342,42 +15348,42 @@ SkinnedMeshRenderer:
   m_UpdateWhenOffscreen: 0
   m_Mesh: {fileID: 0}
   m_Bones:
-  - {fileID: 440800}
-  - {fileID: 451698}
-  - {fileID: 470926}
-  - {fileID: 411390}
-  - {fileID: 460250}
-  - {fileID: 433702}
-  - {fileID: 460206}
-  - {fileID: 451262}
-  - {fileID: 409658}
-  - {fileID: 456284}
-  - {fileID: 428764}
-  - {fileID: 445318}
-  - {fileID: 461104}
-  - {fileID: 491756}
-  - {fileID: 400166}
-  - {fileID: 472794}
-  - {fileID: 499930}
-  - {fileID: 428312}
-  - {fileID: 482980}
-  - {fileID: 463784}
-  - {fileID: 469656}
-  - {fileID: 480054}
-  - {fileID: 499726}
-  - {fileID: 459834}
-  - {fileID: 440830}
-  - {fileID: 463732}
-  - {fileID: 474262}
-  - {fileID: 463816}
-  - {fileID: 485410}
-  - {fileID: 453424}
+  - {fileID: 416498}
+  - {fileID: 406384}
+  - {fileID: 424308}
+  - {fileID: 430654}
+  - {fileID: 412672}
+  - {fileID: 482566}
+  - {fileID: 469048}
+  - {fileID: 454272}
+  - {fileID: 462956}
+  - {fileID: 440592}
+  - {fileID: 458672}
+  - {fileID: 466530}
+  - {fileID: 454130}
+  - {fileID: 469878}
+  - {fileID: 418054}
+  - {fileID: 437672}
+  - {fileID: 453138}
+  - {fileID: 471060}
+  - {fileID: 403146}
+  - {fileID: 488754}
+  - {fileID: 429612}
+  - {fileID: 408718}
+  - {fileID: 447104}
+  - {fileID: 420692}
+  - {fileID: 401404}
+  - {fileID: 461286}
+  - {fileID: 473566}
+  - {fileID: 422338}
+  - {fileID: 416014}
+  - {fileID: 496342}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 29.803894, y: 109.291412, z: 0}
-    m_Extent: {x: 281.69577, y: 369.422394, z: 0}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

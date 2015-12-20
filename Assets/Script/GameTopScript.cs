@@ -101,9 +101,9 @@ public class GameTopScript : MonoBehaviour {
         charaSelectPanelDefaultPosition = charaSelectPanel.transform.localPosition;
         iTween.MoveTo(charaSelectPanel, iTween.Hash(
                     "position", new Vector3(0, 0, 0),
-                    "time", 0.2f, 
+                    "time", 0.2f,
                     "islocal", true,
-                    "oncomplete", "CompleteHandler", 
+                    "oncomplete", "CompleteHandler",
                     "oncompletetarget", gameObject
                     ));
 
@@ -122,9 +122,9 @@ public class GameTopScript : MonoBehaviour {
         stageSelectPanelDefaultPosition = stageSelectPanel.transform.localPosition;
         iTween.MoveTo(stageSelectPanel, iTween.Hash(
                     "position", new Vector3(0, 0, 0),
-                    "time", 0.2f, 
+                    "time", 0.2f,
                     "islocal", true,
-                    "oncomplete", "CompleteHandler", 
+                    "oncomplete", "CompleteHandler",
                     "oncompletetarget", gameObject
                     ));
 
@@ -135,9 +135,9 @@ public class GameTopScript : MonoBehaviour {
     IEnumerator closeStageSelect() {
         iTween.MoveTo(stageSelectPanel, iTween.Hash(
                     "position", stageSelectPanelDefaultPosition,
-                    "time", 0.2f, 
+                    "time", 0.2f,
                     "islocal", true,
-                    "oncomplete", "CompleteHandler", 
+                    "oncomplete", "CompleteHandler",
                     "oncompletetarget", gameObject
                     ));
 
@@ -409,7 +409,6 @@ public class GameTopScript : MonoBehaviour {
             Debug.Log(response);
 
             for (int i = 0; i < jsonCharaData.Count; i++) {
-                Debug.Log("AAAAAAAAAAAAAAAAAAAAA");
                 var json = (IDictionary) jsonCharaData[i];
                 string cID = (string) json["id"];
                 string cName = (string) json["name"];
@@ -423,8 +422,6 @@ public class GameTopScript : MonoBehaviour {
                     cShowFlg = 1;
                 }
 
-                Debug.Log("BBBBBBBBBBBBBBBBBBBBBBBB");
-
                 //存在チェック
                 bool isUpdate = false;
                 foreach (DataRow row in characterTable.Rows) {
@@ -433,17 +430,14 @@ public class GameTopScript : MonoBehaviour {
                         break;
                     }
                 }
-                Debug.Log("CCCCCCCCCCCCCCCCCCCCCCCCCC");
 
                 //アップデート
                 if (isUpdate) {
-                Debug.Log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
                     string query = "update Character set name='"+cName+"', skill_number="+cSkillNumber+", skill_name='"+cSkillName+"', skill_type="+cSkillType+", skill_description='"+cSkillDescription+"', skill_plus_description='"+cSkillPlusDescription+"', show_flg="+cShowFlg+" where id="+cID;
                     Debug.Log(query);
                     sqlDB.ExecuteNonQuery(query);
                 //インサート
                 } else {
-                Debug.Log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     string query = "insert into Character(id, name, skill_number, skill_name, skill_description, skill_plus_description, show_flg) values("+cID+",'"+cName+"',"+cSkillNumber+",'"+cSkillName+"','"+cSkillDescription+"','"+cSkillPlusDescription+"',"+cShowFlg+")";
                     Debug.Log(query);
                     sqlDB.ExecuteNonQuery(query);
@@ -539,7 +533,8 @@ public class GameTopScript : MonoBehaviour {
             }
 
             //キャラクター系設定
-            selectQuery = "select * from Character where get_flg = 1";
+            //selectQuery = "select * from Character where get_flg = 1";
+            selectQuery = "select * from Character";
             characterTable = sqlDB.ExecuteQuery(selectQuery);
             string charaName = "";
             string skName = "";
@@ -549,6 +544,7 @@ public class GameTopScript : MonoBehaviour {
 
             //現在選択中のキャラ
             for (int i = 0; i < characterTable.Rows.Count; i++) {
+                    Debug.Log(characterTable.Rows[i]["name"]);
                 if ((int)characterTable.Rows[i]["select_flg"] == 1) {
                     selectedCharaNumber = (int) characterTable.Rows[i]["id"];
                     charaName = (string) characterTable.Rows[i]["name"];
@@ -559,7 +555,7 @@ public class GameTopScript : MonoBehaviour {
                     skDescription = (string) characterTable.Rows[i]["skill_description"];
 
                     selectedCharaTableNumber = i;
-                    break;
+                    //break;
                 }
             }
 
