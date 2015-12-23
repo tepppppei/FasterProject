@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 529336600, guid: 289bab7cc27a12745b5df9b71d7b06c4, type: 3}
+  m_Name: chara_12_atlas
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 598981ff0f2144ad8a0783a27e7d8143, type: 2}
+  uvs:
+  - serializedVersion: 2
+    x: .517578125
+    y: .38671875
+    width: .08203125
+    height: .21484375
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: .41015625
+    height: .814453125
+  - serializedVersion: 2
+    x: 0
+    y: .81640625
+    width: .0888671875
+    height: .1796875
+  - serializedVersion: 2
+    x: .411132812
+    y: 0
+    width: .194335938
+    height: .384765625
+  - serializedVersion: 2
+    x: .606445312
+    y: .556640625
+    width: .0947265625
+    height: .201171875
+  - serializedVersion: 2
+    x: .506835938
+    y: .712890625
+    width: .0986328125
+    height: .23046875
+  - serializedVersion: 2
+    x: .606445312
+    y: 0
+    width: .219726562
+    height: .2421875
+  - serializedVersion: 2
+    x: .606445312
+    y: .244140625
+    width: .104492188
+    height: .310546875
+  - serializedVersion: 2
+    x: .411132812
+    y: .712890625
+    width: .0947265625
+    height: .2578125
+  - serializedVersion: 2
+    x: .827148438
+    y: 0
+    width: .10546875
+    height: .220703125
+  - serializedVersion: 2
+    x: .411132812
+    y: .38671875
+    width: .10546875
+    height: .32421875
+  textureGUIDs:
+  - bd7031030a1ad435db9b6e75bbaa728f
+  - 4c325f53a8e1e4b4d9d1f1b08938e9f5
+  - 009d83352989742d2b689bb09bea7343
+  - 9c1ac145c481a4861b8713aa5c187a47
+  - 91feb7c57c000451592a57d09fede63f
+  - e4d5a1f5b55d24b30b1e6227da7cf6f6
+  - 3e168d665797f429e902a8bac98bbf8d
+  - e9dd863702c1e42a0a1a1d7fd3582e0f
+  - 74515bf9710434e96bdd9dc2f640bb72
+  - 6a3adbfc3f5cb4b8ca694c84a6ce7933
+  - 3b7bb89e0910f4035b9ef16deb33d7f9
+  textureSizes:
+  - {x: 84, y: 110}
+  - {x: 420, y: 417}
+  - {x: 91, y: 92}
+  - {x: 199, y: 197}
+  - {x: 97, y: 103}
+  - {x: 101, y: 118}
+  - {x: 225, y: 124}
+  - {x: 107, y: 159}
+  - {x: 97, y: 132}
+  - {x: 108, y: 113}
+  - {x: 108, y: 166}
+  defaultPivotOffsets:
+  - {x: .20892857, y: .431590885}
+  - {x: .0321428552, y: -.321043164}
+  - {x: -.0535714254, y: .431861401}
+  - {x: 0, y: 0}
+  - {x: .176785707, y: .411173731}
+  - {x: -.321428567, y: .405803561}
+  - {x: .401785731, y: .111787163}
+  - {x: .0110072689, y: .431481481}
+  - {x: .139285713, y: .431067348}
+  - {x: -.364285707, y: .355847031}
+  - {x: -.130932793, y: .442592591}
+  textureNames:
+  - slice01_01
+  - head
+  - slice12_12
+  - slice10_10
+  - slice11_11
+  - slice03_03
+  - slice06_06
+  - slice08_08
+  - slice04_04
+  - slice05_05
+  - slice09_09
+  texturePaths:
+  - Assets/Resources/Image/Character/Chara12/slice01_01.png
+  - Assets/Resources/Image/Character/Chara12/head.png
+  - Assets/Resources/Image/Character/Chara12/slice12_12.png
+  - Assets/Resources/Image/Character/Chara12/slice10_10.png
+  - Assets/Resources/Image/Character/Chara12/slice11_11.png
+  - Assets/Resources/Image/Character/Chara12/slice03_03.png
+  - Assets/Resources/Image/Character/Chara12/slice06_06.png
+  - Assets/Resources/Image/Character/Chara12/slice08_08.png
+  - Assets/Resources/Image/Character/Chara12/slice04_04.png
+  - Assets/Resources/Image/Character/Chara12/slice05_05.png
+  - Assets/Resources/Image/Character/Chara12/slice09_09.png
+  lastBuildID: 20151218162314328
+  needsRebuilt: 0
+  dataVersion: 4
+  maxAtlasSize: 1024
+  padding: 1
+  forceSquare: 0
