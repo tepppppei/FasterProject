@@ -555,7 +555,7 @@ public class GameTopScript : MonoBehaviour {
                     skDescription = (string) characterTable.Rows[i]["skill_description"];
 
                     selectedCharaTableNumber = i;
-                    //break;
+                    break;
                 }
             }
 
