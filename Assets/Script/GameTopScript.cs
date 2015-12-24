@@ -34,7 +34,6 @@ public class GameTopScript : MonoBehaviour {
 
     //トップボタン一覧
     public GameObject[] topButtonList;
-
     public GameObject[] difficultyButtonList;
 
     public GameObject stageSelectPanel;
@@ -42,7 +41,14 @@ public class GameTopScript : MonoBehaviour {
     public GameObject scrollViewContent;
     public GameObject charaSelectPanel;
     public GameObject charaHeadImage;
+    public GameObject gachaPanel;
     public Text charaNameText;
+
+    //ガチャ実行時のオブジェクト
+    public GameObject[] gachaCloseObjectList;
+    public GameObject gachaCharacterObject;
+    public GameObject gachaCharacterName;
+    private int gachaCount = 0;
 
     //シーン変更時のオブジェクト
     public GameObject[] sceneChangeObject;
@@ -50,6 +56,7 @@ public class GameTopScript : MonoBehaviour {
     //初期位置
     private Vector3 stageSelectPanelDefaultPosition; 
     private Vector3 charaSelectPanelDefaultPosition;
+    private Vector3 gachaPanelDefaultPosition;
 
     //選択中のキャラ番号
     private int selectedCharaNumber;
@@ -87,6 +94,16 @@ public class GameTopScript : MonoBehaviour {
     //キャラ選択クローズ用
     public void closeChara() {
         StartCoroutine(closeCharaSelect());
+    }
+
+    //ガチャクローズ用
+    public void closeGacha() {
+        StartCoroutine(closeGachaPanel());
+    }
+
+    //ガチャ遷移用
+    public void gacha() {
+        StartCoroutine(gachaShow());
     }
 
     //キャラ選択画面表示用
@@ -167,6 +184,49 @@ public class GameTopScript : MonoBehaviour {
             iTween.ScaleTo(n, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.05f));
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    //ガチャ閉じる
+    IEnumerator closeGachaPanel() {
+        iTween.MoveTo(gachaPanel, iTween.Hash(
+                    "position", gachaPanelDefaultPosition,
+                    "time", 0.2f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(0.1f);
+
+        foreach (GameObject n in topButtonList) {
+            // 4秒かけて、y軸を3倍に拡大
+            iTween.ScaleTo(n, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.05f));
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    //ガチャ遷移
+    IEnumerator gachaShow() {
+        iTween.MoveTo(charaSelectPanel, iTween.Hash(
+                    "position", charaSelectPanelDefaultPosition,
+                    "time", 0.2f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(0.1f);
+
+        gachaPanelDefaultPosition = gachaPanel.transform.localPosition;
+        iTween.MoveTo(gachaPanel, iTween.Hash(
+                    "position", new Vector3(0, 0, 0),
+                    "time", 0.2f, 
+                    "islocal", true,
+                    "oncomplete", "CompleteHandler", 
+                    "oncompletetarget", gameObject
+                    ));
+
+        yield return new WaitForSeconds(0.1f);
     }
 
     public void stageChange(string difficulty) {
@@ -533,8 +593,8 @@ public class GameTopScript : MonoBehaviour {
             }
 
             //キャラクター系設定
-            //selectQuery = "select * from Character where get_flg = 1";
-            selectQuery = "select * from Character";
+            selectQuery = "select * from Character where get_flg = 1";
+            //selectQuery = "select * from Character";
             characterTable = sqlDB.ExecuteQuery(selectQuery);
             string charaName = "";
             string skName = "";
@@ -557,6 +617,18 @@ public class GameTopScript : MonoBehaviour {
                     selectedCharaTableNumber = i;
                     break;
                 }
+            }
+
+            if (selectedCharaTableNumber == null) {
+                selectedCharaNumber = (int) characterTable.Rows[0]["id"];
+                charaName = (string) characterTable.Rows[0]["name"];
+                skName = (string) characterTable.Rows[0]["skill_name"];
+                charaLevel = (string) characterTable.Rows[0]["get_count"].ToString();
+                growth = (string) characterTable.Rows[0]["growth"];
+                growth = "35";
+                skDescription = (string) characterTable.Rows[0]["skill_description"];
+
+                selectedCharaTableNumber = 0;
             }
 
             //キャラ画像設定
@@ -647,5 +719,70 @@ public class GameTopScript : MonoBehaviour {
 
         query = "update Character set select_flg=1 where id = " + selectedCharaNumber;
         sqlDB.ExecuteNonQuery(query);
+    }
+
+    public void gachaStart() {
+        if (gachaCount >= 1) {
+
+
+        }
+
+        StartCoroutine(gachaAction());
+    }
+
+    //ガチャ実行
+    IEnumerator gachaAction() {
+        //キャラ選定
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string selectQuery = "select * from Character";
+        DataTable allCharacterTable = sqlDB.ExecuteQuery(selectQuery);
+        int gachaCharaNumber = (int) UnityEngine.Random.Range(0, (allCharacterTable.Rows.Count - 1));
+        Debug.Log("NUMBER:" + gachaCharaNumber);
+        Debug.Log(allCharacterTable.Rows[gachaCharaNumber]["name"] + "GET!!");
+
+
+        //取得チェック
+        if ((int) allCharacterTable.Rows[gachaCharaNumber]["get_flg"] == 1) {
+        //取得済みの場合
+
+
+        } else {
+        //未取得の場合
+
+        }
+
+        //スタートボタン系を削除
+        foreach (GameObject n in gachaCloseObjectList) {
+            iTween.ScaleTo(n, iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.05f));
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        GameObject gachaEffect = Resources.Load <GameObject> ("Effect/Gacha");
+        GameObject gachaEffectObject = GameObject.Instantiate(gachaEffect) as GameObject;
+        gachaEffectObject.transform.SetParent (gachaPanel.transform, false);
+        yield return new WaitForSeconds(1.3f);
+
+        gachaCharacterObject.GetComponent<Animation>().Play("Open");
+
+        yield return new WaitForSeconds(1.0f);
+        GameObject charaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + (gachaCharaNumber+1));
+        GameObject charaObject = GameObject.Instantiate(charaPrefab) as GameObject;
+        charaObject.transform.localScale = new Vector3(0, 0, 0);
+        charaObject.transform.localPosition = new Vector3(-4.0f, 35.0f, -100.0f);
+        charaObject.GetComponent<Rigidbody2D>().isKinematic = true;
+
+        charaObject.transform.SetParent (gachaPanel.transform, false);
+        //位置とスケールを設定
+
+        yield return new WaitForSeconds(2.0f);
+        Destroy(gachaEffectObject, 0.8f);
+        Destroy(gachaCharacterObject, 0.8f);
+
+        iTween.ScaleTo(charaObject, iTween.Hash("x", 0.2f, "y", 0.2f, "z", 0.2f, "time", 1.3f));
+        GameObject childObject = gachaCharacterName.transform.FindChild("Text").gameObject;
+        childObject.GetComponent<Text>().text = allCharacterTable.Rows[gachaCharaNumber]["name"] + "GET!!";
+        iTween.ScaleTo(gachaCharacterName, iTween.Hash("x", 1.0f, "y", 1.0f, "z", 1.0f, "time", 1.3f));
+
+        yield return new WaitForSeconds(2.0f);
     }
 }
