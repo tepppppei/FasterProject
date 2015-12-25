@@ -19,10 +19,17 @@ public class GameTopScript : MonoBehaviour {
 
     //キャラテーブル
     private DataTable characterTable;
+    //ステータステーブル
+    private DataTable statusTable;
 
     private string currentDifficulty = "easy";
 
+    //DB
+    SqliteDatabase sqlDB;
+
     void Start () {
+        sqlDB = new SqliteDatabase("UserStatus.db");
+
         StartCoroutine(characterInit());
         StartCoroutine(databaseInit());
     }
@@ -48,6 +55,9 @@ public class GameTopScript : MonoBehaviour {
     public GameObject[] gachaCloseObjectList;
     public GameObject gachaCharacterObject;
     public GameObject gachaCharacterName;
+    public GameObject gachaCharacterLevel;
+    public Text gachaCharacterLevelText;
+    public GameObject gachaCharacterGrowth;
     private int gachaCount = 0;
 
     //シーン変更時のオブジェクト
@@ -70,6 +80,9 @@ public class GameTopScript : MonoBehaviour {
     public Text skillDescriptionText;
     public GameObject growthProgressObject;
 
+    //canvas
+    public GameObject canvasObject;
+
     //ステージ選択表示用
     public void sceneStageSelect() {
         //ステージ選択パネルを表示する
@@ -82,6 +95,9 @@ public class GameTopScript : MonoBehaviour {
 
     //キャラ選択表示用
     public void sceneCharaSelect() {
+        string selectQuery = "select * from Character where get_flg = 1";
+        characterTable = sqlDB.ExecuteQuery(selectQuery);
+
         //ステージ選択パネルを表示する
         StartCoroutine(showCharaSelect());
     }
@@ -99,6 +115,7 @@ public class GameTopScript : MonoBehaviour {
     //ガチャクローズ用
     public void closeGacha() {
         StartCoroutine(closeGachaPanel());
+        initGachaPanel();
     }
 
     //ガチャ遷移用
@@ -461,7 +478,7 @@ public class GameTopScript : MonoBehaviour {
             var jsonCharaData = (IList) jsonFullData["character_list"];
 
             //キャラクターデータを取得
-            SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+            //SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
             //Statusが無ければインサート
             string selectQuery = "select * from Character";
             DataTable characterTable = sqlDB.ExecuteQuery(selectQuery);
@@ -536,7 +553,7 @@ public class GameTopScript : MonoBehaviour {
             stageNormal = int.Parse(json["normal"].ToString());
             stageHard = int.Parse(json["hard"].ToString());
 
-            SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+            //SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
 
             // Select
             string selectQuery = "select * from Stage where difficulty = 1";
@@ -548,45 +565,19 @@ public class GameTopScript : MonoBehaviour {
             selectQuery = "select * from Stage where difficulty = 3";
             hardDataTable = sqlDB.ExecuteQuery(selectQuery);
 
+                //DEBUG用
+                string testQuery = "update UserStatus set money = 1000";
+                sqlDB.ExecuteNonQuery(testQuery);
+
             //Statusが無ければインサート
             selectQuery = "select * from UserStatus";
-            DataTable statusTable = sqlDB.ExecuteQuery(selectQuery);
+            statusTable = sqlDB.ExecuteQuery(selectQuery);
             if (statusTable.Rows.Count > 0) {
+
+
                 int baseMoney = (int) statusTable.Rows[0]["money"];
-                string money = baseMoney.ToString();
+                moneyChange(baseMoney);
 
-                Debug.Log("MONEY:" + money);
-
-                GameObject money1 = GameObject.Find("number1").gameObject;
-                GameObject money2 = GameObject.Find("number2").gameObject;
-                GameObject money3 = GameObject.Find("number3").gameObject;
-                GameObject money4 = GameObject.Find("number4").gameObject;
-
-                String m1 = "0";
-                String m2 = "0";
-                String m3 = "0";
-                String m4 = "0";
-
-                if (money.Length >= 4) {
-                    m4 = money.Substring(0, 1);
-                    m3 = money.Substring(1, 1);
-                    m2 = money.Substring(2, 1);
-                    m1 = money.Substring(3, 1);
-                } else if (money.Length >= 3) {
-                    m3 = money.Substring(0, 1);
-                    m2 = money.Substring(1, 1);
-                    m1 = money.Substring(2, 1);
-                } else if (money.Length >= 2) {
-                    m2 = money.Substring(0, 1);
-                    m1 = money.Substring(1, 1);
-                } else {
-                    m1 = money.Substring(0, 1);
-                }
-
-                money1.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m1);
-                money2.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m2);
-                money3.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m3);
-                money4.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m4);
             } else {
                 string query = "insert into UserStatus(user_name, money, created, updated) values('NoName', 0, datetime(), datetime())";
                 sqlDB.ExecuteNonQuery(query);
@@ -599,7 +590,7 @@ public class GameTopScript : MonoBehaviour {
             string charaName = "";
             string skName = "";
             string charaLevel = "";
-            string growth = "";
+            int growth = 0;
             string skDescription = "";
 
             //現在選択中のキャラ
@@ -610,8 +601,7 @@ public class GameTopScript : MonoBehaviour {
                     charaName = (string) characterTable.Rows[i]["name"];
                     skName = (string) characterTable.Rows[i]["skill_name"];
                     charaLevel = (string) characterTable.Rows[i]["get_count"].ToString();
-                    growth = (string) characterTable.Rows[i]["growth"];
-                    growth = "35";
+                    growth = (int) characterTable.Rows[i]["growth"];
                     skDescription = (string) characterTable.Rows[i]["skill_description"];
 
                     selectedCharaTableNumber = i;
@@ -624,8 +614,7 @@ public class GameTopScript : MonoBehaviour {
                 charaName = (string) characterTable.Rows[0]["name"];
                 skName = (string) characterTable.Rows[0]["skill_name"];
                 charaLevel = (string) characterTable.Rows[0]["get_count"].ToString();
-                growth = (string) characterTable.Rows[0]["growth"];
-                growth = "35";
+                growth = (int) characterTable.Rows[0]["growth"];
                 skDescription = (string) characterTable.Rows[0]["skill_description"];
 
                 selectedCharaTableNumber = 0;
@@ -643,10 +632,10 @@ public class GameTopScript : MonoBehaviour {
             selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
             charaNameText.text = charaName;
             levelText.text = "Lv." + charaLevel;
-            growthText.text = growth + "%";
+            growthText.text = growth.ToString() + "%";
             skillNameText.text = "スキル:" + skName;
             skillDescriptionText.text = skDescription;
-            growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
+            growthProgressObject.GetComponent<Image>().fillAmount = (growth / 100.0f);
 
             StartCoroutine(viewStart());
         }
@@ -670,7 +659,8 @@ public class GameTopScript : MonoBehaviour {
                 selectedCharaTableNumber--;
             }
         }
-        selectedCharaNumber = (int)characterTable.Rows[selectedCharaTableNumber]["id"];
+
+        selectedCharaNumber = (int) characterTable.Rows[selectedCharaTableNumber]["id"];
 
         //既存キャラを削除
         iTween.ScaleTo(selectCharaObject, iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.1f));
@@ -680,14 +670,13 @@ public class GameTopScript : MonoBehaviour {
         string charaName = "";
         string skName = "";
         string charaLevel = "";
-        string growth = "";
+        int growth = 0;
         string skDescription = "";
 
         charaName = (string) characterTable.Rows[selectedCharaTableNumber]["name"];
         skName = (string) characterTable.Rows[selectedCharaTableNumber]["skill_name"];
         charaLevel = (string) characterTable.Rows[selectedCharaTableNumber]["get_count"].ToString();
-        growth = (string) characterTable.Rows[selectedCharaTableNumber]["growth"];
-        growth = "35";
+        growth = (int) characterTable.Rows[selectedCharaTableNumber]["growth"];
         skDescription = (string) characterTable.Rows[selectedCharaTableNumber]["skill_description"];
 
         //charaHeadImage.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + selectedCharaNumber + "/head");
@@ -701,10 +690,10 @@ public class GameTopScript : MonoBehaviour {
         selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
         charaNameText.text = charaName;
         levelText.text = "Lv." + charaLevel;
-        growthText.text = growth + "%";
+        growthText.text = growth.ToString() + "%";
         skillNameText.text = "スキル:" + skName;
         skillDescriptionText.text = skDescription;
-        growthProgressObject.GetComponent<Image>().fillAmount = (int.Parse(growth) / 100.0f);
+        growthProgressObject.GetComponent<Image>().fillAmount = (growth / 100.0f);
 
         iTween.ScaleTo(selectCharaObject, iTween.Hash("x", 0.13f, "y", 0.13f, "z", 0.13f, "time", 0.1f));
     }
@@ -713,7 +702,7 @@ public class GameTopScript : MonoBehaviour {
         selectedCharaNumber = (int)characterTable.Rows[selectedCharaTableNumber]["id"];
         charaHeadImage.GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Image/Character/Chara" + selectedCharaNumber + "/head");
 
-        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        //SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
         string query = "update Character set select_flg=0";
         sqlDB.ExecuteNonQuery(query);
 
@@ -722,33 +711,94 @@ public class GameTopScript : MonoBehaviour {
     }
 
     public void gachaStart() {
-        if (gachaCount >= 1) {
+        //SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string selectQuery = "select * from UserStatus";
+        statusTable = sqlDB.ExecuteQuery(selectQuery);
 
+        //お金チェック
+        int money = (int) statusTable.Rows[0]["money"];
+        if (money < 100) {
+            errorMessage("コインが足りません。");
+        } else {
+            //お金を減らす処理
+            money -= 100;
+            string query = "update UserStatus set money = " + money.ToString();
+            sqlDB.ExecuteNonQuery(query);
 
+            iTween.ValueTo(gameObject,iTween.Hash(
+                "from", (money + 100),
+                "to", money,
+                "time",0.5f,
+                "onupdate","moneyChange"
+                ));
+
+            if (gachaCount >= 1) {
+                initGachaPanel();
+            }
+
+            StartCoroutine(gachaAction());
+        }
+    }
+
+    private GameObject temporaryGachaCharacterObject;
+    private void initGachaPanel() {
+        //ガチャで引いたキャラを削除
+        if (temporaryGachaCharacterObject != null) {
+            Destroy(temporaryGachaCharacterObject);
         }
 
-        StartCoroutine(gachaAction());
+        gachaCharacterName.transform.localScale = new Vector3(0, 0, 0);
+        gachaCharacterObject.GetComponent<Animation>().Play("Idle");
+        gachaCharacterObject.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f);
+        gachaCharacterLevel.transform.localScale = new Vector3(0, 0, 0);
+        gachaCharacterGrowth.transform.localScale = new Vector3(0, 0, 0);
     }
 
     //ガチャ実行
+    private int afterLevel = 1;
     IEnumerator gachaAction() {
         //キャラ選定
-        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        //SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
         string selectQuery = "select * from Character";
         DataTable allCharacterTable = sqlDB.ExecuteQuery(selectQuery);
         int gachaCharaNumber = (int) UnityEngine.Random.Range(0, (allCharacterTable.Rows.Count - 1));
         Debug.Log("NUMBER:" + gachaCharaNumber);
         Debug.Log(allCharacterTable.Rows[gachaCharaNumber]["name"] + "GET!!");
 
+        int beforeLevel = 1;
+        int beforeGrowth = 0;
+        int afterGrowth = 0;
 
         //取得チェック
         if ((int) allCharacterTable.Rows[gachaCharaNumber]["get_flg"] == 1) {
         //取得済みの場合
+            beforeLevel = (int) allCharacterTable.Rows[gachaCharaNumber]["get_count"];
+            beforeGrowth = (int) allCharacterTable.Rows[gachaCharaNumber]["growth"];
 
+            if (beforeLevel == 1) {
+                afterLevel = 2;
+            } else if (beforeLevel == 2) {
+                afterLevel = beforeLevel;
+                if (beforeGrowth == 0) {
+                    afterGrowth = 50;
+                } else {
+                    afterLevel = 3;
+                }
+            } else {
+                afterLevel = beforeLevel;
+                if (beforeGrowth < 75) {
+                    afterGrowth = beforeGrowth + 25;
+                } else {
+                    afterLevel = beforeLevel++;
+                }
+            }
 
+            string query = "update Character set get_count = " + afterLevel.ToString() + ",growth = " + afterGrowth.ToString() + " where id = " + (gachaCharaNumber+1).ToString();
+            sqlDB.ExecuteNonQuery(query);
         } else {
         //未取得の場合
-
+            string query = "update Character set get_flg = 1, get_count = 1 where id = " + (gachaCharaNumber+1).ToString();
+            sqlDB.ExecuteNonQuery(query);
         }
 
         //スタートボタン系を削除
@@ -766,23 +816,134 @@ public class GameTopScript : MonoBehaviour {
 
         yield return new WaitForSeconds(1.0f);
         GameObject charaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + (gachaCharaNumber+1));
-        GameObject charaObject = GameObject.Instantiate(charaPrefab) as GameObject;
-        charaObject.transform.localScale = new Vector3(0, 0, 0);
-        charaObject.transform.localPosition = new Vector3(-4.0f, 35.0f, -100.0f);
-        charaObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        temporaryGachaCharacterObject = GameObject.Instantiate(charaPrefab) as GameObject;
+        temporaryGachaCharacterObject.transform.localScale = new Vector3(0, 0, 0);
+        temporaryGachaCharacterObject.transform.localPosition = new Vector3(-4.0f, 35.0f, -100.0f);
+        temporaryGachaCharacterObject.GetComponent<Rigidbody2D>().isKinematic = true;
 
-        charaObject.transform.SetParent (gachaPanel.transform, false);
+        temporaryGachaCharacterObject.transform.SetParent (gachaPanel.transform, false);
         //位置とスケールを設定
 
         yield return new WaitForSeconds(2.0f);
         Destroy(gachaEffectObject, 0.8f);
-        Destroy(gachaCharacterObject, 0.8f);
 
-        iTween.ScaleTo(charaObject, iTween.Hash("x", 0.2f, "y", 0.2f, "z", 0.2f, "time", 1.3f));
+        iTween.ScaleTo(temporaryGachaCharacterObject, iTween.Hash("x", 0.2f, "y", 0.2f, "z", 0.2f, "time", 1.3f));
         GameObject childObject = gachaCharacterName.transform.FindChild("Text").gameObject;
         childObject.GetComponent<Text>().text = allCharacterTable.Rows[gachaCharaNumber]["name"] + "GET!!";
         iTween.ScaleTo(gachaCharacterName, iTween.Hash("x", 1.0f, "y", 1.0f, "z", 1.0f, "time", 1.3f));
+        yield return new WaitForSeconds(0.8f);
+
+        gachaCharacterObject.transform.localScale = new Vector3(0, 0, 0);
+
+        //Lvとゲージを表示
+        gachaCharacterLevelText.text = "Lv." + beforeLevel;
+        iTween.ScaleTo(gachaCharacterLevel, iTween.Hash("x", 0.3f, "y", 0.3f, "z", 0.3f, "time", 0.8f));
+
+        GameObject growthChildObject = gachaCharacterGrowth.transform.FindChild("Progress").gameObject;
+        GameObject growthChildTextObject = gachaCharacterGrowth.transform.FindChild("GrowthText").gameObject;
+        growthChildObject.GetComponent<Image>().fillAmount = (beforeGrowth / 100);
+        growthChildTextObject.GetComponent<Text>().text = beforeGrowth.ToString() + "%";
+        iTween.ScaleTo(gachaCharacterGrowth, iTween.Hash("x", 1.0f, "y", 1.0f, "z", 1.0f, "time", 0.8f));
+        yield return new WaitForSeconds(0.8f);
+
+        if (afterLevel > 1) {
+            if (beforeGrowth < afterGrowth) {
+                iTween.ValueTo(gameObject, iTween.Hash(
+                    "from", beforeGrowth,
+                    "to", afterGrowth,
+                    "time", 0.5f,
+                    "onupdate", "changeGrowthProgress"
+                    ));
+            } else if (afterGrowth == 0) {
+                iTween.ValueTo(gameObject, iTween.Hash(
+                    "from", beforeGrowth,
+                    "to", 100,
+                    "time", 0.5f,
+                    "onupdate", "changeGrowthProgress"
+                    ));
+            }
+        }
+
+
+        //ボタンを元に戻す
+        foreach (GameObject n in gachaCloseObjectList) {
+            iTween.ScaleTo(n, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.05f));
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        gachaCount++;
 
         yield return new WaitForSeconds(2.0f);
+    }
+
+    //ガチャGrowthプログレスバー変更用
+    private void changeGrowthProgress(int num) {
+        GameObject childObject = gachaCharacterGrowth.transform.FindChild("Progress").gameObject;
+        childObject.GetComponent<Image>().fillAmount = (num / 100.00f);
+
+        GameObject growthChildTextObject = gachaCharacterGrowth.transform.FindChild("GrowthText").gameObject;
+        growthChildTextObject.GetComponent<Text>().text = num.ToString() + "%";
+
+        if (num == 100) {
+            gachaCharacterLevelText.text = "Lv." + afterLevel;
+
+            GameObject growthChildObject = gachaCharacterGrowth.transform.FindChild("Progress").gameObject;
+            growthChildObject.GetComponent<Image>().fillAmount = 0;
+            growthChildTextObject.GetComponent<Text>().text = "0%";
+        }
+    }
+
+    //お金の表示を変更する処理
+    private GameObject tempMoney1;
+    private GameObject tempMoney2;
+    private GameObject tempMoney3;
+    private GameObject tempMoney4;
+    private void moneyChange(int baseMoney) {
+        string money = baseMoney.ToString();
+        if (tempMoney1 == null) {
+            tempMoney1 = GameObject.Find("number1").gameObject;
+            tempMoney2 = GameObject.Find("number2").gameObject;
+            tempMoney3 = GameObject.Find("number3").gameObject;
+            tempMoney4 = GameObject.Find("number4").gameObject;
+        }
+
+        String m1 = "0";
+        String m2 = "0";
+        String m3 = "0";
+        String m4 = "0";
+
+        if (money.Length >= 4) {
+            m4 = money.Substring(0, 1);
+            m3 = money.Substring(1, 1);
+            m2 = money.Substring(2, 1);
+            m1 = money.Substring(3, 1);
+        } else if (money.Length >= 3) {
+            tempMoney4.transform.localScale = new Vector3(0, 0, 0);
+            m3 = money.Substring(0, 1);
+            m2 = money.Substring(1, 1);
+            m1 = money.Substring(2, 1);
+        } else if (money.Length >= 2) {
+            tempMoney4.transform.localScale = new Vector3(0, 0, 0);
+            tempMoney3.transform.localScale = new Vector3(0, 0, 0);
+            m2 = money.Substring(0, 1);
+            m1 = money.Substring(1, 1);
+        } else {
+            tempMoney4.transform.localScale = new Vector3(0, 0, 0);
+            tempMoney3.transform.localScale = new Vector3(0, 0, 0);
+            tempMoney2.transform.localScale = new Vector3(0, 0, 0);
+            m1 = money.Substring(0, 1);
+        }
+
+        tempMoney1.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m1);
+        tempMoney2.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m2);
+        tempMoney3.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m3);
+        tempMoney4.GetComponent<Image>().sprite = Resources.Load <Sprite> ("Prefab/Number/" + "number_" + m4);
+    }
+
+    private void errorMessage(string mes) {
+        GameObject errorPrefab = (GameObject)Resources.Load("Prefab/Canvas/ErrorMessage");
+        errorPrefab.GetComponent<Text>().text = mes;
+        GameObject errorObj = GameObject.Instantiate(errorPrefab) as GameObject;
+        errorObj.transform.SetParent (canvasObject.transform, false);
     }
 }
