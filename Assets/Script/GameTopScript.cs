@@ -628,7 +628,7 @@ public class GameTopScript : MonoBehaviour {
             selectCharaObject.transform.SetParent (charaSelectPanel.transform, false);
             //位置とスケールを設定
             selectCharaObject.transform.localScale = new Vector3(0.13f, 0.13f, 0.13f);
-            selectCharaObject.transform.localPosition = new Vector3(-4.0f, 118.0f, -100.0f);
+            selectCharaObject.transform.localPosition = new Vector3(0, 100.0f, -100.0f);
             selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
             charaNameText.text = charaName;
             levelText.text = "Lv." + charaLevel;
@@ -686,7 +686,7 @@ public class GameTopScript : MonoBehaviour {
         //Canvasの子要素として登録する
         selectCharaObject.transform.SetParent (charaSelectPanel.transform, false);
         //位置とスケールを設定
-        selectCharaObject.transform.localPosition = new Vector3(-4.0f, 118.0f, -100.0f);
+        selectCharaObject.transform.localPosition = new Vector3(0, 100.0f, -100.0f);
         selectCharaObject.GetComponent<Rigidbody2D>().isKinematic = true;
         charaNameText.text = charaName;
         levelText.text = "Lv." + charaLevel;
@@ -818,7 +818,7 @@ public class GameTopScript : MonoBehaviour {
         GameObject charaPrefab = Resources.Load <GameObject> ("Prefab/Chara/Character" + (gachaCharaNumber+1));
         temporaryGachaCharacterObject = GameObject.Instantiate(charaPrefab) as GameObject;
         temporaryGachaCharacterObject.transform.localScale = new Vector3(0, 0, 0);
-        temporaryGachaCharacterObject.transform.localPosition = new Vector3(-4.0f, 35.0f, -100.0f);
+        temporaryGachaCharacterObject.transform.localPosition = new Vector3(0, 35.0f, -100.0f);
         temporaryGachaCharacterObject.GetComponent<Rigidbody2D>().isKinematic = true;
 
         temporaryGachaCharacterObject.transform.SetParent (gachaPanel.transform, false);
