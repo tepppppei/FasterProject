@@ -36,22 +36,22 @@ public class CameraScript : MonoBehaviour {
 
 */
 
-    	//float aspect = (float)Screen.height / (float)Screen.width;
+        //float aspect = (float)Screen.height / (float)Screen.width;
         float aspect = (float)1024 / (float)Screen.height;
-    	float bgAcpect = height / width;
+        float bgAcpect = height / width;
 
-    	cam = GetComponent<Camera> ();
-    	cam.orthographicSize = (height / 2f / pixelPerUnit);
+        cam = GetComponent<Camera> ();
+        cam.orthographicSize = (height / 2f / pixelPerUnit);
 
 
-    	if (bgAcpect > aspect) {
-    		float bgScale = height / Screen.height;
-    		float camWidth = width / (Screen.width * bgScale);
-    		cam.rect = new Rect ((1f - camWidth) / 2f, 0f, camWidth, 1f);
-    	} else {
-    		float bgScale = width / Screen.width;
-    		float camHeight = height / (Screen.height * bgScale);
-    		cam.rect = new Rect (0f, (1f - camHeight) / 2f, 1f, camHeight);
-    	}
+        if (bgAcpect > aspect) {
+            float bgScale = height / Screen.height;
+            float camWidth = width / (Screen.width * bgScale);
+            cam.rect = new Rect ((1f - camWidth) / 2f, 0f, camWidth, 1f);
+        } else {
+            float bgScale = width / Screen.width;
+            float camHeight = height / (Screen.height * bgScale);
+            cam.rect = new Rect (0f, (1f - camHeight) / 2f, 1f, camHeight);
+        }
     }
 }

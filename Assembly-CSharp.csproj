@@ -172,6 +172,7 @@
      <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_Weapon.cs" />
      <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_WeaponProperties.cs" />
      <Compile Include="Assets\Rise of the Dough\Scripts\ROTD_WeaponUpgrade.cs" />
+     <Compile Include="Assets\Script\AddFloorScript.cs" />
      <Compile Include="Assets\Script\BackgroundScript.cs" />
      <Compile Include="Assets\Script\BattleBackgroundScript.cs" />
      <Compile Include="Assets\Script\BattleCameraScript.cs" />
@@ -194,6 +195,7 @@
      <Compile Include="Assets\Script\JumpBombScript.cs" />
      <Compile Include="Assets\Script\MoveFloorScript.cs" />
      <Compile Include="Assets\Script\NetworkPlayerScript.cs" />
+     <Compile Include="Assets\Script\NewGameStartScript.cs" />
      <Compile Include="Assets\Script\ParticleScript.cs" />
      <Compile Include="Assets\Script\PhotonSystemScript.cs" />
      <Compile Include="Assets\Script\PlayerAnimScript.cs" />
@@ -202,6 +204,7 @@
      <Compile Include="Assets\Script\SceneChangeScript.cs" />
      <Compile Include="Assets\Script\ScreenManager.cs" />
      <Compile Include="Assets\Script\SqliteDatabase.cs" />
+     <Compile Include="Assets\Script\StarScript.cs" />
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Animal\Animal.cs" />
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Animal\Bird.cs" />
      <Compile Include="Assets\UniArt.PixelScifiLandscape\Sample\Scripts\Animal\Bird_SoundPlayer.cs" />
@@ -235,17 +238,11 @@
      <None Include="Assets\Photon Unity Networking\Demos\DemoPickup\Assets\3dFont\3dText.shader" />
      <None Include="Assets\Photon Unity Networking\readme.txt" />
      <None Include="Assets\Photon Unity Networking\changelog.txt" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Analytics">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Photon3Unity3D">
  <HintPath>/Users/shimajiriteppei/Desktop/UnityWorkSpace/FasterProject/Assets/Plugins/Photon3Unity3D.dll</HintPath>

@@ -35,7 +35,7 @@ public class CharaScript : MonoBehaviour {
             //this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
         } else if(collision.gameObject.tag == "Floor"){
             if (!isOnMoveFloor) {
-                gameStartScript.correctCharaPositionX();
+                //gameStartScript.correctCharaPositionX();
             }
         } else if(collision.gameObject.tag == "Rock"){
             gameStartScript.goBack();
