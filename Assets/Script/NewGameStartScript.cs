@@ -14,9 +14,11 @@ public class NewGameStartScript : MonoBehaviour {
     private int limitTime = 60;
     private int basePoint = 2;
     private float baseSpeed = 1.0f;
+    private int maxFloorNumber = 8;
 
     private int point = 0;
     private float timeleft = 10.0f;
+    private bool checkGroundFlg = false;
 
     private int stageNumber = 1;
     private int difficultyType = 1;
@@ -26,13 +28,6 @@ public class NewGameStartScript : MonoBehaviour {
 
     private GameObject chara;
     public SpriteRenderer sr;
-    private GameObject floorPrefab;
-    private GameObject bombPrefab;
-    private GameObject jumpBombPrefab;
-    private GameObject moveFloorPrefab;
-    private GameObject rockPrefab;
-    private GameObject wallPrefab;
-    private GameObject goalStarPrefab;
     public LayerMask groundlayer;
 
     //ゲームスタート系
@@ -41,14 +36,14 @@ public class NewGameStartScript : MonoBehaviour {
 
     //ゲーム終了系
     public GameObject panelObject;
-    //順次表示する
-    public GameObject[] endObject;
-    //ゲームクリア系
-    public GameObject clearDialogObject;
-    public GameObject completeObject;
-    public GameObject resultDialogObject;
-    public GameObject[] starObject;
-    public GameObject[] endButtonObject;
+    public GameObject endDialogObject;
+    public GameObject endTitleObject;
+    public GameObject endScoreObject;
+    public GameObject endHighScoreObject;
+    public GameObject endCoinObject;
+    public Text endCoinText;
+    public GameObject endMenuButton;
+    public GameObject endRetryButton;
 
     //canvas系
     public GameObject[] timeObject;
@@ -57,36 +52,31 @@ public class NewGameStartScript : MonoBehaviour {
     public Text scoreTextObject;
     public Text speedTextObject;
 
+    //CameraScript
+    public GameObject cameraObject;
+    private CameraScript cameraScript;
+
+    //BGM
+    public AudioSource bgmObject;
+
     //ゲームスタートフラグ
     private bool startFlg = false;
-    //キャラの移動回数
-    private int charaMoveCount = 0;
     //入力受付
     private bool isMove = false;
     private int jumpCount = 0;
     private Vector3 touchPos;
-    //現在何番目までブロックを作ったか
-    private int blockCount = 0;
-    //初回ブロック作成フラグ
-    private bool firstCreateFlg = false;
     //接地フラグ
     private bool isGrounded = true;
-    //戻りフラグ
-    private bool isBack = false;
-    //岩フラグ
-    private bool isRock = false;
-    private int rockNumber = 0;
-    //MAXどこまで進んだか
-    private int maxMoveCount = 0;
     //キャラの初期Ｘ値
     private float charaDefaultPositionX;
     //時間
     private DateTime startTime;
     //残りHP
     private int hp = 3;
-    //ゴール接地フラグ
-    private bool goalAddFlg = false;
     private int cd;
+    //ダメージフラグ
+    private bool damageFlg = false;
+    private int damageNumber = 1;
 
     //スキル設定系
     private bool skillIntervalFlg = false;
@@ -126,20 +116,15 @@ public class NewGameStartScript : MonoBehaviour {
 
             //キャラを落ちないように設定
             chara.GetComponent<Rigidbody2D>().isKinematic = true;
-            // プレハブを取得
-            floorPrefab = (GameObject)Resources.Load("Prefab/FloorCube");
-            bombPrefab = (GameObject)Resources.Load("Prefab/Bomb");
-            jumpBombPrefab = (GameObject)Resources.Load("Prefab/JumpBomb");
-            moveFloorPrefab = (GameObject)Resources.Load("Prefab/FloorMove");
-            rockPrefab = (GameObject)Resources.Load("Prefab/FloorRock");
-            wallPrefab = (GameObject)Resources.Load("Prefab/FloorWall");
-            goalStarPrefab = (GameObject)Resources.Load("Prefab/GoalStar");
 
             sr = chara.GetComponent<SpriteRenderer>();
             charaDefaultPositionX = chara.transform.localPosition.x;
 
             StartCoroutine(gameStart());
         }
+
+        //CameraScriptを取得
+        cameraScript = (CameraScript) cameraObject.GetComponent<CameraScript>();
     }
 
     IEnumerator viewStart() {
@@ -163,7 +148,10 @@ public class NewGameStartScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (startFlg) {
+        //時間更新
+        CalcRealDeltaTime();
+
+        if (startFlg && !damageFlg) {
             if (skillIntervalFlg) {
                 float amo = 1.0f / skillWaitTime * Time.deltaTime;
                 skillButtonCoverObject.GetComponent<Image>().fillAmount -= amo;
@@ -180,41 +168,86 @@ public class NewGameStartScript : MonoBehaviour {
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 float swipeDistanceY = releasePos.y - touchPos.y;
 
-                //接地判定
-                isGrounded = Physics2D.Linecast(
-                        chara.transform.localPosition, chara.transform.localPosition - chara.transform.up * 1.2f, groundlayer);
-                if (isGrounded) {
-                    jumpCount = 0;
-                }
-
-                if (jumpCount <= 1 && worldPos.y <= 2.3f) {
-                    jump(Vector2.up * 600f);
+                if (swipeDistanceY < -35) {
+                    sliding();
                     touchTrueEffect(worldPos.x, worldPos.y);
-                } else if (swipeDistanceY < -35) {
+                } else if (jumpCount <= 1 && worldPos.y <= 2.3f) {
+                    jump(Vector2.up * 600f);
                     touchTrueEffect(worldPos.x, worldPos.y);
                 }
             }
 
             chara.transform.Translate(new Vector2((moveSpeed * baseSpeed), 0.0f * Time.deltaTime));
+            if (cameraScript.moveOffsetX != (moveSpeed * baseSpeed)) {
+                cameraScript.moveOffsetX = (moveSpeed * baseSpeed);
+            }
+
+            //接地判定
+            isGrounded = Physics2D.Linecast(
+                    chara.transform.position, chara.transform.position - chara.transform.up * 1.2f, groundlayer);
+            if (checkGroundFlg && isGrounded && jumpCount != 0) {
+                chara.GetComponent<Animation>().Play("Idle");
+                checkGroundFlg = false;
+                jumpCount = 0;
+            }
 
             //point増加
             addScore((int)(basePoint * baseSpeed));
 
-            //だいたい1秒ごとに処理を行う
-            timeleft -= Time.deltaTime;
+            timeleft -= realDeltaTime;
             if (timeleft <= 0.0) {
                 timeleft = 10.0f;
 
-                baseSpeed += 0.5f;
+                baseSpeed += 0.1f;
+
+                Time.timeScale = baseSpeed;
                 speedTextObject.text = "速度×" + baseSpeed.ToString();
+
+                errorMessage("スピードアップ！");
+                //BGMのピッチをあげる
+                bgmObject.pitch = 1.0f + 0.1f;
+            }
+
+            if (hp <= 0) {
+                goal();
             }
         }
     }
 
+    // Update is called once per frame
+    void FixedUpdate() {
+        if (startFlg) {
+        }
+    }
+
     //ジャンプ
+    private float charaAfterPositionY = 0;
     private void jump(Vector2 force) {
         jumpCount++;
+        if (jumpCount == 1) {
+            Invoke("checkGround", 0.4f);
+        }
+
+        chara.GetComponent<Animation>().Play("Jump");
         chara.GetComponent<Rigidbody2D>().AddForce(force);
+    }
+
+    private void sliding() {
+        Invoke("stopSliding", 0.8f);
+        chara.GetComponent<Rigidbody2D>().isKinematic = true;
+        chara.GetComponent<BoxCollider2D>().isTrigger = true;
+
+        chara.GetComponent<Animation>().Play("Sliding");
+    }
+    //スライディング終了
+    private void stopSliding() {
+        chara.GetComponent<Rigidbody2D>().isKinematic = false;
+        chara.GetComponent<BoxCollider2D>().isTrigger = false;
+        chara.GetComponent<Animation>().Play("Idle");
+    }
+
+    private void checkGround() {
+        checkGroundFlg = true;
     }
 
     //移動OKタッチエフェクト
@@ -239,7 +272,7 @@ public class NewGameStartScript : MonoBehaviour {
 
     void badMove() {
         isMove = true;
-        iTween.ValueTo(gameObject,iTween.Hash(
+        iTween.ValueTo(gameObject, iTween.Hash(
                     "from",0,
                     "to",0.5f,
                     "time",0.2f,
@@ -256,8 +289,6 @@ public class NewGameStartScript : MonoBehaviour {
         //chara.GetComponent<SkinnedMeshRenderer>().material.tintColor = new Color(1, 1, 1, 1.0f);
         chara.GetComponent<SkinnedMeshRenderer>().material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
         iTween.Stop(gameObject);
-        Debug.Log("IS MOVEをFALSEにする");
-        isMove = false;
     }
 
     void ValueChange(float value){
@@ -301,45 +332,137 @@ public class NewGameStartScript : MonoBehaviour {
 
     }
 
-    IEnumerator gameFailed() {
-        //GameObjectを生成、生成したオブジェクトを変数に代入
-        GameObject panelPrefab = (GameObject)Instantiate(panelObject); 
-        panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
-        //Canvasの子要素として登録する 
-        panelPrefab.transform.SetParent (canvasObject.transform, false);
-        yield return new WaitForSeconds(0.5f);
-
-        //end object群を全部表示
-        GameObject endPrefab;
-        for (int i = 0; i < endObject.Length; i++) {
-            endPrefab = (GameObject)Instantiate(endObject[i]); 
-            float scaleX = endPrefab.transform.localScale.x;
-            float scaleY = endPrefab.transform.localScale.y;
-            float scaleZ = endPrefab.transform.localScale.z;
-
-            endPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
-
-            //Canvasの子要素として登録する 
-            endPrefab.transform.SetParent (canvasObject.transform, false);
-            // 4秒かけて、y軸を3倍に拡大
-            if (endPrefab.GetComponent<Text>() == null) {
-                iTween.ScaleTo(endPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
-            } else {
-                iTween.ScaleTo(endPrefab, iTween.Hash("x", 0.3f, "y", 0.3f, "z", 0.3f, "time", 0.3f));
-            }
-
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-
     public void goal() {
         if (startFlg) {
             startFlg = false;
+            Time.timeScale = 1;
             StartCoroutine(gameCleared());
         }
     }
 
     IEnumerator gameCleared() {
+        SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
+        string selectQuery = "select * from Stage where stage_number = " + stageNumber + " and difficulty = " + difficultyType;
+        DataTable stageTable = sqlDB.ExecuteQuery(selectQuery);
+        bool highScoreFlg = false;
+        if (stageTable.Rows.Count == 0) {
+            highScoreFlg = true;
+        } else {
+            int beforeScore = (int)stageTable.Rows[0]["score"];
+            if (beforeScore < point) {
+                highScoreFlg = true;
+            }
+        }
+
+        //panelの表示
+        GameObject panelPrefab = (GameObject)Instantiate(panelObject);
+        panelPrefab.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0);
+        panelPrefab.transform.SetParent (canvasObject.transform, false);
+        yield return new WaitForSeconds(0.2f);
+
+        //ダイアログの表示
+        GameObject dialogPrefab = (GameObject)Instantiate(endDialogObject);
+        float scaleX = dialogPrefab.transform.localScale.x;
+        float scaleY = dialogPrefab.transform.localScale.y;
+        float scaleZ = dialogPrefab.transform.localScale.z;
+        dialogPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        dialogPrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(dialogPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.2f);
+
+        //タイトルの表示
+        GameObject endTitlePrefab = (GameObject)Instantiate(endTitleObject);
+        scaleX = endTitlePrefab.transform.localScale.x;
+        scaleY = endTitlePrefab.transform.localScale.y;
+        scaleZ = endTitlePrefab.transform.localScale.z;
+        endTitlePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        endTitlePrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(endTitlePrefab, iTween.Hash("x", scaleX, "y", scaleY, "z", scaleZ, "time", 0.3f));
+        yield return new WaitForSeconds(0.2f);
+
+        //スコアの表示
+        GameObject scorePrefab = (GameObject)Instantiate(endScoreObject);
+        scaleX = scorePrefab.transform.localScale.x;
+        scaleY = scorePrefab.transform.localScale.y;
+        scaleZ = scorePrefab.transform.localScale.z;
+        scorePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        scorePrefab.transform.SetParent (canvasObject.transform, false);
+        //スコアのテキストを変更
+        GameObject scoreText = scorePrefab.transform.FindChild("ScoreText").gameObject;
+        scoreText.GetComponent<Text>().text = point.ToString();
+        iTween.ScaleTo(scorePrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.2f);
+
+        //ハイスコアの表示
+        if (highScoreFlg) {
+            GameObject highScorePrefab = (GameObject)Instantiate(endHighScoreObject);
+            scaleX = highScorePrefab.transform.localScale.x;
+            scaleY = highScorePrefab.transform.localScale.y;
+            scaleZ = highScorePrefab.transform.localScale.z;
+            highScorePrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+            highScorePrefab.transform.SetParent (canvasObject.transform, false);
+            iTween.ScaleTo(highScorePrefab, iTween.Hash("x", scaleX, "y", scaleY, "z", scaleZ, "time", 0.3f));
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        //コインの表示
+        GameObject coinPrefab = (GameObject)Instantiate(endCoinObject);
+        scaleX = coinPrefab.transform.localScale.x;
+        scaleY = coinPrefab.transform.localScale.y;
+        scaleZ = coinPrefab.transform.localScale.z;
+        coinPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        coinPrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(coinPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.2f);
+
+        //コインテキストの表示
+        Text coinTextPrefab = (Text)Instantiate(endCoinText);
+        coinTextPrefab.transform.SetParent (canvasObject.transform, false);
+        //コインの計算
+        int coin = (point / 1000);
+        coinTextPrefab.text = coin.ToString();
+        yield return new WaitForSeconds(0.2f);
+
+        //ボタンの表示
+        GameObject endButtonPrefab = (GameObject)Instantiate(endMenuButton);
+        scaleX = endButtonPrefab.transform.localScale.x;
+        scaleY = endButtonPrefab.transform.localScale.y;
+        scaleZ = endButtonPrefab.transform.localScale.z;
+        endButtonPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        endButtonPrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(endButtonPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.2f);
+
+        endButtonPrefab = (GameObject)Instantiate(endRetryButton);
+        scaleX = endButtonPrefab.transform.localScale.x;
+        scaleY = endButtonPrefab.transform.localScale.y;
+        scaleZ = endButtonPrefab.transform.localScale.z;
+        endButtonPrefab.transform.localScale = new Vector3((scaleX / 3), (scaleY / 3), (scaleZ / 3));
+        endButtonPrefab.transform.SetParent (canvasObject.transform, false);
+        iTween.ScaleTo(endButtonPrefab, iTween.Hash("x", 1, "y", 1, "z", 1, "time", 0.3f));
+        yield return new WaitForSeconds(0.2f);
+
+        string query;
+        //インサート
+        if (stageTable.Rows.Count == 0) {
+            query = "insert into Stage(stage_number, difficulty, star, remaining_time, remaining_hp, score, created, updated) values(" + stageNumber + "," + difficultyType + ",0,0,0," + point + ",datetime(),datetime())";
+            sqlDB.ExecuteNonQuery(query);
+        //アップデート
+        } else {
+            int stageID = (int)stageTable.Rows[0]["id"];
+
+            if (highScoreFlg) {
+                query = "update Stage set star=0, remaining_time=0, remaining_hp=0, score=" + point + ",updated=dateTime() where id=" + stageID;
+                sqlDB.ExecuteNonQuery(query);
+            }
+        }
+
+        //お金アップデート
+        query = "update UserStatus set money = (money + " + coin + ") where id = 1";
+        sqlDB.ExecuteNonQuery(query);
+
+
+        /*
         int clearTime = cd;
 
         //GameObjectを生成、生成したオブジェクトを変数に代入
@@ -518,10 +641,12 @@ public class NewGameStartScript : MonoBehaviour {
 
             yield return new WaitForSeconds(0.2f);
         }
+        */
+            yield return new WaitForSeconds(0.2f);
     }
 
     public void retryGame() {
-        StartCoroutine(viewChange("RaceScene"));
+        StartCoroutine(viewChange("NewRaceScene"));
     }
 
     public void gameTop() {
@@ -689,16 +814,78 @@ public class NewGameStartScript : MonoBehaviour {
     }
 
     public void addFloor() {
-        Debug.Log("ADD FLOOR");
-        GameObject floorPrefab = Resources.Load <GameObject> ("Prefab/Stage/Floor/FloorSet1");
+        //ランダムでフロアを選択
+        float randomFloorNumber = UnityEngine.Random.Range(1, (maxFloorNumber+1));
+
+        GameObject floorPrefab = Resources.Load <GameObject> ("Prefab/Stage/Floor/FloorSet" + randomFloorNumber);
         GameObject floor = GameObject.Instantiate(floorPrefab) as GameObject;
         floor.transform.localPosition = new Vector3((floorDefaultPositionX + (addFloorPositionX * addFloorCount)), floorDefaultPositionY, -1.0f);
 
         addFloorCount++;
+
+        if (addFloorCount == 2) {
+            addFloor();
+        }
     }
 
     private void addScore(int score) {
         point += score;
         scoreTextObject.text = point.ToString();
+    }
+
+    //timeScaleに影響されない時間
+    float realDeltaTime;
+    float lastRealTime;
+
+    //現実時間基準でデルタ時間を求める.
+    void CalcRealDeltaTime() {
+        if(lastRealTime == 0) {
+            lastRealTime = Time.realtimeSinceStartup;
+        }
+        realDeltaTime = Time.realtimeSinceStartup - lastRealTime;
+        lastRealTime = Time.realtimeSinceStartup;
+    }
+
+    //壁に当たった処理
+    public void damageWall() {
+        if (startFlg) {
+            damageFlg = true;
+            cameraScript.moveOffsetX = 0;
+            badMove();
+
+            hp--;
+            iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.5f));
+
+            damageNumber = 1;
+            Invoke("charaFall", 0.5f);
+        }
+    }
+
+    //落ちた処理
+    public void damageFall() {
+        if (startFlg) {
+            damageFlg = true;
+            cameraScript.moveOffsetX = 0;
+            badMove();
+
+            hp--;
+            iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.5f));
+
+            damageNumber = 2;
+            Invoke("charaFall", 0.5f);
+        }
+    }
+
+    private void charaFall() {
+        //キャラを上から落とす
+        if (damageNumber == 1) {
+            chara.transform.localPosition = new Vector3((chara.transform.localPosition.x + 1.5f), 7.0f, chara.transform.localPosition.z);
+        } else if (damageNumber == 2) {
+            chara.transform.localPosition = new Vector3((chara.transform.localPosition.x + 0.5f), 7.0f, chara.transform.localPosition.z);
+        }
+
+        checkGroundFlg = false;
+        jumpCount = 0;
+        damageFlg = false;
     }
 }

@@ -857,7 +857,7 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
-  animationData: {fileID: 0}
+  animationData: {fileID: 11400000, guid: f0bab1e600722423b81f7c93e5ae10b2, type: 2}
   animationDataGUID: f0bab1e600722423b81f7c93e5ae10b2
   mMaterialSource:
   - {fileID: 2100000, guid: 75ffb9aeef3e54f44be90d2df35aa2b2, type: 2}
@@ -11085,7 +11085,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_GravityScale
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 141196}

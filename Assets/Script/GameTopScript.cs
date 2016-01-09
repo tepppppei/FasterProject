@@ -286,7 +286,7 @@ public class GameTopScript : MonoBehaviour {
         Debug.Log("難易度：" + currentDifficulty);
         Debug.Log("ステージ番号：" + stageNumber);
 
-        StartCoroutine(viewChange("RaceScene"));
+        StartCoroutine(viewChange("NewRaceScene"));
     }
 
     public void gameBattle() {

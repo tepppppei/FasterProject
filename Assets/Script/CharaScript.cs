@@ -12,21 +12,21 @@ public class CharaScript : MonoBehaviour {
     private bool isOnMoveFloor = false;
 
     //GameStartObjectのScript
-    GameStartScript gameStartScript;
+    NewGameStartScript gameStartScript;
 
     // Use this for initialization
     void Start () {
         gameStartObj = GameObject.Find("GameStartObj");
         if (gameStartObj != null) {
-            gameStartScript = gameStartObj.GetComponent<GameStartScript>();
+            gameStartScript = gameStartObj.GetComponent<NewGameStartScript>();
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision){
         if(collision.gameObject.tag == "Bomb"){
-            gameStartScript.goBack();
+            //gameStartScript.goBack();
         } else if(collision.gameObject.tag == "Fall"){
-            gameStartScript.goBack();
+            gameStartScript.damageFall();
         } else if(collision.gameObject.tag == "MoveFloor"){
             Debug.Log("動く床にぶつかった");
             isOnMoveFloor = true;
@@ -38,9 +38,11 @@ public class CharaScript : MonoBehaviour {
                 //gameStartScript.correctCharaPositionX();
             }
         } else if(collision.gameObject.tag == "Rock"){
-            gameStartScript.goBack();
+            //gameStartScript.goBack();
         } else if(collision.gameObject.tag == "Goal"){
             gameStartScript.goal();
+        } else if(collision.gameObject.tag == "DamageWall"){
+            gameStartScript.damageWall();
         }
     }
 

@@ -3,8 +3,9 @@ using System.Collections;
 
 public class CameraScript : MonoBehaviour {
 
-	private GameObject chara;
+private GameObject chara;
     public Vector3 offset;
+    public float moveOffsetX = 0;
 
     // Use this for initialization
     void Start () {
@@ -16,7 +17,7 @@ public class CameraScript : MonoBehaviour {
         if (chara == null) {
             chara = GameObject.Find("Character");
         } else {
-            this.transform.position = new Vector3 (this.chara.transform.position.x + this.offset.x, this.offset.y , this.chara.transform.position.z + this.offset.z);
+            this.transform.position = new Vector3 (this.transform.position.x + moveOffsetX, this.offset.y , this.chara.transform.position.z + this.offset.z);
         }
     }
 
@@ -26,14 +27,12 @@ public class CameraScript : MonoBehaviour {
     private float pixelPerUnit = 100f;
 
     void Awake () {
-
 /*
         float screenRate = (float)1024 / Screen.height;
         if( screenRate > 1 ) screenRate = 1;
         int width = (int)(Screen.width * screenRate);
         int height = (int)(Screen.height * screenRate);
         Screen.SetResolution( width , height, true, 5);
-
 */
 
         //float aspect = (float)Screen.height / (float)Screen.width;
