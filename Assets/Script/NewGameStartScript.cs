@@ -10,11 +10,11 @@ public class NewGameStartScript : MonoBehaviour {
     private float floorDefaultPositionY = -1.2f;
     private float addFloorPositionX = 5.11f;
     private float addFloorCount = 1;
-    private float moveSpeed = 0.03f;
+    private float moveSpeed = 0.045f;
     private int limitTime = 60;
     private int basePoint = 2;
     private float baseSpeed = 1.0f;
-    private int maxFloorNumber = 8;
+    private int maxFloorNumber = 9;
 
     private int point = 0;
     private float timeleft = 10.0f;
@@ -161,6 +161,10 @@ public class NewGameStartScript : MonoBehaviour {
                 }
             }
 
+            //接地判定
+            isGrounded = Physics2D.Linecast(
+                    chara.transform.position, chara.transform.position - chara.transform.up * 1.2f, groundlayer);
+
             if (Input.GetMouseButtonDown(0)) {
                 touchPos = Input.mousePosition;
             } else if (Input.GetMouseButtonUp(0)) {
@@ -168,7 +172,7 @@ public class NewGameStartScript : MonoBehaviour {
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 float swipeDistanceY = releasePos.y - touchPos.y;
 
-                if (swipeDistanceY < -35) {
+                if (isGrounded && swipeDistanceY < -35) {
                     sliding();
                     touchTrueEffect(worldPos.x, worldPos.y);
                 } else if (jumpCount <= 1 && worldPos.y <= 2.3f) {
@@ -177,14 +181,17 @@ public class NewGameStartScript : MonoBehaviour {
                 }
             }
 
-            chara.transform.Translate(new Vector2((moveSpeed * baseSpeed), 0.0f * Time.deltaTime));
+            //キャラを前進
+            if (chara.transform.localRotation.y == 0) {
+                chara.transform.Translate(new Vector2((moveSpeed * baseSpeed), 0.0f * Time.deltaTime));
+            } else {
+                chara.transform.Translate(new Vector2((moveSpeed * baseSpeed * -1.0f), 0.0f * Time.deltaTime));
+            }
+
             if (cameraScript.moveOffsetX != (moveSpeed * baseSpeed)) {
                 cameraScript.moveOffsetX = (moveSpeed * baseSpeed);
             }
 
-            //接地判定
-            isGrounded = Physics2D.Linecast(
-                    chara.transform.position, chara.transform.position - chara.transform.up * 1.2f, groundlayer);
             if (checkGroundFlg && isGrounded && jumpCount != 0) {
                 chara.GetComponent<Animation>().Play("Idle");
                 checkGroundFlg = false;
@@ -228,14 +235,25 @@ public class NewGameStartScript : MonoBehaviour {
             Invoke("checkGround", 0.4f);
         }
 
+        if (colliderY < colliderX) {
+            chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, (chara.transform.localPosition.y + 0.5f), chara.transform.localPosition.z);
+            chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderX, colliderY);
+        }
+
         chara.GetComponent<Animation>().Play("Jump");
         chara.GetComponent<Rigidbody2D>().AddForce(force);
     }
 
+    private float colliderX = 0;
+    private float colliderY = 0;
     private void sliding() {
-        Invoke("stopSliding", 0.8f);
-        chara.GetComponent<Rigidbody2D>().isKinematic = true;
-        chara.GetComponent<BoxCollider2D>().isTrigger = true;
+        Invoke("stopSliding", 1.0f);
+        //chara.GetComponent<Rigidbody2D>().isKinematic = true;
+        //chara.GetComponent<BoxCollider2D>().isTrigger = true;
+        colliderX = chara.GetComponent<BoxCollider2D>().size.x;
+        colliderY = chara.GetComponent<BoxCollider2D>().size.y;
+        chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, (chara.transform.localPosition.y + 0.5f), chara.transform.localPosition.z);
+        chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderY, colliderX);
 
         chara.GetComponent<Animation>().Play("Sliding");
     }
@@ -244,6 +262,8 @@ public class NewGameStartScript : MonoBehaviour {
         chara.GetComponent<Rigidbody2D>().isKinematic = false;
         chara.GetComponent<BoxCollider2D>().isTrigger = false;
         chara.GetComponent<Animation>().Play("Idle");
+        chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, (chara.transform.localPosition.y + 0.5f), chara.transform.localPosition.z);
+        chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderX, colliderY);
     }
 
     private void checkGround() {
@@ -848,7 +868,7 @@ public class NewGameStartScript : MonoBehaviour {
 
     //壁に当たった処理
     public void damageWall() {
-        if (startFlg) {
+        if (startFlg && !damageFlg) {
             damageFlg = true;
             cameraScript.moveOffsetX = 0;
             badMove();
@@ -863,7 +883,7 @@ public class NewGameStartScript : MonoBehaviour {
 
     //落ちた処理
     public void damageFall() {
-        if (startFlg) {
+        if (startFlg && !damageFlg) {
             damageFlg = true;
             cameraScript.moveOffsetX = 0;
             badMove();
@@ -876,12 +896,29 @@ public class NewGameStartScript : MonoBehaviour {
         }
     }
 
+    //ボム処理
+    public void damageBomb() {
+        if (startFlg && !damageFlg) {
+            damageFlg = true;
+            cameraScript.moveOffsetX = 0;
+            badMove();
+
+            hp--;
+            iTween.ScaleTo(hpObject[hp], iTween.Hash("x", 0, "y", 0, "z", 0, "time", 0.5f));
+
+            damageNumber = 3;
+            Invoke("charaFall", 0.5f);
+        }
+    }
+
     private void charaFall() {
         //キャラを上から落とす
         if (damageNumber == 1) {
             chara.transform.localPosition = new Vector3((chara.transform.localPosition.x + 1.5f), 7.0f, chara.transform.localPosition.z);
         } else if (damageNumber == 2) {
             chara.transform.localPosition = new Vector3((chara.transform.localPosition.x + 0.5f), 7.0f, chara.transform.localPosition.z);
+        } else if (damageNumber == 3) {
+            chara.transform.localPosition = new Vector3((chara.transform.localPosition.x + 1.0f), 7.0f, chara.transform.localPosition.z);
         }
 
         checkGroundFlg = false;

@@ -761,7 +761,7 @@ public class GameTopScript : MonoBehaviour {
         //SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
         string selectQuery = "select * from Character";
         DataTable allCharacterTable = sqlDB.ExecuteQuery(selectQuery);
-        int gachaCharaNumber = (int) UnityEngine.Random.Range(0, (allCharacterTable.Rows.Count - 1));
+        int gachaCharaNumber = (int) UnityEngine.Random.Range(0, (allCharacterTable.Rows.Count));
         Debug.Log("NUMBER:" + gachaCharaNumber);
         Debug.Log(allCharacterTable.Rows[gachaCharaNumber]["name"] + "GET!!");
 

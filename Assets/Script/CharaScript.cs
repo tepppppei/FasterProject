@@ -24,11 +24,10 @@ public class CharaScript : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision){
         if(collision.gameObject.tag == "Bomb"){
-            //gameStartScript.goBack();
+            gameStartScript.damageBomb();
         } else if(collision.gameObject.tag == "Fall"){
             gameStartScript.damageFall();
         } else if(collision.gameObject.tag == "MoveFloor"){
-            Debug.Log("動く床にぶつかった");
             isOnMoveFloor = true;
             moveFloorX = collision.gameObject.transform.localPosition.x;
             charaX = this.gameObject.transform.localPosition.x;
