@@ -65,6 +65,7 @@ public class NewGameStartScript : MonoBehaviour {
     private bool isMove = false;
     private int jumpCount = 0;
     private Vector3 touchPos;
+    private Vector3 touchWorldPos;
     //接地フラグ
     private bool isGrounded = true;
     //キャラの初期Ｘ値
@@ -93,8 +94,9 @@ public class NewGameStartScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        StartCoroutine(viewStart());
+        Resources.UnloadUnusedAssets();
 
+        StartCoroutine(viewStart());
         //使用中のキャラ取得
         SqliteDatabase sqlDB = new SqliteDatabase("UserStatus.db");
         string selectQuery = "select * from Character where select_flg = 1";
@@ -130,16 +132,16 @@ public class NewGameStartScript : MonoBehaviour {
     IEnumerator viewStart() {
         iTween.MoveTo(sceneChangeObject[0], iTween.Hash(
                     "position", new Vector3(3, 479, -500),
-                    "time", 1.0f, 
+                    "time", 1.0f,
                     "islocal", true,
-                    "oncomplete", "CompleteHandler", 
+                    "oncomplete", "CompleteHandler",
                     "oncompletetarget", gameObject
                     ));
         iTween.MoveTo(sceneChangeObject[1], iTween.Hash(
                     "position", new Vector3(3, -487, -500),
-                    "time", 1.0f, 
+                    "time", 1.0f,
                     "islocal", true,
-                    "oncomplete", "CompleteHandler", 
+                    "oncomplete", "CompleteHandler",
                     "oncompletetarget", gameObject
                     ));
 
@@ -148,6 +150,7 @@ public class NewGameStartScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+
         //時間更新
         CalcRealDeltaTime();
 
@@ -164,22 +167,6 @@ public class NewGameStartScript : MonoBehaviour {
             //接地判定
             isGrounded = Physics2D.Linecast(
                     chara.transform.position, chara.transform.position - chara.transform.up * 1.2f, groundlayer);
-
-            if (Input.GetMouseButtonDown(0)) {
-                touchPos = Input.mousePosition;
-            } else if (Input.GetMouseButtonUp(0)) {
-                Vector3 releasePos = Input.mousePosition;
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                float swipeDistanceY = releasePos.y - touchPos.y;
-
-                if (isGrounded && swipeDistanceY < -35) {
-                    sliding();
-                    touchTrueEffect(worldPos.x, worldPos.y);
-                } else if (jumpCount <= 1 && worldPos.y <= 2.3f) {
-                    jump(Vector2.up * 600f);
-                    touchTrueEffect(worldPos.x, worldPos.y);
-                }
-            }
 
             //キャラを前進
             if (chara.transform.localRotation.y == 0) {
@@ -223,31 +210,52 @@ public class NewGameStartScript : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate() {
-        if (startFlg) {
+        if (startFlg && !damageFlg) {
+            if (!chara.GetComponent<Animation>().IsPlaying("Sliding") && colliderX != 0) {
+                chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderX, colliderY);
+            }
+
+            if (Input.GetMouseButtonDown(0)) {
+                Debug.Log("TOUCH DOWN");
+                touchPos = Input.mousePosition;
+                touchWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            } else if (Input.GetMouseButtonUp(0) && touchPos.y != 0) {
+                Debug.Log("TOUCH UP");
+                if (touchWorldPos.y >= -4.0f) {
+                    Vector3 releasePos = Input.mousePosition;
+                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    float swipeDistanceY = releasePos.y - touchPos.y;
+
+                    /*
+                    if (isGrounded && swipeDistanceY < -35) {
+                        sliding();
+                        touchTrueEffect(worldPos.x, worldPos.y);
+                        */
+                    if (jumpCount <= 1 && worldPos.y <= 2.3f) {
+                        Vector2 force = (Vector2.up * 1200f);
+                        jumpCount++;
+                        if (jumpCount == 1) {
+                            Invoke("checkGround", 0.4f);
+                        }
+
+                        chara.GetComponent<Animation>().Play("Jump");
+                        chara.GetComponent<Rigidbody2D>().AddForce(force);
+
+                        touchTrueEffect(worldPos.x, worldPos.y);
+                    }
+                }
+
+                touchPos = new Vector3(0, 0, 0);
+            }
         }
     }
 
     //ジャンプ
     private float charaAfterPositionY = 0;
-    private void jump(Vector2 force) {
-        jumpCount++;
-        if (jumpCount == 1) {
-            Invoke("checkGround", 0.4f);
-        }
-
-        if (colliderY < colliderX) {
-            chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, (chara.transform.localPosition.y + 0.5f), chara.transform.localPosition.z);
-            chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderX, colliderY);
-        }
-
-        chara.GetComponent<Animation>().Play("Jump");
-        chara.GetComponent<Rigidbody2D>().AddForce(force);
-    }
 
     private float colliderX = 0;
     private float colliderY = 0;
-    private void sliding() {
-        Invoke("stopSliding", 1.0f);
+    public void slidingStart() {
         //chara.GetComponent<Rigidbody2D>().isKinematic = true;
         //chara.GetComponent<BoxCollider2D>().isTrigger = true;
         colliderX = chara.GetComponent<BoxCollider2D>().size.x;
@@ -257,13 +265,19 @@ public class NewGameStartScript : MonoBehaviour {
 
         chara.GetComponent<Animation>().Play("Sliding");
     }
-    //スライディング終了
-    private void stopSliding() {
-        chara.GetComponent<Rigidbody2D>().isKinematic = false;
-        chara.GetComponent<BoxCollider2D>().isTrigger = false;
+
+    public void slidingEnd() {
+        //chara.GetComponent<Rigidbody2D>().isKinematic = false;
+        //chara.GetComponent<BoxCollider2D>().isTrigger = false;
         chara.GetComponent<Animation>().Play("Idle");
         chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, (chara.transform.localPosition.y + 0.5f), chara.transform.localPosition.z);
         chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderX, colliderY);
+    }
+
+    public void dash() {
+        if (startFlg) {
+            chara.transform.localPosition = new Vector3(chara.transform.localPosition.x + 0.4f, chara.transform.localPosition.y, chara.transform.localPosition.z);
+        }
     }
 
     private void checkGround() {
@@ -924,5 +938,7 @@ public class NewGameStartScript : MonoBehaviour {
         checkGroundFlg = false;
         jumpCount = 0;
         damageFlg = false;
+
+        chara.GetComponent<Animation>().Play("Idle");
     }
 }

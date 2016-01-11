@@ -6,7 +6,7 @@ public class StarScript : MonoBehaviour {
     GameObject starEffect;
     // Use this for initialization
     void Start () {
-        starEffect = (GameObject)Resources.Load("Effect/Star");
+        starEffect = (GameObject)Resources.Load("Effect/" + this.name);
         //Destroy(this.gameObject, 2.0f);
     }
 
