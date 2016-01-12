@@ -25,10 +25,10 @@ public class NewGameStartScript : MonoBehaviour {
 
     //GameObject系
     public GameObject[] sceneChangeObject;
-
     private GameObject chara;
     public SpriteRenderer sr;
     public LayerMask groundlayer;
+    public GameObject characterPositionObject;
 
     //ゲームスタート系
     public GameObject canvasObject;
@@ -169,17 +169,31 @@ public class NewGameStartScript : MonoBehaviour {
                     chara.transform.position, chara.transform.position - chara.transform.up * 1.2f, groundlayer);
 
             //キャラを前進
-            if (chara.transform.localRotation.y == 0) {
-                chara.transform.Translate(new Vector2((moveSpeed * baseSpeed), 0.0f * Time.deltaTime));
-            } else {
-                chara.transform.Translate(new Vector2((moveSpeed * baseSpeed * -1.0f), 0.0f * Time.deltaTime));
+            float addPosition = 0;
+            if (chara.transform.localPosition.x < characterPositionObject.transform.localPosition.x &&
+                    (characterPositionObject.transform.localPosition.x - chara.transform.localPosition.x) >= 0.1f) {
+                addPosition = 0.01f;
+            } else if (chara.transform.localPosition.x > characterPositionObject.transform.localPosition.x &&
+                    (chara.transform.localPosition.x - characterPositionObject.transform.localPosition.x) >= 0.1f) {
+                addPosition = -0.01f;
             }
+
+            Debug.Log("CHARA:" + chara.transform.localPosition.x);
+            Debug.Log("BBBBB:" + characterPositionObject.transform.localPosition.x);
+
+            if (chara.transform.localRotation.y == 0) {
+                chara.transform.Translate(new Vector2((moveSpeed * baseSpeed) + addPosition, 0.0f * Time.deltaTime));
+            } else {
+                chara.transform.Translate(new Vector2((moveSpeed * baseSpeed * -1.0f) + (addPosition * -1.0f), 0.0f * Time.deltaTime));
+            }
+
+            characterPositionObject.transform.Translate(new Vector2((moveSpeed * baseSpeed), 0.0f * Time.deltaTime));
 
             if (cameraScript.moveOffsetX != (moveSpeed * baseSpeed)) {
                 cameraScript.moveOffsetX = (moveSpeed * baseSpeed);
             }
 
-            if (checkGroundFlg && isGrounded && jumpCount != 0) {
+            if (checkGroundFlg && isGrounded && jumpCount != 0 && !chara.GetComponent<Animation>().IsPlaying("Sliding")) {
                 chara.GetComponent<Animation>().Play("Idle");
                 checkGroundFlg = false;
                 jumpCount = 0;
@@ -214,6 +228,7 @@ public class NewGameStartScript : MonoBehaviour {
             if (!chara.GetComponent<Animation>().IsPlaying("Sliding") && colliderX != 0) {
                 chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderX, colliderY);
             }
+            /*
 
             if (Input.GetMouseButtonDown(0)) {
                 Debug.Log("TOUCH DOWN");
@@ -226,11 +241,6 @@ public class NewGameStartScript : MonoBehaviour {
                     Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     float swipeDistanceY = releasePos.y - touchPos.y;
 
-                    /*
-                    if (isGrounded && swipeDistanceY < -35) {
-                        sliding();
-                        touchTrueEffect(worldPos.x, worldPos.y);
-                        */
                     if (jumpCount <= 1 && worldPos.y <= 2.3f) {
                         Vector2 force = (Vector2.up * 1200f);
                         jumpCount++;
@@ -247,6 +257,7 @@ public class NewGameStartScript : MonoBehaviour {
 
                 touchPos = new Vector3(0, 0, 0);
             }
+            */
         }
     }
 
@@ -255,6 +266,20 @@ public class NewGameStartScript : MonoBehaviour {
 
     private float colliderX = 0;
     private float colliderY = 0;
+
+    public void jump() {
+        if (jumpCount <= 1 && startFlg) {
+            Vector2 force = (Vector2.up * 1200f);
+            jumpCount++;
+            if (jumpCount == 1) {
+                Invoke("checkGround", 0.4f);
+            }
+
+            chara.GetComponent<Animation>().Play("Jump");
+            chara.GetComponent<Rigidbody2D>().AddForce(force);
+        }
+    }
+
     public void slidingStart() {
         //chara.GetComponent<Rigidbody2D>().isKinematic = true;
         //chara.GetComponent<BoxCollider2D>().isTrigger = true;

@@ -904,9 +904,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: .0858500302, y: 1.28147435}
+  m_Offset: {x: .0858500302, y: 4.14421654}
   serializedVersion: 2
-  m_Size: {x: .942766547, y: 5.58519316}
+  m_Size: {x: .942766547, y: 11.3106785}
 --- !u!114 &243129611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12220,6 +12220,7 @@ MonoBehaviour:
   groundlayer:
     serializedVersion: 2
     m_Bits: 256
+  characterPositionObject: {fileID: 1730367831}
   canvasObject: {fileID: 1787836342}
   startObject:
   - {fileID: 172354, guid: b15931912182f98419c7cff63b4dca2d, type: 2}
@@ -12327,7 +12328,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: DASH
+  m_Text: JUMP
 --- !u!222 &596328132
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13765,11 +13766,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22454484, guid: b60453fd577beaa46a6cc9f394397059, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -122
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 22454484, guid: b60453fd577beaa46a6cc9f394397059, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -233
+      value: -167
       objectReference: {fileID: 0}
     - target: {fileID: 22454484, guid: b60453fd577beaa46a6cc9f394397059, type: 2}
       propertyPath: m_SizeDelta.x
@@ -14325,10 +14326,10 @@ RectTransform:
   m_Children:
   - {fileID: 352142356}
   m_Father: {fileID: 1787836343}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: -20, y: -233}
+  m_AnchoredPosition: {x: 92, y: -233}
   m_SizeDelta: {x: 112, y: 65}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1465847276
@@ -14567,7 +14568,7 @@ Transform:
   - {fileID: 199573615}
   - {fileID: 243129609}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 11
 --- !u!61 &1612977150
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14836,6 +14837,33 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a04b20514ca23fb41b62456eae74bcef, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1730367831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1730367832}
+  m_Layer: 0
+  m_Name: CharacterPositionObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1730367832
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1730367831}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.99000001, y: -2.16000009, z: -100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
 --- !u!1 &1732380482
 GameObject:
   m_ObjectHideFlags: 0
@@ -14978,8 +15006,8 @@ RectTransform:
   - {fileID: 1782338768}
   - {fileID: 1013028792}
   - {fileID: 1928326010}
-  - {fileID: 1901333007}
   - {fileID: 1465847275}
+  - {fileID: 1901333007}
   - {fileID: 1986794983}
   - {fileID: 1732380483}
   - {fileID: 1041426142}
@@ -15414,7 +15442,7 @@ GameObject:
   - 114: {fileID: 1901333009}
   - 114: {fileID: 1901333008}
   m_Layer: 0
-  m_Name: DashButton
+  m_Name: JumpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15432,10 +15460,10 @@ RectTransform:
   m_Children:
   - {fileID: 596328130}
   m_Father: {fileID: 1787836343}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 110, y: -233}
+  m_AnchoredPosition: {x: -79, y: -233}
   m_SizeDelta: {x: 112, y: 65}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1901333008
@@ -15478,7 +15506,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 580039145}
-        m_MethodName: dash
+        m_MethodName: jump
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
