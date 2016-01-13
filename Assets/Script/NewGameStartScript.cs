@@ -194,7 +194,7 @@ public class NewGameStartScript : MonoBehaviour {
             }
 
             if (checkGroundFlg && isGrounded && jumpCount != 0 && !chara.GetComponent<Animation>().IsPlaying("Sliding")) {
-                chara.GetComponent<Animation>().Play("Idle");
+                chara.GetComponent<Animation>().Play("Run");
                 checkGroundFlg = false;
                 jumpCount = 0;
             }
@@ -276,6 +276,7 @@ public class NewGameStartScript : MonoBehaviour {
             }
 
             chara.GetComponent<Animation>().Play("Jump");
+            chara.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             chara.GetComponent<Rigidbody2D>().AddForce(force);
         }
     }
@@ -294,7 +295,7 @@ public class NewGameStartScript : MonoBehaviour {
     public void slidingEnd() {
         //chara.GetComponent<Rigidbody2D>().isKinematic = false;
         //chara.GetComponent<BoxCollider2D>().isTrigger = false;
-        chara.GetComponent<Animation>().Play("Idle");
+        chara.GetComponent<Animation>().Play("Run");
         chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, (chara.transform.localPosition.y + 0.5f), chara.transform.localPosition.z);
         chara.GetComponent<BoxCollider2D>().size = new Vector2(colliderX, colliderY);
     }
@@ -356,7 +357,7 @@ public class NewGameStartScript : MonoBehaviour {
     }
 
     private void CompleteHandler() {
-        chara.GetComponent<Animation>().Play("Idle");
+        chara.GetComponent<Animation>().Play("Run");
         isMove = false;
     }
 
@@ -964,6 +965,6 @@ public class NewGameStartScript : MonoBehaviour {
         jumpCount = 0;
         damageFlg = false;
 
-        chara.GetComponent<Animation>().Play("Idle");
+        chara.GetComponent<Animation>().Play("Run");
     }
 }
