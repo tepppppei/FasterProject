@@ -8,9 +8,7 @@ public class FloorDestroyScript : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D collider){
-        Debug.Log(collider.gameObject.tag + "とぶつかった");
         if(collider.gameObject.tag == "DestroyFloor"){
-            Debug.Log("ぶつかった");
             Destroy(this.gameObject);
         }
     }

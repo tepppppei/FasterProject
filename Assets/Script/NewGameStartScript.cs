@@ -10,11 +10,13 @@ public class NewGameStartScript : MonoBehaviour {
     private float floorDefaultPositionY = -1.2f;
     private float addFloorPositionX = 5.11f;
     private float addFloorCount = 1;
-    private float moveSpeed = 0.045f;
     private int limitTime = 60;
+
+    private float moveSpeed = 0.045f;
     private int basePoint = 2;
     private float baseSpeed = 1.0f;
-    private int maxFloorNumber = 9;
+    private float baseBoosterTime = 3.0f;
+    private int maxFloorNumber = 10;
 
     private int point = 0;
     private float timeleft = 10.0f;
@@ -78,6 +80,10 @@ public class NewGameStartScript : MonoBehaviour {
     //ダメージフラグ
     private bool damageFlg = false;
     private int damageNumber = 1;
+    //ブースト
+    private bool boosterFlg = false;
+    private GameObject boosterEffect;
+    private GameObject bef;
 
     //スキル設定系
     private bool skillIntervalFlg = false;
@@ -124,6 +130,8 @@ public class NewGameStartScript : MonoBehaviour {
 
             StartCoroutine(gameStart());
         }
+
+        boosterEffect = (GameObject)Resources.Load("Effect/Booster");
 
         //CameraScriptを取得
         cameraScript = (CameraScript) cameraObject.GetComponent<CameraScript>();
@@ -178,9 +186,6 @@ public class NewGameStartScript : MonoBehaviour {
                 addPosition = -0.01f;
             }
 
-            Debug.Log("CHARA:" + chara.transform.localPosition.x);
-            Debug.Log("BBBBB:" + characterPositionObject.transform.localPosition.x);
-
             if (chara.transform.localRotation.y == 0) {
                 chara.transform.Translate(new Vector2((moveSpeed * baseSpeed) + addPosition, 0.0f * Time.deltaTime));
             } else {
@@ -214,6 +219,23 @@ public class NewGameStartScript : MonoBehaviour {
                 errorMessage("スピードアップ！");
                 //BGMのピッチをあげる
                 bgmObject.pitch = 1.0f + 0.1f;
+            }
+
+            //ブースト処理
+            if (boosterFlg) {
+                baseBoosterTime -= realDeltaTime;
+                if (baseBoosterTime <= 0) {
+                    boosterFlg = false;
+                    baseSpeed /= 1.5f;
+                    baseBoosterTime = 3.0f;
+
+                    //キャラを落ちないように設定
+                    chara.GetComponent<Rigidbody2D>().isKinematic = false;
+                    chara.GetComponent<BoxCollider2D>().isTrigger = false;
+                    Destroy(bef);
+                }
+
+                bef.transform.localPosition = new Vector3(chara.transform.localPosition.x - 1.0f, bef.transform.localPosition.y, bef.transform.localPosition.z);
             }
 
             if (hp <= 0) {
@@ -966,5 +988,20 @@ public class NewGameStartScript : MonoBehaviour {
         damageFlg = false;
 
         chara.GetComponent<Animation>().Play("Run");
+    }
+
+    public void booster() {
+        if (!boosterFlg) {
+            baseSpeed *= 1.5f;
+
+            boosterFlg = true;
+            //ブースターエフェクト
+            chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, 1.07f, chara.transform.localPosition.z);
+            bef = Instantiate (boosterEffect, new Vector3(chara.transform.localPosition.x - 1.0f, chara.transform.localPosition.y, -100), Quaternion.identity) as GameObject;
+
+            //キャラを落ちないように設定
+            chara.GetComponent<Rigidbody2D>().isKinematic = true;
+            chara.GetComponent<BoxCollider2D>().isTrigger = true;
+        }
     }
 }

@@ -27,11 +27,6 @@ public class CharaScript : MonoBehaviour {
             gameStartScript.damageBomb();
         } else if(collision.gameObject.tag == "Fall"){
             gameStartScript.damageFall();
-        } else if(collision.gameObject.tag == "MoveFloor"){
-            isOnMoveFloor = true;
-            moveFloorX = collision.gameObject.transform.localPosition.x;
-            charaX = this.gameObject.transform.localPosition.x;
-            //this.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
         } else if(collision.gameObject.tag == "Floor"){
             if (!isOnMoveFloor) {
                 //gameStartScript.correctCharaPositionX();
@@ -42,6 +37,12 @@ public class CharaScript : MonoBehaviour {
             gameStartScript.goal();
         } else if(collision.gameObject.tag == "DamageWall"){
             gameStartScript.damageWall();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collider){
+        if(collider.gameObject.tag == "Booster"){
+            gameStartScript.booster();
         }
     }
 
