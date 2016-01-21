@@ -10,12 +10,12 @@ public class NewGameStartScript : MonoBehaviour {
     private float floorDefaultPositionY = -1.2f;
     private float addFloorPositionX = 5.11f;
     private float addFloorCount = 1;
-    private int limitTime = 60;
 
     private float moveSpeed = 0.045f;
     private int basePoint = 2;
     private float baseSpeed = 1.0f;
     private float baseBoosterTime = 3.0f;
+    private float baseBoosterTimeScale = 1.5f;
     private int maxFloorNumber = 10;
 
     private int point = 0;
@@ -212,6 +212,7 @@ public class NewGameStartScript : MonoBehaviour {
                 timeleft = 10.0f;
 
                 baseSpeed += 0.1f;
+                Math.Round(baseSpeed, 1, MidpointRounding.AwayFromZero);
 
                 Time.timeScale = baseSpeed;
                 speedTextObject.text = "速度×" + baseSpeed.ToString();
@@ -226,8 +227,12 @@ public class NewGameStartScript : MonoBehaviour {
                 baseBoosterTime -= realDeltaTime;
                 if (baseBoosterTime <= 0) {
                     boosterFlg = false;
-                    baseSpeed /= 1.5f;
                     baseBoosterTime = 3.0f;
+
+                    baseSpeed /= baseBoosterTimeScale;
+                    baseSpeed = (float) Math.Round(baseSpeed, 1, MidpointRounding.AwayFromZero);
+                    Time.timeScale = baseSpeed;
+                    speedTextObject.text = "速度×" + baseSpeed.ToString();
 
                     //キャラを落ちないように設定
                     chara.GetComponent<Rigidbody2D>().isKinematic = false;
@@ -992,12 +997,18 @@ public class NewGameStartScript : MonoBehaviour {
 
     public void booster() {
         if (!boosterFlg) {
-            baseSpeed *= 1.5f;
+            baseSpeed *= baseBoosterTimeScale;
+            baseSpeed = (float) Math.Round(baseSpeed, 1, MidpointRounding.AwayFromZero);
+            Time.timeScale = baseSpeed;
+            speedTextObject.text = "速度×" + baseSpeed.ToString();
 
             boosterFlg = true;
-            //ブースターエフェクト
+            //キャラのポジションを変更
             chara.transform.localPosition = new Vector3(chara.transform.localPosition.x, 1.07f, chara.transform.localPosition.z);
+            //ブースターエフェクト
             bef = Instantiate (boosterEffect, new Vector3(chara.transform.localPosition.x - 1.0f, chara.transform.localPosition.y, -100), Quaternion.identity) as GameObject;
+
+            chara.GetComponent<Animation>().Play("Run");
 
             //キャラを落ちないように設定
             chara.GetComponent<Rigidbody2D>().isKinematic = true;
