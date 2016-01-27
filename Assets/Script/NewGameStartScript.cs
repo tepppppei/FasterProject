@@ -16,7 +16,7 @@ public class NewGameStartScript : MonoBehaviour {
     private float baseSpeed = 1.0f;
     private float baseBoosterTime = 3.0f;
     private float baseBoosterTimeScale = 1.5f;
-    private int maxFloorNumber = 10;
+    private int maxFloorNumber = 20;
 
     private int point = 0;
     private float timeleft = 10.0f;
